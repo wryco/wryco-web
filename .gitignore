@@ -1,0 +1,6 @@
+bin/
+data/mariadb/*
+data/mssql/*
+obj/
+*.local
+!.gitkeep

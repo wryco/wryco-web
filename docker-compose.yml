@@ -1,0 +1,41 @@
+services:
+  caspnetti_backend:
+    build:
+      context: ./
+      dockerfile: ./docker/backend/Dockerfile
+    container_name: caspnetti_backend
+    image: caspnetti_backend
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/caspnetti
+    networks:
+      - caspnetti
+  # caspnetti_mariadb:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/mariadb/Dockerfile
+  #   container_name: caspnetti_mariadb
+  #   env_file:
+  #     - ./docker/mariadb/.env.local
+  #   image: caspnetti_mariadb
+  #   volumes:
+  #     - ./data/mariadb:/var/lib/mysql
+  #   networks:
+  #     - caspnetti
+  caspnetti_mssql:
+    build:
+      context: ./
+      dockerfile: ./docker/mssql/Dockerfile
+    container_name: caspnetti_mssql
+    env_file:
+      - ./docker/mssql/.env.local
+    image: caspnetti_mssql
+    volumes:
+      - ./data/mssql:/var/opt/mssql/data
+    networks:
+      - caspnetti
+networks:
+  caspnetti:
+    name: caspnetti
+    driver: bridge
