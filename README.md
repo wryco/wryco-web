@@ -123,6 +123,8 @@ dotnet add Caspnetti.DAL package Microsoft.Extensions.Configuration.Json
 Manually updated
 - Caspnetti.API/Program.cs
 - Caspnetti.API/Properties/launchSettings.json
+- Caspnetti.API/appsettings.json
+- Caspnetti.API/appsettings.Development.json
 
 Manually created
 - Caspnetti.DAL/ApplicationDbContext.cs

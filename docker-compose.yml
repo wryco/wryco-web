@@ -11,18 +11,6 @@ services:
       - ./src:/caspnetti
     networks:
       - caspnetti
-  # caspnetti_mariadb:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/mariadb/Dockerfile
-  #   container_name: caspnetti_mariadb
-  #   env_file:
-  #     - ./docker/mariadb/.env.local
-  #   image: caspnetti_mariadb
-  #   volumes:
-  #     - ./data/mariadb:/var/lib/mysql
-  #   networks:
-  #     - caspnetti
   caspnetti_mssql:
     build:
       context: ./
