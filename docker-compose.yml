@@ -4,6 +4,8 @@ services:
       context: ./
       dockerfile: ./docker/backend/Dockerfile
     container_name: caspnetti_backend
+    depends_on:
+      - caspnetti_mssql
     image: caspnetti_backend
     ports:
       - 8080:8080
@@ -21,6 +23,20 @@ services:
     image: caspnetti_mssql
     volumes:
       - ./data/mssql:/var/opt/mssql/data
+    networks:
+      - caspnetti
+  caspnetti_adminer:
+    build:
+      context: ./
+      dockerfile: ./docker/adminer/Dockerfile
+    container_name: caspnetti_adminer
+    depends_on:
+      - caspnetti_mssql
+    env_file:
+      - ./docker/adminer/.env.local
+    image: caspnetti_adminer
+    ports:
+      - 8081:8080
     networks:
       - caspnetti
 networks:
