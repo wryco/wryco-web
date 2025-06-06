@@ -16,7 +16,7 @@
 Download docker.
 
 ```
-./scripts/
+./scripts/copy_env.sh
 docker compose up -d
 ```
 
