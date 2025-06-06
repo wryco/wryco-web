@@ -24,7 +24,7 @@ docker compose up -d
 
 ## Frequently used commands:
 
-Surgically destroy and rebuild images:
+Surgically destroy containers and images:
 
 ```
 docker compose down --rmi local
@@ -48,7 +48,17 @@ Start API
 dotnet run --project Caspnetti.API
 ```
 
-Create migrations
+Create migration:
+
+```
+dotnet ef migrations add init --project Caspnetti.DAL --startup-project Caspnetti.API
+```
+
+Run migrations:
+
+```
+dotnet ef database update --project Caspnetti.DAL --startup-project Caspnetti.API
+```
 
 ## View API:
 
