@@ -11,6 +11,8 @@
 - 📝 Code-first SQL and [migrations](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/managing?tabs=dotnet-core-cli) using [entity framework](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - ⚖️ A controller, entity, service, and test abstraction pattern built for any scale
 - 🔍 [Adminer](https://www.adminer.org/en/) for easy database viewing
+- 👋 [Hey](https://github.com/rakyll/hey) for convient saturation testing
+- 😎 [Swagger](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0&viewFallbackFrom=aspnetcore-9.0) for living documentation and testing
 
 ## Quickstart:
 
