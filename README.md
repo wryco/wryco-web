@@ -16,6 +16,8 @@
 Download docker.
 
 ```
+git clone git@github.com:ramity/caspnetti.git
+cd caspnetti
 ./scripts/copy_env.sh
 docker compose up -d
 ```
