@@ -51,8 +51,10 @@ dotnet run --project Caspnetti.API
 Create migration:
 
 ```
-dotnet ef migrations add init --project Caspnetti.DAL --startup-project Caspnetti.API
+dotnet ef migrations add DESCRIPTION_GOES_HERE --project Caspnetti.DAL --startup-project Caspnetti.API
 ```
+
+> Replacing `DESCRIPTION_GOES_HERE` with a description of changes that capture what entity/database changes occured.
 
 Run migrations:
 
