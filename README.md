@@ -11,7 +11,7 @@
 - ⚖️ A controller, entity, service, and test abstraction pattern built for any scale
 - 🔍 [Adminer](https://www.adminer.org/en/) for easy database viewing
 
-### Quickstart:
+## Quickstart:
 
 Download docker.
 
@@ -22,7 +22,7 @@ docker compose up -d
 
 > It's that simple
 
-### Frequently used commands:
+## Frequently used commands:
 
 Surgically destroy and rebuild images:
 
@@ -50,10 +50,10 @@ dotnet run --project Caspnetti.API
 
 Create migrations
 
-### View API:
+## View API:
 
 Navigate to https://localhost
 
-### View database:
+## View database:
 
 Navigate to http://localhost:8080
