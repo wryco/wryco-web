@@ -11,8 +11,8 @@ public interface IRepository<T> where T : class
     // Read
     IEnumerable<T> FindAll();
     IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate);
-    T FindOneBy(Expression<Func<T, bool>> predicate);
-    T FindById(int id);
+    T? FindOneBy(Expression<Func<T, bool>> predicate);
+    T? FindById(int id);
     // Write
     void Add(T entity);
     void AddAll(IEnumerable<T> entities);
@@ -28,8 +28,8 @@ public interface IRepository<T> where T : class
     // Read
     Task<IEnumerable<T>> FindAllAsync();
     Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> predicate);
-    Task<T> FindOneByAsync(Expression<Func<T, bool>> predicate);
-    Task<T> FindByIdAsync(int id);
+    Task<T?> FindOneByAsync(Expression<Func<T, bool>> predicate);
+    Task<T?> FindByIdAsync(int id);
     // Write
     Task AddAsync(T entity);
     Task AddAllAsync(IEnumerable<T> entities);

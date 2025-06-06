@@ -32,12 +32,12 @@ public class Repository<T> : IRepository<T> where T : class
         return _dbSet.Where(predicate).AsEnumerable();
     }
 
-    public T FindOneBy(Expression<Func<T, bool>> predicate)
+    public T? FindOneBy(Expression<Func<T, bool>> predicate)
     {
         return _dbSet.Where(predicate).FirstOrDefault();
     }
 
-    public T FindById(int id)
+    public T? FindById(int id)
     {
         return _dbSet.Find(id);
     }
@@ -63,7 +63,8 @@ public class Repository<T> : IRepository<T> where T : class
 
     public void Delete(int id)
     {
-        T entity = FindById(id);
+        T? entity = FindById(id);
+
         if (entity != null)
         {
             _dbSet.Remove(entity);
@@ -96,12 +97,12 @@ public class Repository<T> : IRepository<T> where T : class
         return await _dbSet.Where(predicate).ToListAsync();
     }
 
-    public async Task<T> FindOneByAsync(Expression<Func<T, bool>> predicate)
+    public async Task<T?> FindOneByAsync(Expression<Func<T, bool>> predicate)
     {
         return await _dbSet.Where(predicate).FirstOrDefaultAsync();
     }
 
-    public async Task<T> FindByIdAsync(int id)
+    public async Task<T?> FindByIdAsync(int id)
     {
         return await this._dbSet.FindAsync(id);
     }
