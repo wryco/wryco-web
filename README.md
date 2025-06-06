@@ -16,7 +16,7 @@
 
 ## Quickstart:
 
-Download docker then run the following:
+Download [docker](https://docs.docker.com/) then run the following:
 
 ```
 git clone git@github.com:ramity/caspnetti.git
