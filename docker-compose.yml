@@ -45,6 +45,17 @@ services:
     networks:
       - caspnetti
 
+  caspnetti_hey:
+    build:
+      context: ./
+      dockerfile: ./docker/hey/Dockerfile
+    container_name: caspnetti_hey
+    depends_on:
+      - caspnetti_backend
+    image: caspnetti_hey
+    networks:
+      - caspnetti
+
 networks:
   caspnetti:
     name: caspnetti
