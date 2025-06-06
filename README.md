@@ -64,6 +64,12 @@ Run migrations:
 dotnet ef database update --project Caspnetti.DAL --startup-project Caspnetti.API
 ```
 
+Run tests:
+
+```
+dotnet test
+```
+
 ## View API:
 
 Navigate to https://localhost
