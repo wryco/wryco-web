@@ -15,6 +15,7 @@ public interface IRepository<T> where T : class
     T FindById(int id);
     // Write
     void Add(T entity);
+    void AddAll(IEnumerable<T> entities);
     void Update(T entity);
     // Delete
     void Delete(int id);
@@ -31,6 +32,7 @@ public interface IRepository<T> where T : class
     Task<T> FindByIdAsync(int id);
     // Write
     Task AddAsync(T entity);
+    Task AddAllAsync(IEnumerable<T> entities);
     // void Update(T entity);
     // Delete
     // void Delete(int id);
