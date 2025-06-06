@@ -53,10 +53,10 @@ dotnet run --project Caspnetti.API
 Create migration:
 
 ```
-dotnet ef migrations add DESCRIPTION_GOES_HERE --project Caspnetti.DAL --startup-project Caspnetti.API
+dotnet ef migrations add DESCRIPTION_HERE --project Caspnetti.DAL --startup-project Caspnetti.API
 ```
 
-> Replacing `DESCRIPTION_GOES_HERE` with a description that captures what changes occured.
+> Replacing `DESCRIPTION_HERE` with a description that captures what changes occured.
 
 Run migrations:
 
