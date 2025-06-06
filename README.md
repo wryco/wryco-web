@@ -20,7 +20,7 @@ Download docker.
 docker compose up -d
 ```
 
-> It's that simple
+> It's that shrimple 🦐
 
 ## Frequently used commands:
 
