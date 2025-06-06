@@ -1,12 +1,8 @@
-<center>
-
-<h1>Caspnetti</h1>
+<h1 align="center">Caspnetti</h1>
 
 ![splash-image](./docs/assets/caspnetti-splash.jpg)
 
-</center>
-
-> Mom's caspnetti
+<blockquote align="center">"Mom's caspnetti"</blockquote>
 
 ### An opinionated and cooked c# asp.net core web application boilerplate featuring:
 
