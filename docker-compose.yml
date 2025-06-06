@@ -8,7 +8,7 @@ services:
     depends_on:
       - caspnetti_mssql
     env_file:
-      - ./docker/mssql/.env.local
+      - ./docker/backend/.env.local
     image: caspnetti_backend
     ports:
       - 443:443
