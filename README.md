@@ -6,7 +6,7 @@
 
 ### An opinionated and cooked c# asp.net core web application boilerplate featuring:
 
-- 🚄 Stupid fast. Capable of handling [15,000+ requests/second](https://github.com/ramity/caspnetti/blob/master/docs/simple-benchmark.md)
+- 🚄 Stupid fast performance capable of handling [15,000+ requests/second](https://github.com/ramity/caspnetti/blob/master/docs/simple-benchmark.md)
 - 🐋 Fully [dockerized](https://www.docker.com/) environment
 - 📝 Code-first SQL and [migrations](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/managing?tabs=dotnet-core-cli) using [entity framework](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - ⚖️ A controller, entity, service, and test abstraction pattern built for any scale
