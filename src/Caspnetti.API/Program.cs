@@ -1,4 +1,5 @@
 using Caspnetti.DAL;
+using Caspnetti.DAL.Repository;
 using Caspnetti.Service;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(MSSQLConnection));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();

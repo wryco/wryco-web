@@ -1,5 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+using Caspnetti.DAL.Entity;
 using Caspnetti.Service;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Caspnetti.API.Controllers;
 
@@ -15,8 +17,10 @@ public class IndexController : ControllerBase
     }
 
     [HttpGet(Name = "Index")]
-    public String Get()
+    public IEnumerable<User> Get()
     {
-        return "Hello, world c:";
+        var users = _userService.Test();
+        return users;
+        // return "Hello, world c:";
     }
 }

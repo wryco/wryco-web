@@ -1,13 +1,21 @@
-using Caspnetti.DAL;
+using Caspnetti.DAL.Entity;
+using Caspnetti.DAL.Repository;
+using System.Collections.Generic;
 
 namespace Caspnetti.Service;
 
 public class UserService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly UserRepository _userRepository;
 
-    public UserService(ApplicationDbContext context)
+    public UserService(UserRepository userRepository)
     {
-        _context = context;
+        _userRepository = userRepository;
+    }
+
+    public IEnumerable<User> Test()
+    {
+        var users = _userRepository.FindAll();
+        return users;
     }
 }
