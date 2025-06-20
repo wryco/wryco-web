@@ -3,4 +3,5 @@ data/mariadb/*
 data/mssql/*
 obj/
 *.local
+*.log
 !.gitkeep

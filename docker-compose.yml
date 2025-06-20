@@ -1,5 +1,7 @@
 services:
 
+  # Aspnetcore development
+
   caspnetti_backend:
     build:
       context: ./
@@ -10,12 +12,14 @@ services:
     env_file:
       - ./docker/backend/.env.local
     image: caspnetti_backend
-    ports:
-      - 443:443
+    # ports:
+    #   - 443:443
     volumes:
       - ./src/backend:/caspnetti
     networks:
       - caspnetti
+
+  # MSSQL database
 
   caspnetti_mssql:
     build:
@@ -29,6 +33,8 @@ services:
       - ./data/mssql:/var/opt/mssql/data
     networks:
       - caspnetti
+
+  # Adminer database viewer
 
   caspnetti_adminer:
     build:
@@ -44,6 +50,8 @@ services:
       - 8080:8080
     networks:
       - caspnetti
+
+  # Vuejs frontend
 
   caspnetti_vue:
     build:
@@ -62,7 +70,25 @@ services:
     networks:
       - caspnetti
 
-  # Saturation testing service
+  # Nginx reverse proxy
+
+  caspnetti_nginx:
+    container_name: caspnetti_nginx
+    build:
+      context: ./
+      dockerfile: docker/nginx/Dockerfile
+    image: caspnetti_nginx
+    ports:
+      - 443:443
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      # Production reverse proxy
+      # - reproxy
+      - caspnetti
+    restart: unless-stopped
+
+  # Saturation testing
 
   # caspnetti_hey:
   #   build:
@@ -75,7 +101,7 @@ services:
   #   networks:
   #     - caspnetti
 
-  # Monitoring service
+  # Monitoring
 
   # caspnetti_monitor:
   #   build:
@@ -89,6 +115,15 @@ services:
   #     - //var/run/docker.sock:/var/run/docker.sock
 
 networks:
+
+  # External production reverse proxy
+
+  # reproxy:
+  #   external: true
+  #   name: reproxy
+
+  # Internal container network
+
   caspnetti:
     name: caspnetti
     driver: bridge
