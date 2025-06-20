@@ -47,7 +47,7 @@ services:
       - ./docker/adminer/.env.local
     image: caspnetti_adminer
     ports:
-      - 8080:8080
+      - 8000:8080
     networks:
       - caspnetti
 
@@ -64,7 +64,7 @@ services:
       - ./docker/frontend/.env.local
     image: caspnetti_vue
     ports:
-      - 8000:8080
+      - 8080:8080
     volumes:
       - ./src/frontend:/caspnetti
     networks:
