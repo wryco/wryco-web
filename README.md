@@ -13,6 +13,8 @@
 - 🔍 [Adminer](https://www.adminer.org/en/) for easy database viewing
 - 👋 [Hey](https://github.com/rakyll/hey) for convient saturation testing
 - 😎 [Swagger](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0&viewFallbackFrom=aspnetcore-9.0) for living documentation and testing
+- ⏺️ Custom docker container monitoring
+- ✌️ [Vue.js](https://vuejs.org/) frontend
 
 ## Quickstart:
 

@@ -13,7 +13,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - ./src:/caspnetti
+      - ./src/backend:/caspnetti
     networks:
       - caspnetti
 
@@ -45,16 +45,48 @@ services:
     networks:
       - caspnetti
 
-  caspnetti_hey:
+  caspnetti_vue:
     build:
       context: ./
-      dockerfile: ./docker/hey/Dockerfile
-    container_name: caspnetti_hey
+      dockerfile: ./docker/frontend/Dockerfile
+    container_name: caspnetti_vue
     depends_on:
       - caspnetti_backend
-    image: caspnetti_hey
+    env_file:
+      - ./docker/frontend/.env.local
+    image: caspnetti_vue
+    ports:
+      - 8000:8080
+    volumes:
+      - ./src/frontend:/caspnetti
     networks:
       - caspnetti
+
+  # Saturation testing service
+
+  # caspnetti_hey:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/hey/Dockerfile
+  #   container_name: caspnetti_hey
+  #   depends_on:
+  #     - caspnetti_backend
+  #   image: caspnetti_hey
+  #   networks:
+  #     - caspnetti
+
+  # Monitoring service
+
+  # caspnetti_monitor:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/monitor/Dockerfile
+  #   container_name: caspnetti_monitor
+  #   image: caspnetti_monitor
+  #   networks:
+  #     - caspnetti
+  #   volumes:
+  #     - //var/run/docker.sock:/var/run/docker.sock
 
 networks:
   caspnetti:
