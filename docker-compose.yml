@@ -56,19 +56,36 @@ services:
   caspnetti_vue:
     build:
       context: ./
-      dockerfile: ./docker/frontend/Dockerfile
-    container_name: caspnetti_vue
+      dockerfile: ./docker/vue_development/Dockerfile
+    container_name: caspnetti_vue_development
     depends_on:
       - caspnetti_backend
     env_file:
-      - ./docker/frontend/.env.local
-    image: caspnetti_vue
+      - ./docker/vue_development/.env.local
+    image: caspnetti_vue_development
     ports:
       - 8080:8080
     volumes:
       - ./src/frontend:/caspnetti
     networks:
       - caspnetti
+
+  # Vue + nginx production frontend
+
+  # caspnetti_vue_production:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/vue_production/Dockerfile
+  #   container_name: caspnetti_vue_production
+  #   depends_on:
+  #     - caspnetti_backend
+  #   env_file:
+  #     - ./docker/vue_production/.env.local
+  #   image: caspnetti_vue_production
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #     - caspnetti
 
   # Nginx reverse proxy
 
