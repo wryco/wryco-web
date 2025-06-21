@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Caspnetti.DAL\Caspnetti.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Assets\**\*">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
