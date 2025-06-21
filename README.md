@@ -15,6 +15,8 @@
 - 😎 [Swagger](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0&viewFallbackFrom=aspnetcore-9.0) for living documentation and testing
 - ⏺️ Custom docker container monitoring
 - ✌️ [Vue.js](https://vuejs.org/) frontend
+- 🅱️ [Bootstrap](https://getbootstrap.com/)
+- 📺 Development and production ready services
 
 ## Quickstart:
 

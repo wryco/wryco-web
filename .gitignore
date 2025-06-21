@@ -1,6 +1,6 @@
 bin/
-data/mariadb/*
-data/mssql/*
+data/mssql_development/*
+data/mssql_production/*
 obj/
 *.local
 *.log
