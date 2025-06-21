@@ -6,4 +6,4 @@ RUN npm install -g @vue/cli
 
 WORKDIR /caspnetti
 
-ENTRYPOINT sleep infinity
+ENTRYPOINT npm update && npm start

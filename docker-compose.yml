@@ -53,7 +53,7 @@ services:
 
   # Vuejs frontend
 
-  caspnetti_vue:
+  caspnetti_vue_development:
     build:
       context: ./
       dockerfile: ./docker/vue_development/Dockerfile
