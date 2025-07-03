@@ -1,0 +1,27 @@
+services:
+
+  # Saturation testing
+
+  caspnetti_hey:
+    build:
+      context: ./
+      dockerfile: ./docker/hey/Dockerfile
+    container_name: caspnetti_hey
+    depends_on:
+      - caspnetti_aspnet_development
+    image: caspnetti_hey
+    networks:
+      - caspnetti
+
+  # Monitoring
+
+  caspnetti_monitor:
+    build:
+      context: ./
+      dockerfile: ./docker/monitor/Dockerfile
+    container_name: caspnetti_monitor
+    image: caspnetti_monitor
+    networks:
+      - caspnetti
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock
