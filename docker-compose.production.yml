@@ -69,6 +69,12 @@ services:
 
 networks:
 
+  # Internal container network
+
+  caspnetti:
+    name: caspnetti
+    driver: bridge
+
   # External production reverse proxy
 
   reproxy:
