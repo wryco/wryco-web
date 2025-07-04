@@ -4,7 +4,27 @@
 
 <blockquote align="center">"Mom's caspnetti"</blockquote>
 
-### An opinionated and cooked c# asp.net core web application boilerplate featuring:
+## Purpose
+
+This repository serves as a foundation for creating new projects. It provides:
+- Extendable modules, base classes, and templates
+- Commonly used tools and config
+- Documentation and scripts to speed up development
+
+## Getting Started
+
+Download [docker](https://docs.docker.com/) then run the following:
+
+```
+git clone git@github.com:ramity/caspnetti.git
+cd caspnetti
+./scripts/copy_env.sh
+docker compose up -d
+```
+
+> It's that shrimple 🦐 See [docs/](docs/) for more details!
+
+## Features
 
 - 🚄 Stupid fast performance capable of handling [15,000+ requests/second](https://github.com/ramity/caspnetti/blob/master/docs/simple-benchmark.md)
 - 🐋 Fully [dockerized](https://www.docker.com/) environment
@@ -18,69 +38,24 @@
 - 🅱️ [Bootstrap](https://getbootstrap.com/)
 - 📺 Development and production ready services
 
-## Quickstart:
+## Rationale
 
-Download [docker](https://docs.docker.com/) then run the following:
+After using aspnet core in a commercial setting and slowly comming around to the framework, I wanted a good boilerplate to be able to create other projects with. This project provides many of the developer comforts I've come accustomed to having with other frameworks.
 
-```
-git clone git@github.com:ramity/caspnetti.git
-cd caspnetti
-./scripts/copy_env.sh
-docker compose up -d
-```
+Here's an incomplete list of things I prioritize in a web stack:
+- performance
+- package manager and support
+- easy importing
+- module/package approach for dividing code into logical units: controller, entity, service at the very least
+- thin controller, fat service paradigm
+- ORM support
+- code first SQL generation approach (usually referred to as migration(s) by different frameworks)
+- automated and reversible migrations and fixtures to seed the database with values
+- automated unit testing
 
-> It's that shrimple 🦐
-
-## Frequently used commands:
-
-Surgically destroy containers and images:
-
-```
-docker compose down --rmi local
-```
-
-Enter backend container:
-
-```
-docker exec -it caspnetti_backend bash
-```
-
-Build solution:
-
-```
-dotnet build
-```
-
-Start API
-
-```
-dotnet run --project Caspnetti.API
-```
-
-Create migration:
-
-```
-dotnet ef migrations add DESCRIPTION_HERE --project Caspnetti.DAL --startup-project Caspnetti.API
-```
-
-> Replacing `DESCRIPTION_HERE` with a description that captures what changes occured.
-
-Run migrations:
-
-```
-dotnet ef database update --project Caspnetti.DAL --startup-project Caspnetti.API
-```
-
-Run tests:
-
-```
-dotnet test
-```
-
-## View API:
-
-Navigate to https://localhost
-
-## View database:
-
-Navigate to http://localhost:8080
+What I'm willing to give up:
+- type juggling
+- automatic memory management/garbage collector
+- premade middleware
+- hot reload
+- debugger/breakpoints/stepping over code/inspection of variables
