@@ -49,7 +49,7 @@ Here's an incomplete list of things I prioritize in a web stack:
 - module/package approach for dividing code into logical units: controller, entity, service at the very least
 - thin controller, fat service paradigm
 - ORM support
-- code first SQL generation approach (usually referred to as migration(s) by different frameworks)
+- code first SQL generation approach
 - automated and reversible migrations and fixtures to seed the database with values
 - automated unit testing
 
