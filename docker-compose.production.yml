@@ -1,81 +1,67 @@
 services:
 
-  # Nginx production reverse proxy
-
   caspnetti_nginx_production:
     container_name: caspnetti_nginx_production
     build:
       context: ./
-      dockerfile: docker/nginx_production/Dockerfile
+      dockerfile: docker/production/nginx/Dockerfile
     depends_on:
       - caspnetti_aspnet_production
     image: caspnetti_nginx_production
     ports:
       - 443:443
     volumes:
-      - ./logs/nginx_production:/var/log/nginx
+      - ./docker/production/nginx/logs:/var/log/nginx
     networks:
-      # Production reverse proxy
       - reproxy
-      - caspnetti
-    # restart: unless-stopped
-
-  # Aspnetcore production
+      - caspnetti_production
 
   caspnetti_aspnet_production:
     build:
       context: ./
-      dockerfile: ./docker/aspnet_production/Dockerfile
+      dockerfile: ./docker/production/aspnet/Dockerfile
     container_name: caspnetti_aspnet_production
     depends_on:
       - caspnetti_mssql_production
     env_file:
-      - ./docker/aspnet_production/.env.local
+      - ./docker/production/aspnet/.env.local
     image: caspnetti_aspnet_production
     networks:
-      - caspnetti
-
-  # MSSQL production database
+      - caspnetti_production
 
   caspnetti_mssql_production:
     build:
       context: ./
-      dockerfile: ./docker/mssql_production/Dockerfile
+      dockerfile: ./docker/production/mssql/Dockerfile
     container_name: caspnetti_mssql_production
     env_file:
-      - ./docker/mssql_production/.env.local
+      - ./docker/production/mssql/.env.local
     image: caspnetti_mssql_production
     volumes:
-      - ./data/mssql_production:/var/opt/mssql/data
+      - ./docker/production/mssql/data:/var/opt/mssql/data
     networks:
-      - caspnetti
-
-  # Vue + nginx production frontend
+      - caspnetti_production
 
   caspnetti_vue_production:
     build:
       context: ./
-      dockerfile: ./docker/vue_production/Dockerfile
+      dockerfile: ./docker/production/vue/Dockerfile
     container_name: caspnetti_vue_production
     depends_on:
       - caspnetti_aspnet_production
     env_file:
-      - ./docker/vue_production/.env.local
+      - ./docker/production/vue/.env.local
     image: caspnetti_vue_production
     ports:
       - 80:80
     networks:
-      - caspnetti
+      - caspnetti_production
 
 networks:
 
-  # Internal container network
-
-  caspnetti:
-    name: caspnetti
+  caspnetti_production:
+    name: caspnetti_production
     driver: bridge
-
-  # External production reverse proxy
 
   reproxy:
     external: true
