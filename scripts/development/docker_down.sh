@@ -1,1 +1,1 @@
-docker compose -f docker-compose.development.yml down --rmi
+docker compose -f docker-compose.development.yml down --rmi local
