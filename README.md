@@ -28,7 +28,7 @@ docker compose up -d
 
 - 🚄 Stupid fast performance capable of handling [15,000+ requests/second](https://github.com/ramity/caspnetti/blob/master/docs/simple-benchmark.md)
 - 🐋 Fully [dockerized](https://www.docker.com/) environment
-- 📝 Code-first SQL and [migrations](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/managing?tabs=dotnet-core-cli) using [entity framework](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
+- 📝 Code-first SQL [migrations](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/managing?tabs=dotnet-core-cli) using [entity framework](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - ⚖️ A controller, entity, service, and test abstraction pattern built for any scale
 - 🔍 [Adminer](https://www.adminer.org/en/) for easy database viewing
 - 👋 [Hey](https://github.com/rakyll/hey) for convient saturation testing
@@ -49,7 +49,7 @@ Here's an incomplete list of things I prioritize in a web stack:
 - module/package approach for dividing code into logical units: controller, entity, service at the very least
 - thin controller, fat service paradigm
 - ORM support
-- code first SQL generation approach (usually referred to as migration(s) by different frameworks)
+- code first SQL generation approach
 - automated and reversible migrations and fixtures to seed the database with values
 - automated unit testing
 
