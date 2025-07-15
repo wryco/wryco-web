@@ -13,7 +13,7 @@ services:
     volumes:
       - ./docker/production/nginx/logs:/var/log/nginx
     networks:
-      - reproxy
+      # - reproxy
       - caspnetti_production
 
   caspnetti_aspnet_production:
@@ -63,6 +63,6 @@ networks:
     name: caspnetti_production
     driver: bridge
 
-  reproxy:
-    external: true
-    name: reproxy
+  # reproxy:
+  #   external: true
+  #   name: reproxy
