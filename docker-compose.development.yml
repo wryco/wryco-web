@@ -77,6 +77,6 @@ services:
 
 networks:
 
-  caspnetti:
+  caspnetti_development:
     name: caspnetti_development
     driver: bridge
