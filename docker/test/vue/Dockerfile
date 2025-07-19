@@ -6,4 +6,4 @@ RUN npm install -g @vue/cli
 
 WORKDIR /caspnetti
 
-ENTRYPOINT npm update && npm test
+ENTRYPOINT npm update && npm run test:unit
