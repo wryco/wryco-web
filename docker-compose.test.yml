@@ -1,0 +1,82 @@
+services:
+
+  caspnetti_adminer_test:
+    build:
+      context: ./
+      dockerfile: ./docker/development/adminer/Dockerfile
+    container_name: caspnetti_adminer_test
+    depends_on:
+      - caspnetti_mssql_test
+    env_file:
+      - ./docker/development/adminer/.env.local
+    image: caspnetti_adminer_test
+    ports:
+      - 8000:8080
+    networks:
+      - caspnetti_test
+
+  caspnetti_aspnet_test:
+    build:
+      context: ./
+      dockerfile: ./docker/development/aspnet/Dockerfile
+    container_name: caspnetti_aspnet_test
+    depends_on:
+      - caspnetti_mssql_test
+    env_file:
+      - ./docker/development/aspnet/.env.local
+    image: caspnetti_aspnet_test
+    volumes:
+      - ./src/backend:/caspnetti
+    networks:
+      - caspnetti_test
+
+  caspnetti_mssql_test:
+    build:
+      context: ./
+      dockerfile: ./docker/development/mssql/Dockerfile
+    container_name: caspnetti_mssql_test
+    env_file:
+      - ./docker/development/mssql/.env.local
+    image: caspnetti_mssql_test
+    volumes:
+      - ./docker/development/mssql/data:/var/opt/mssql/data
+    networks:
+      - caspnetti_test
+
+  caspnetti_nginx_test:
+    container_name: caspnetti_nginx_test
+    build:
+      context: ./
+      dockerfile: docker/development/nginx/Dockerfile
+    depends_on:
+      - caspnetti_aspnet_test
+    image: caspnetti_nginx_test
+    ports:
+      - 443:443
+    volumes:
+      - ./docker/development/nginx/logs:/var/log/nginx
+    networks:
+      - caspnetti_test
+
+  caspnetti_vue_test:
+    build:
+      context: ./
+      dockerfile: ./docker/development/vue/Dockerfile
+    container_name: caspnetti_vue_test
+    depends_on:
+      - caspnetti_aspnet_test
+    env_file:
+      - ./docker/development/vue/.env.local
+    image: caspnetti_vue_test
+    ports:
+      - 80:80
+    volumes:
+      - ./src/frontend:/caspnetti
+    networks:
+      - caspnetti_test
+
+networks:
+
+  caspnetti_test:
+    name: caspnetti_test
+    driver: bridge

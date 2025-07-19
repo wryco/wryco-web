@@ -29,6 +29,14 @@ where TEntity : class, IEntity
         return _repository.FindOneBy(e => e.Id == id);
     }
 
+    [HttpPost]
+    public int? Create([FromBody] TEntity newEntity)
+    {
+        _repository.Add(newEntity);
+        _repository.Save();
+        return newEntity.Id;
+    }
+
     [HttpPut("{id}")]
     public bool Update(int id, [FromBody] TEntity updatedEntity)
     {
@@ -39,6 +47,7 @@ where TEntity : class, IEntity
         }
 
         _repository.Update(updatedEntity);
+        _repository.Save();
         return true;
     }
 
@@ -52,6 +61,7 @@ where TEntity : class, IEntity
         }
 
         _repository.Delete(existing);
+        _repository.Save();
         return true;
     }
 }
