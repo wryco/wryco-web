@@ -5,7 +5,7 @@
 namespace Caspnetti.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class added_user_table : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
