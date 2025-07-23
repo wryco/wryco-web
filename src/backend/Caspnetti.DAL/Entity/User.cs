@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Caspnetti.DAL.Entity;
 
+[Table("Users")]
 public class User: IEntity
 {
     public int Id { get; set; }
