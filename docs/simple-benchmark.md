@@ -6,7 +6,7 @@ Details:
 - API calls userService::test which calls User::FindAll which returns empty set from `SELECT * FROM Users`
 
 ```
-root@9c4a92b04337:/go# hey -z 1m https://caspnetti_backend
+root@9c4a92b04337:/go# hey -z 1m https://wryco_backend
 
 Summary:
   Total:        60.0038 secs

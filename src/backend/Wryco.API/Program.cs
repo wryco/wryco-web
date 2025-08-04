@@ -1,6 +1,6 @@
-using Caspnetti.DAL;
-using Caspnetti.DAL.Repository;
-using Caspnetti.Service;
+using Wryco.DAL;
+using Wryco.DAL.Repository;
+using Wryco.Service;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 

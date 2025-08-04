@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -it caspnetti_aspnet_development bash -c "dotnet run --project Caspnetti.API"
+docker exec -it wryco_aspnet_development bash -c "dotnet run --project Wryco.API"

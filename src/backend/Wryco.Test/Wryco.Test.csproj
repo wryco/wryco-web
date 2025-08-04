@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Caspnetti.DAL\Caspnetti.DAL.csproj" />
-    <ProjectReference Include="..\Caspnetti.Service\Caspnetti.Service.csproj" />
+    <ProjectReference Include="..\Wryco.DAL\Wryco.DAL.csproj" />
+    <ProjectReference Include="..\Wryco.Service\Wryco.Service.csproj" />
   </ItemGroup>
 
 </Project>

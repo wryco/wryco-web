@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -t caspnetti_aspnet_development bash -c "dotnet ef migrations add \"$@\" --project Caspnetti.DAL"
+docker exec -t wryco_aspnet_development bash -c "dotnet ef migrations add \"$@\" --project Wryco.DAL"

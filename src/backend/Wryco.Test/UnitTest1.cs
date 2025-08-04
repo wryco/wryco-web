@@ -1,4 +1,4 @@
-﻿namespace Caspnetti.Test;
+﻿namespace Wryco.Test;
 
 public class UnitTest1
 {

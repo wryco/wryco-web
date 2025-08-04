@@ -1,6 +1,6 @@
-using Caspnetti.DAL.Entity;
+using Wryco.DAL.Entity;
 
-namespace Caspnetti.DAL.Repository;
+namespace Wryco.DAL.Repository;
 
 public class UserRepository: Repository<User>
 {

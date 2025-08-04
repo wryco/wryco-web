@@ -2,13 +2,13 @@ services:
 
   # Monitoring
 
-  caspnetti_monitor:
+  wryco_monitor:
     build:
       context: ./
       dockerfile: ./docker/monitor/Dockerfile
-    container_name: caspnetti_monitor
-    image: caspnetti_monitor
+    container_name: wryco_monitor
+    image: wryco_monitor
     networks:
-      - caspnetti
+      - wryco
     volumes:
       - //var/run/docker.sock:/var/run/docker.sock

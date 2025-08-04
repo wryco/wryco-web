@@ -1,8 +1,8 @@
-using Caspnetti.DAL.Entity;
+using Wryco.DAL.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Caspnetti.DAL;
+namespace Wryco.DAL;
 
 public class ApplicationDbContext : DbContext
 {
@@ -18,7 +18,7 @@ public class ApplicationDbContext : DbContext
         {
             // Build configuration from appsettings.json
             var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Caspnetti.API"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Wryco.API"))
                 .AddJsonFile("appsettings.json")
                 .Build();
 

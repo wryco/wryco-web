@@ -1,8 +1,8 @@
-using Caspnetti.DAL.Repository;
-using Caspnetti.DAL.Entity;
+using Wryco.DAL.Repository;
+using Wryco.DAL.Entity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Caspnetti.API.Controllers;
+namespace Wryco.API.Controllers;
 
 [ApiController]
 [Route("api/user")]

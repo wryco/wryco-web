@@ -4,6 +4,6 @@ RUN apt update
 RUN apt upgrade -y
 RUN npm install -g @vue/cli
 
-WORKDIR /caspnetti
+WORKDIR /wryco
 
 ENTRYPOINT npm update && npm run test:unit

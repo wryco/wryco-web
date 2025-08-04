@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Caspnetti.DAL.Entity;
+namespace Wryco.DAL.Entity;
 
 [Table("Users")]
 public class User: IEntity

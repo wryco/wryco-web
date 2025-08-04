@@ -1,8 +1,8 @@
-<h1 align="center">Caspnetti</h1>
+<h1 align="center">Wryco</h1>
 
-![splash-image](./docs/assets/caspnetti-splash.jpg)
+![splash-image](./docs/assets/wryco-splash.jpg)
 
-<blockquote align="center">"Mom's caspnetti"</blockquote>
+<blockquote align="center">"Mom's wryco"</blockquote>
 
 ## Purpose
 
@@ -16,8 +16,8 @@ This repository serves as a foundation for creating new projects. It provides:
 Download [docker](https://docs.docker.com/) then run the following:
 
 ```
-git clone git@github.com:ramity/caspnetti.git
-cd caspnetti
+git clone git@github.com:ramity/wryco.git
+cd wryco
 ./scripts/copy_env.sh
 docker compose up -d
 ```
@@ -26,7 +26,7 @@ docker compose up -d
 
 ## Features
 
-- 🚄 Stupid fast performance capable of handling [15,000+ requests/second](https://github.com/ramity/caspnetti/blob/master/docs/simple-benchmark.md)
+- 🚄 Stupid fast performance capable of handling [15,000+ requests/second](https://github.com/ramity/wryco/blob/master/docs/simple-benchmark.md)
 - 🐋 Fully [dockerized](https://www.docker.com/) environment
 - 📝 Code-first SQL [migrations](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/managing?tabs=dotnet-core-cli) using [entity framework](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - ⚖️ A controller, entity, service, and test abstraction pattern built for any scale

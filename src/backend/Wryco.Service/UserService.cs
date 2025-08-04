@@ -1,8 +1,8 @@
-using Caspnetti.DAL.Entity;
-using Caspnetti.DAL.Repository;
+using Wryco.DAL.Entity;
+using Wryco.DAL.Repository;
 using System.Collections.Generic;
 
-namespace Caspnetti.Service;
+namespace Wryco.Service;
 
 public class UserService
 {

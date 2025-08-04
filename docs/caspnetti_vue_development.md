@@ -1,7 +1,7 @@
 ### Enter vue container
 
 ```
-docker exec -it caspnetti_vue bash
+docker exec -it wryco_vue bash
 ```
 
 ### Start development server

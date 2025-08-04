@@ -1,10 +1,10 @@
-using Caspnetti.DAL;
-using Caspnetti.DAL.Repository;
-using Caspnetti.Service;
+using Wryco.DAL;
+using Wryco.DAL.Repository;
+using Wryco.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace Caspnetti.API.Controllers;
+namespace Wryco.API.Controllers;
 
 public class BaseController<TRepo, TEntity> : ControllerBase
 where TRepo : IRepository<TEntity>

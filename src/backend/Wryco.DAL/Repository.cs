@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Caspnetti.DAL;
+namespace Wryco.DAL;
 
 // Create custom repo classes extending this one to modify or extend functionality
 

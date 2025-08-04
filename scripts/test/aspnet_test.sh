@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker restart caspnetti_aspnet_test --attach
+docker restart wryco_aspnet_test --attach

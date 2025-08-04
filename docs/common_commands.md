@@ -9,7 +9,7 @@ docker compose down --rmi local
 Enter backend container:
 
 ```
-docker exec -it caspnetti_backend bash
+docker exec -it wryco_backend bash
 ```
 
 Build solution:
@@ -21,13 +21,13 @@ dotnet build
 Start API
 
 ```
-dotnet run --project Caspnetti.API
+dotnet run --project Wryco.API
 ```
 
 Create migration:
 
 ```
-dotnet ef migrations add DESCRIPTION_HERE --project Caspnetti.DAL --startup-project Caspnetti.API
+dotnet ef migrations add DESCRIPTION_HERE --project Wryco.DAL --startup-project Wryco.API
 ```
 
 > Replacing `DESCRIPTION_HERE` with a description that captures what changes occured.
@@ -35,7 +35,7 @@ dotnet ef migrations add DESCRIPTION_HERE --project Caspnetti.DAL --startup-proj
 Run migrations:
 
 ```
-dotnet ef database update --project Caspnetti.DAL --startup-project Caspnetti.API
+dotnet ef database update --project Wryco.DAL --startup-project Wryco.API
 ```
 
 Run tests:

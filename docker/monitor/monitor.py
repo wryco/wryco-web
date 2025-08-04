@@ -19,11 +19,11 @@ def collect_and_log_metrics():
         for container in containers:
 
             # Skip self to avoid recursive monitoring
-            if container.name == 'caspnetti_monitor':
+            if container.name == 'wryco_monitor':
                 continue
 
-            # Only monitor caspnetti containers
-            if not container.name.startswith('caspnetti'):
+            # Only monitor wryco containers
+            if not container.name.startswith('wryco'):
                 continue
 
             # Get stats for given container

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Caspnetti.DAL\Caspnetti.DAL.csproj" />
+    <ProjectReference Include="..\Wryco.DAL\Wryco.DAL.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Caspnetti.DAL.Migrations
+namespace Wryco.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class add_user : Migration
