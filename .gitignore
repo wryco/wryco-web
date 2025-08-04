@@ -1,6 +1,3 @@
-docker/**/mssql/data/*
-bin/
-obj/
 *.local
-*.log
+**/logs/*
 !.gitkeep

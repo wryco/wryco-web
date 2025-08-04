@@ -1,74 +1,20 @@
 services:
 
-  wryco_adminer_production:
-    build:
-      context: ./
-      dockerfile: ./docker/production/adminer/Dockerfile
-    container_name: wryco_adminer_production
-    depends_on:
-      - wryco_mssql_production
-    env_file:
-      - ./docker/production/adminer/.env.local
-    image: wryco_adminer_production
-    ports:
-      - 8000:8080
-    networks:
-      - wryco_production
-
-  wryco_aspnet_production:
-    build:
-      context: ./
-      dockerfile: ./docker/production/aspnet/Dockerfile
-    container_name: wryco_aspnet_production
-    depends_on:
-      - wryco_mssql_production
-    env_file:
-      - ./docker/production/aspnet/.env.local
-    image: wryco_aspnet_production
-    networks:
-      - wryco_production
-
-  wryco_mssql_production:
-    build:
-      context: ./
-      dockerfile: ./docker/production/mssql/Dockerfile
-    container_name: wryco_mssql_production
-    env_file:
-      - ./docker/production/mssql/.env.local
-    image: wryco_mssql_production
-    volumes:
-      - ./docker/production/mssql/data:/var/opt/mssql/data
-    networks:
-      - wryco_production
-
   wryco_nginx_production:
     container_name: wryco_nginx_production
     build:
       context: ./
       dockerfile: docker/production/nginx/Dockerfile
-    depends_on:
-      - wryco_aspnet_production
     image: wryco_nginx_production
     ports:
       - 443:443
     volumes:
+      - ./html:/usr/share/nginx/html:ro
       - ./docker/production/nginx/logs:/var/log/nginx
     networks:
-      # - reproxy
+      - reproxy
       - wryco_production
-
-  wryco_vue_production:
-    build:
-      context: ./
-      dockerfile: ./docker/production/vue/Dockerfile
-    container_name: wryco_vue_production
-    depends_on:
-      - wryco_aspnet_production
-    env_file:
-      - ./docker/production/vue/.env.local
-    image: wryco_vue_production
-    networks:
-      - wryco_production
+    restart: unless-stopped
 
 networks:
 
@@ -76,6 +22,6 @@ networks:
     name: wryco_production
     driver: bridge
 
-  # reproxy:
-  #   external: true
-  #   name: reproxy
+  reproxy:
+    external: true
+    name: reproxy

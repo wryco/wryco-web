@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wryco</title>
+    <link rel="icon" href="/wryco.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/wryco.png" type="image/png" />
+</head>
+
+<style>
+    html {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #ecf0f1;
+    }
+
+    body {
+        margin: 0px;
+    }
+
+    div#branding {
+        border-bottom: 1px solid #000;
+        margin: 0 30px 30px 30px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    div#title {
+        font-size: 90px;
+        text-align: center;
+    }
+
+    div#author {
+        margin: 0 30px 30px 30px;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    div#content {
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 0 15px;
+    }
+
+    div#content>h3,
+    div#content>h1 {
+        margin: 30px 0;
+    }
+
+    div#content>p {
+        margin: 15px 0;
+    }
+
+    div#content>blockquote {
+        padding: 15px;
+        background-color: #fff;
+        border-left: 5px solid #bdc3c7;
+        margin: 30px 0;
+    }
+
+    div#copyleft {
+        border-top: 1px solid #000;
+        margin: 30px 30px 0 30px;
+        padding: 15px;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <header>
+        <div id="branding">Wryco</div>
+        <div id="title">Making Software Harder</div>
+        <div id="author">Article by Lewis Brown</div>
+    </header>
+
+    <main>
+        <div id="content">
+
+            <h3>
+                Software is difficult. Would it surprise you that it could be harder?
+            </h3>
+
+            <p>
+                Software's difficulty is bound to bring about failure, but I say relish in it. Be acquainted with it.
+                Fail fast and often. Environments that quickly punish misalignment are sometimes hard to come by.
+                Experience of failure can be desirable, and this article's theme and intended message is to convince you
+                failure is good. Knowing how not to do something can be incredibly powerful, and that's what I intend on
+                sharing.
+            </p>
+            <p>
+                Let's consider an example. You are tasked with building something. You bring in two engineers to look
+                over the designs. Engineer A says, "I've never built it using X, but Y will work." and the other
+                engineer B says, "I once tried X. It did not work, but Y will work." Who are you more receptive you? If
+                you say B as I do, this suggests knowledge of failure outweighs knowledge of success alone.
+            </p>
+
+            <p>
+                You may hear of or know an engineer for their successes, but only in rare or unfortunate circumstances
+                do we hear of their failures. I think that's unfortunate. Often times, there are more pathways to
+                failure than success (citation needed), and only knowing success can be crippling.
+            </p>
+
+            <blockquote>
+                Me and success? We go way back. She goes to another school. You wouldn't know her.
+            </blockquote>
+
+            <p>
+                I am a software engineer. I'm doubtful this is unique to our field, but we have a tolerance for problem
+                solving that many might misinterpret as masochism. We are shaped and molded by what we work on, and
+                sometimes no punch is spared. Many of us have stories, albeit sometimes repressed, of overcoming
+                insurmountable odds and delivering despite circumstances. Other times we don't deliver and brush
+                against problems that will only ever be our white whale.
+            </p>
+
+            <p>
+                This article will cover failures. Some of my own, some of my peers, some secondhand, and some shared by
+                many. I will not make the distinction of blame, and some may be obvious given by background. Those
+                interested enough may be successful in their efforts to cork and red thread, but regardless of their
+                originators, these are my failures. You may hire me for my flashy successes or brags, but in reality,
+                the true value you gain is my knowledge of failure.
+            </p>
+
+            <blockquote>
+                While reflecting on failure, a thought slowly dwelled in my mind until finally compelling me to write
+                this article, "How can one make software harder?"
+            </blockquote>
+
+            <p>
+                My intentions in writing this article are to be humorous, share knowledge, and to generally create a
+                dialogue on how to create software by first explaining how not to. I am not without bias, and I don't
+                expect something I write to be free of it either. I think of myself as a generalist in a field
+                oversaturated with specialists. Maybe I proclaim this so you, the reader, can better understand a
+                possible root of my positions/stances or to save the time of those who think it impossible to be a
+                generalist. I understand that some of my points may generate disagreement, software is an art sometimes
+                requiring a curated and personally calibrated touch, but know they are by no means overt attempts at
+                sensationalism. Am I the singular, definitive source and all knowing oracle of software? Absolutely not.
+                Probably not even close. I've been principally unemployed for 2025, so you probably shouldn't take
+                anything I have to say about software seriously.
+            </p>
+
+            <p>
+                This is my first long format post for blog consumption. With my only priors being academia, I'm not much
+                of a pleasure writer. My thoughts are often fragmented and scattered. Compiling, categorizing, and
+                ordering them for consumption was a significant challenge, but it just isn't enough to be a great X
+                without being able to tell someone about it. Let's consider this practice.
+            </p>
+
+            <p>
+                The below is diabolical in every sense of the word, I present:
+            </p>
+
+            <h1>
+                How to make software harder
+            </h1>
+
+            <h3>
+                Hardware and equipment neglect
+            </h3>
+
+            <p>
+                The software development process starts on hardware. Depending on the stack, development can be a
+                resource intensive activity, so be sure your engineers have the least resources you can justify whilst
+                ensuring those who primarily use their device for email get the latest and greatest. Make it impossible
+                for your engineers to modify, upgrade, or exchange their devices. Make it bad enough that your engineers
+                offer to completely forfeit control over their own devices to comply with company policy but ultimately
+                block it. You're sure to receive pushback, so quickly quell any argument of the utility of X unit of
+                time gained every compile/reload.
+            </p>
+
+            <h3>
+                Version control and code hygiene anti-patterns
+            </h3>
+
+            <blockquote>"everyone's misguided hype on version control" - a completely sane individual</blockquote>
+
+            <p>
+                Software and version control are so ubiquitously associated, it's hard to imagine software without it
+                but not here. Opt to forgo it at all possible times besides things like assets like binaries and images.
+                In most cases, you'll have to give in to everyone's misguided hype on version control, but fear not, you
+                are not without levers for added difficulty. Enforcing outdated version control practices like favoring
+                rebases
+                and
+                squash merges to erase context with the justification of having a cleaner commit history is a surefire
+                way
+                to add difficulty. This will make it even more difficult for engineers to point at their contributions
+                which
+                can weaken their perceived creditability. Additionally, preventing versioning for key files like lock
+                files
+                can make sure to cause confusion and achieve your goal.
+            </p>
+
+            <p>
+                Version control unfortunately opens up the requirement of having to manage commits, branches, pull/merge
+                requests, and code review - gross. Why bother? Commit as infrequently as possible, besides, you know
+                what
+                that work is for. Why waste the time describing it? Additionally avoid using branches or use
+                inconsistent
+                naming patterns when forced to do so. Better yet, use the branches of others when available and
+                carefully
+                construct merge conflicts.
+            </p>
+
+            <p>
+                In a perfect world, of course, you can just push directly to the default branch. Don't worry about any
+                breaking changes this might introduce. If it bothers others, just have them correct it as an onboarding
+                task or a quick favor. Be sure absolutely everyone on your team comes up with their own fix only to be
+                met with the reality, once creating a PR, that you've fixed the issue and generated a new, different
+                breaking change.
+            </p>
+
+            <p>
+                Believe it or not, code review can be even harder. A good mindset to apply is that good code should be
+                clever and concise. As such, block PRs using descriptive variables. Enforce an ever changing code style
+                during reviews instead of a consistent pattern through the use of a linter. Why hold off on consistency
+                with just code style? Arbitrarily or outright reject pull requests while displaying rubber stamp
+                approval to a subset of teammates.
+            </p>
+
+            <h3>
+                Overengineering and complexity
+            </h3>
+
+            <blockquote>I like thick controllers, I cannot lie.</blockquote>
+
+            <p>
+                With hardware and some software fundamentals covered, it's time to move on to the application/tool being
+                developed. When creating anything, be sure to overengineer the architecture. In the case of a corporate
+                environment, orchestrate your solutions so no single person knows the end-to-end process. Simple
+                automation that can be covered by execution of a script? Create an entire monolith and dedicated
+                infrastructure for the task, irrespective of how small the operation. In the case of CI/CD processes, be
+                sure to create one-off scripts and avoid standardization in the case of many. Additionally, non
+                standardized design choices are highly encouraged.
+            </p>
+
+            <p>
+                When it comes to the application patterns and paradigms like REST, CRUD, MVC, or similar, consider them
+                suggestions and distractions that should go ignored. Think thick controller and non-existent service.
+                If you're following everything so far, data will have to traverse from space to space frequently. Make
+                sure the application has as many serialization steps as possible for maximum overhead, and never
+                refactor or consolidate the code in these areas so they have an opportunity to grow wild like an unkept
+                lawn.
+            </p>
+
+            <p>
+                Business logic will also be a big point of contention. Obfuscating it across multiple layers, process
+                flows, or applications will add well needed difficulty, and if one is feeling extravagant, implementing
+                version less, homegrown solutions in choke points also adds an extra flavor. Regardless of the
+                application, be sure to fragment repos and obscure interdependencies as much as possible. You'll know
+                you're doing it right when you have to look in more than one repo at a time to debug practically
+                anything, and tracking the trace takes longer than creating the solution.
+            </p>
+
+            <p>
+                What about tooling? Always push for using experimental or new tooling despite possible or present
+                incompatibilities. Fear missing early adoption and let it guide your decision making. New AI IDE or
+                plugin? Push your engineers to use it and ask for unverifiable metrics to aggregate and tout as a proof
+                of your company's commitment to technological innovation. Be sure the models are outdated or perform
+                poorly generating code for your hyper specific application stack. Additionally misuse new technologies
+                in lieu of more established approaches. A blockchain seems like a good enough replacement for a database
+                after all.
+            </p>
+
+            <h3>
+                Tech debt weaponization
+            </h3>
+
+            <p>
+                Tech debt is a common scapegoat in software development, so you should weaponize it. Use it as a
+                justification for churn or anything else your heart desires. Fear failure and punish experimentation, as
+                all roads all lead to tech debt. Engineers are here for quick and loose solutions to accumulate more
+                debt, so make sure they always leave performance on the table. Push back against and sabotage code that
+                even remotely smells of optimization. They certainly aren't getting paid extra to optimize.
+            </p>
+
+            <h3>
+                Cultivate a dysfunctional engineering culture
+            </h3>
+
+            <blockquote>
+                "the spectacle of a public execution"
+            </blockquote>
+
+            <p>
+                The last thing you want is a functional engineering culture that enables collaboration and effective
+                delivery of software. Therefore you should employ subtle acts of psychological warfare. Your goal is to
+                weaken other's will to participate and undermine their morale. The environment should feel uncomfortable
+                to breathe in, and it will undoubtedly generate developer feedback. Be sure to dismiss anything even
+                bordering constructive. Avoid coaching, pairing, or giving meaningful feedback, but don't stop there.
+                You should also look to undermine the development experience as well. Create dependency on single
+                individuals for added friction. Something like a single reviewer for as many projects as possible.
+            </p>
+            <p>
+                Treat all developer produced code as consumable. Canning code should be a comparable to the spectacle of
+                a public execution to further demoralize teammates. Achieve further erosion by quantifying the
+                development process. Declare lines of code as the metric of value, and reclassify developer commits as
+                all AI generated. Besides, there's no way they aren't using AI, right? Who isn't these days? Why would
+                anyone bother learning how to program anymore?
+            </p>
+
+            <p>
+                Your actions might be causing a rift amongst the team, but for maximum damage, you should look to find
+                your in-group. Reward their compliance and punish anyone looking to push other initiatives. Keeping
+                people in the dark on business contexts can also prevent those who are still attempting to push through
+                the friction from being able to quantify their contributions, but let's be honest. The only mobility
+                they have is to leave. Ensure this by making performance evaluations as subjective, detached from
+                reality, and as biased as possible, promoting from your in-group when possible.
+            </p>
+
+            <h3>
+                Infrastructure and ops dysfunction
+            </h3>
+
+            <p>
+                You probably use the cloud. If you don't, start. Only use one and never justify the setup or planning
+                for a failover. Your goal is complete vendor lock-in. Never justify or submit to possible trade-offs of
+                exploring more providers. Petition for only using a single environment as a cost saving measure if you
+                can. If you can't avoid multiple environments, limit access and versioning as much as possible. Treat
+                lower environments as production grade zero-trust platforms. Over-secure dev through the use of a VPN,
+                require a token and ticket for every access to punish interacting with the system. It doesn't matter if
+                its customer facing or not. You don't want anything to be frictionless. Infrequently update
+                infrastructure out of fear of breaking something and prevent version locking dependencies. After
+                delaying for as long as possible, task junior talent to step on the landmine you curated. Use the
+                probable result as justification to continue limiting access. If the environment is still somehow
+                deployable, ensure that releases and any testing occurring afterwards are completely manual. Outright
+                block any form of automation.
+            </p>
+
+            <h3>
+                Obstruct communication and hoard information
+            </h3>
+
+            <blockquote>
+                "The only thing separating you from your job is what knowledge you hoard"
+            </blockquote>
+
+            <p>
+                A lot of the software process occurs outside of the code. You need to diversify your efforts into
+                obstructing any communication channel covering technical details. Have these technical discussions in
+                private and ensure they go undocumented. Personally set up these meetings to prevent integrated routes
+                of transcription, and express the desire to not be transcribed out of privacy concerns to achieve the
+                same result.
+            </p>
+
+            <p>
+                With technical knowledge in hand, you'll likely need to keep up the illusion of collaboration, so thinly
+                spread information across threads. You don't want anyone to be able to fully quote anything without
+                requiring a degree of paraphrasing. The goal here is to prevent or avoid unified knowledge/process
+                sharing. Further silo contributors by blocking visibility or preventing the ability to edit code. In the
+                event that contributions get through your process, be sure to take credit in communication channels
+                inaccessible to the contributor.
+            </p>
+
+            <p>
+                A good mindset to apply is that anyone in the company can take your position at a moments notice, and
+                the only thing separating you from your job is what knowledge you hoard. Do not openly document business
+                logic or system interactions. People need to go to you in order to demystify the web of interactions or
+                reverse engineer everything they touch. Avoid structured or searchable documentation at any costs, and
+                forfeit information in physical formats when required.
+            </p>
+
+            <h3>
+                Toxic recruiting and hiring practices
+            </h3>
+
+            <blockquote>
+                "You aren't interested in partial credit"
+            </blockquote>
+
+            <p>
+                Continue to influence communication flows by looking to have a hand in the recruiting process. The goal
+                here is to disallow team communication before hiring. You don't want anyone to get a whiff of the awful
+                environment you're cooking up. Give the illusion of complete trust in the recruiting process once you
+                have a hand in it, and commonly tout it as, "better-than-industry." It's perfect. Let the hiring process
+                further guide other areas like dispute resolution. When they arise, and they will, prioritize titles.
+                It's harder to recruit someone with a better title after all.
+            </p>
+
+            <p>
+                Homogenously hire engineers. You want as many siloed specialists as possible to cultivate knowledge and
+                accountability gaps. Push back against generalist propaganda. Consider their value provide low when
+                accessibility to AI is high. Require overly verbose or concise resumes and punish candidates in between.
+                Reject web portfolios in favor of .doc files. Disallow .pdfs resumes with any degree of formatting or
+                color. You want something that radiates MVP and status quo. The combination of poor grammar and em
+                dashes are the equivalent to striking gold.
+            </p>
+
+            <p>
+                With all these complicated hiring procedures, you'll no doubt be filtering a majority of candidates. Be
+                sure to give those fortunate enough to only graze your presence a boilerplate decline email from no
+                reply sender to prevent the possibility of clarification. Further narrow candidate pools by filtering
+                for application/platform specific jargon. In the event someone passes your initial screening tactics,
+                ensure that any technical interviews utilized are as opaque, inflexible, and unguided as possible.
+                Actions like limiting details on the programming language to be used, frequently rescheduling, and
+                requiring obtuse times of the day are good options. Ensure the interviewer does not assist the
+                interviewee in any way. No clarification of details or questions. Additionally have the interviewer
+                prioritize knowledge of jargon over knowledge of how it works. Didn't know the name of blue green
+                deployments or Fisher-Yates shuffle but demonstrated knowledge of how it works? Abruptly end the
+                interview there. Not much value in continuing further. Evaluate those who do make it past by results.
+                You aren't interested in partial credit or the how.
+            </p>
+
+            <h1>
+                Afterword
+            </h1>
+
+            <p>
+                You made it. Congrats. That was probably a tough read. It certainly was for me, at least. Writing all
+                this as advice was difficult as a first write, and keeping the tone lighthearted enough that the article
+                didn't just come off as just me complaining was a difficult tightrope to walk. Not all of the points are
+                hills worth dying over, and I'm sure there's a desire for more clarification on some points.
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div id="copyleft">
+            &#127279; 2025 Wryco. No rights reserved.
+        </div>
+    </footer>
+</body>
+
+</html>

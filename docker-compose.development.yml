@@ -1,77 +1,19 @@
 services:
 
-  wryco_adminer_development:
-    build:
-      context: ./
-      dockerfile: ./docker/development/adminer/Dockerfile
-    container_name: wryco_adminer_development
-    depends_on:
-      - wryco_mssql_development
-    env_file:
-      - ./docker/development/adminer/.env.local
-    image: wryco_adminer_development
-    ports:
-      - 8000:8080
-    networks:
-      - wryco_development
-
-  wryco_aspnet_development:
-    build:
-      context: ./
-      dockerfile: ./docker/development/aspnet/Dockerfile
-    container_name: wryco_aspnet_development
-    depends_on:
-      - wryco_mssql_development
-    env_file:
-      - ./docker/development/aspnet/.env.local
-    image: wryco_aspnet_development
-    volumes:
-      - ./src/backend:/wryco
-    networks:
-      - wryco_development
-
-  wryco_mssql_development:
-    build:
-      context: ./
-      dockerfile: ./docker/development/mssql/Dockerfile
-    container_name: wryco_mssql_development
-    env_file:
-      - ./docker/development/mssql/.env.local
-    image: wryco_mssql_development
-    volumes:
-      - ./docker/development/mssql/data:/var/opt/mssql/data
-    networks:
-      - wryco_development
-
   wryco_nginx_development:
     container_name: wryco_nginx_development
     build:
       context: ./
       dockerfile: docker/development/nginx/Dockerfile
-    depends_on:
-      - wryco_aspnet_development
     image: wryco_nginx_development
     ports:
       - 443:443
     volumes:
+      - ./html:/usr/share/nginx/html:ro
       - ./docker/development/nginx/logs:/var/log/nginx
     networks:
       - wryco_development
-
-  wryco_vue_development:
-    build:
-      context: ./
-      dockerfile: ./docker/development/vue/Dockerfile
-    container_name: wryco_vue_development
-    depends_on:
-      - wryco_aspnet_development
-    env_file:
-      - ./docker/development/vue/.env.local
-    image: wryco_vue_development
-    volumes:
-      - ./src/frontend:/wryco
-    networks:
-      - wryco_development
+    restart: unless-stopped
 
 networks:
 
