@@ -2,12 +2,59 @@
 <html lang="en">
 
 <head>
+    <!-- Required -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title and Description -->
     <title>Wryco</title>
+    <meta name="description" content="A technologist's blog and collection of thoughts" />
+
+    <!-- Icons -->
+    <link rel="icon" href="/wryco.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/wryco.png" type="image/png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://wryco.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Wryco" />
+    <meta property="og:description" content="A technologist's blog and collection of thoughts" />
+    <meta property="og:url" content="https://wryco.com" />
+    <meta property="og:image" content="https://wryco.com/wryco.png" />
+    <meta property="og:site_name" content="Wryco" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Wryco" />
+    <meta name="twitter:description" content="A technologist's blog and collection of thoughts" />
+    <meta name="twitter:image" content="https://wryco.com/wryco.png" />
+
+    <!-- Robots and Crawlers -->
+    <meta name="robots" content="index, nofollow" />
+    <meta name="googlebot" content="index, nofollow" />
+
+    <meta name="language" content="English" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="author" content="Lewis Brown" />
+
+    <!-- Schema.org (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://wryco.com/",
+        "name": "Wryco"
+    }
+    </script>
 </head>
 
 <style>
     html {
-        font-family: 'Courier New', monospace;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #ecf0f1;
     }
 
     body {
@@ -16,8 +63,33 @@
 
     div#branding {
         border-bottom: 1px solid #000;
-        margin: 0 2em 2em 2em;
-        padding: 1em;
+        margin: 0 30px 30px 30px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    div#title {
+        font-size: 60px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    div#author {
+        margin: 0 30px 30px 30px;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    div#content {
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 0 15px;
+    }
+
+    div#copyleft {
+        border-top: 1px solid #000;
+        margin: 30px 30px 0 30px;
+        padding: 15px;
         text-align: center;
     }
 </style>
@@ -25,15 +97,24 @@
 <body>
     <header>
         <div id="branding">Wryco</div>
-        <div id="title">Making Software Harder</div>
+        <div id="title">Technologist Thoughts</div>
+        <div id="author">A blog by Lewis Brown</div>
     </header>
 
     <main>
-        <div>Testing</div>
+        <div id="content">
+            <ul>
+                <li>
+                    <a href="/posts/1754297319-making-software-harder">Making Software Harder</a>
+                </li>
+            </ul>
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2025 Wryco. No rights reserved.</p>
+        <div id="copyleft">
+            &#127279; 2025 Wryco. No rights reserved.
+        </div>
     </footer>
 </body>
 
