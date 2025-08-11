@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title and Description -->
+    <title>Auditing AI</title>
+    <meta name="description"
+        content="Embrace failure. It's a powerful teacher. This satirical guide shows how to make software harder to build, revealing deeper truths about tech, teams, and culture." />
+
+    <!-- Icons -->
+    <link rel="icon" href="/wryco.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/wryco.png" type="image/png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://wryco.com/posts/1754297319-making-software-harder" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Auditing AI | Wryco" />
+    <meta property="og:description"
+        content="Embrace failure. It's a powerful teacher. This satirical guide shows how to make software harder to build, revealing deeper truths about tech, teams, and culture." />
+    <meta property="og:url" content="https://wryco.com/posts/1754297319-making-software-harder" />
+    <meta property="og:image" content="https://wryco.com/wryco-splash.jpg" />
+    <meta property="og:site_name" content="Wryco" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Auditing AI | Wryco" />
+    <meta name="twitter:description"
+        content="Embrace failure. It's a powerful teacher. This satirical guide shows how to make software harder to build, revealing deeper truths about tech, teams, and culture." />
+    <meta name="twitter:image" content="https://wryco.com/wryco-splash.jpg" />
+
+    <!-- Robots and Crawlers -->
+    <meta name="robots" content="index, nofollow" />
+    <meta name="googlebot" content="index, nofollow" />
+
+    <meta name="language" content="English" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="author" content="Lewis Brown" />
+
+    <!-- Schema.org (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://wryco.com/",
+        "name": "Wryco"
+    }
+    </script>
+
+    <style>
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ecf0f1;
+        }
+
+        body {
+            margin: 0px;
+        }
+
+        div#branding {
+            border-bottom: 1px solid #000;
+            margin: 0 30px 30px 30px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        div#title {
+            font-size: 90px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        div#author {
+            margin: 0 30px 30px 30px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        div#content {
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 0 15px;
+        }
+
+        div#content>h3,
+        div#content>h1 {
+            margin: 30px 0;
+        }
+
+        div#content>p {
+            margin: 15px 0;
+        }
+
+        div#content>blockquote {
+            padding: 15px;
+            background-color: #fff;
+            border-left: 5px solid #bdc3c7;
+            margin: 30px 0;
+        }
+
+        div#copyleft {
+            border-top: 1px solid #000;
+            margin: 30px 30px 0 30px;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="branding">Wryco</div>
+        <div id="title">Auditing AI</div>
+        <div id="author">Article by Lewis Brown</div>
+    </header>
+
+    <main>
+        <div id="content">
+            <h3>
+                AI has a dirty secret, but no one seems to care about it.
+            </h3>
+
+            <p>
+                Industries of all kinds have become saturated with AI tooling. Everything from driving a car,
+                determining what content shows up in your feed, and classifying tumors, AI has no doubt brought
+                about tremendous value. But what if I told you that tumor classification model made a critical
+                healthcare decision yesterday, but you can't reproduce how it reached that conclusion today? This
+                reality exists for most intelligent systems today, and I'd like to shine a light on why.
+            </p>
+
+            <h3>
+                Determinism
+            </h3>
+
+            <p>
+                You provided your AI system the same inputs but the outputs are different. What gives? What you're
+                looking for is a deterministic system, a system in which the same input(s) always results in
+                the same output(s). So AI systems aren't deterministic? They can be. To begin to unwrap this question,
+                let's first dive into the types of hardware that support these systems.
+            </p>
+
+            <h3>
+                Hardware
+            </h3>
+
+            <p>
+                AI models can be evaluated on all types of hardware each with their own tradeoffs.
+                CPUs are incredibly general purpose, slow, but deterministic. GPUs are flexible for parallel tasks,
+                fast, but nondeterministic. TPUs are rigid, fast, but only might be deterministic. One can make both a
+                GPU and TPU deterministic, but at the loss of performance. While I'm simplifying a bit here for the sake
+                of brevity but, the main take away here is that deterministic computation come at a cost.
+            </p>
+
+            <h3>
+                Associativity
+            </h3>
+
+            <p>
+                So we've established that we need a deterministic system but deterministic computation comes with a
+                performance penalty. Why are these solutions not deterministic? At some point in school, you might have
+                discussed the associative property. Here's a quick reminder:
+            </p>
+
+            <math>
+                (A + B) + C = A + (B + C)
+            </math>
+
+            <p>
+                Seems simple enough right? Well, the associative property doesn't hold when using floating point math on
+                a computer. This single idiosyncrasy is the cause of all this randomness. Those more interested in the
+                specifics should read this excellent writeup by Jullia Evans on
+                <a href="https://jvns.ca/blog/2023/01/13/examples-of-floating-point-problems/"> examples of floating
+                    point problems</a>.
+            </p>
+
+            <h3>
+                Why does this matter?
+            </h3>
+
+            <p>
+                Think of training a neural network as hiking to the tallest point of a mountain in a fog. You can only
+                see but so far around you, so you go towards the highest viewable point and repeat this process until
+                all the area around you is below you. Unfortunately this method doesn't always result in arriving at the
+                highest point, so to account for this, you must repeat this process many times from different starting
+                points, making the hike and arriving at a peak. This is the reality of training a model, but here's
+                where determinism comes in play.
+            </p>
+
+            <p>
+                Let's say your buddy says he got to the top and used the same approach as you. He shares where on the
+                mountain he started, you go to it, ascent the mountain, but you don't arrive at the top. Without
+                determinism, you can repeat the same starting position and arrive at different peaks. Without a photo
+                at the top, are you inclined to believe your buddy made it there?
+            </p>
+
+            <p>
+                For the most part, this is the state of AI research. The path describing how a model is created doesn't
+                get saved or given much consideration. If neither the path nor the model weights aren't shared, it isn't
+                realistic to be able to peer review findings. All that computation is spent searching a space that isn't
+                mapped in a meaningful way. While these paths are specific to the dataset and model architecture used,
+                mapping the loss space can grant insights that the field as yet to realize. I believe mapping this
+                space is the pathway towards being able to look at a produced model and gleam the hyper dimensional
+                patterns saved within.
+            </p>
+
+            <h3>
+                Caveats
+            </h3>
+
+            <p>
+                At the end of the day, randomness is sometimes good, in those cases seeded randomness can be best.
+                Aspects like temperature and dropout can provide benefits, but these can be additional sources of
+                entropy that make repeating a training path nearly impossible if seeded randomness is not used.
+            </p>
+
+            <h3>
+                Afterword
+            </h3>
+
+            <p>
+                I worked on a research project for a CVE patch recommendation and remediation system. All it really was
+                was something that took in a feed of unified CVEs and gave it a weighted score so that operators would
+                have an easier time knowing what exactly they needed to focus on first. The problem was that the AI
+                system needed to be auditable and therefor repeatable. CPU evaluation was used to achieve this, and
+                hashing was applied for searchability. The system was incredibly simple, but I've seen more than a few
+                companies fall into the pitfall of using tooling powered by nondeterministic GPU/TPU eval for
+                performance reasons and then losing the ability to audit their decision making. Operations and recovery
+                were no longer repeatable, because different results were generated. Most times they just ate it.
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div id="copyleft">
+            &#127279; 2025 Wryco. No rights reserved.
+        </div>
+    </footer>
+</body>
+
+</html>
