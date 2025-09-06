@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title and Description -->
+    <title>Docker Nginx Reverse Proxy</title>
+    <meta name="description"
+        content="Learn how to set up a Docker-based reverse proxy with nginx to host multiple websites." />
+
+    <!-- Icons -->
+    <link rel="icon" href="/wryco.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/wryco.png" type="image/png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://wryco.com/posts/1757039904-docker-nginx-reverse" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Docker Nginx Reverse Proxy | Wryco" />
+    <meta property="og:description"
+        content="Learn how to set up a Docker-based reverse proxy with nginx to host multiple websites." />
+    <meta property="og:url" content="https://wryco.com/posts/1757039904-docker-nginx-reverse" />
+    <meta property="og:image" content="https://wryco.com/wryco-splash.jpg" />
+    <meta property="og:site_name" content="Wryco" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Docker Nginx Reverse Proxy | Wryco" />
+    <meta name="twitter:description"
+        content="Learn how to set up a Docker-based reverse proxy with nginx to host multiple websites." />
+    <meta name="twitter:image" content="https://wryco.com/wryco-splash.jpg" />
+
+    <!-- Robots and Crawlers -->
+    <meta name="robots" content="index, nofollow" />
+    <meta name="googlebot" content="index, nofollow" />
+
+    <meta name="language" content="English" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="author" content="Lewis Brown" />
+
+    <!-- Schema.org (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://wryco.com/",
+        "name": "Wryco"
+    }
+    </script>
+
+    <style>
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ecf0f1;
+        }
+
+        body {
+            margin: 0px;
+        }
+
+        div#branding {
+            border-bottom: 1px solid #000;
+            margin: 0 30px 30px 30px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        div#title {
+            font-size: 90px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        div#author {
+            margin: 0 30px 30px 30px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        div#content {
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 0 15px;
+        }
+
+        div#content>h3,
+        div#content>h1 {
+            margin: 30px 0;
+        }
+
+        div#content>p {
+            margin: 15px 0;
+        }
+
+        div#content>blockquote {
+            padding: 15px;
+            background-color: #fff;
+            border-left: 5px solid #bdc3c7;
+            margin: 30px 0;
+        }
+
+        div#copyleft {
+            border-top: 1px solid #000;
+            margin: 30px 30px 0 30px;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="branding">Wryco</div>
+        <div id="title">Building a Multi-Site Reverse Proxy with Docker and Nginx</div>
+        <div id="author">Article by Lewis Brown</div>
+    </header>
+
+    <main>
+        <div id="content">
+            <h3>
+                Introduction
+            </h3>
+
+            <p>
+                In today's web development landscape, managing multiple websites efficiently while maintaining security,
+                performance, and scalability has become increasingly important. Whether you're running personal
+                projects, client websites, or enterprise applications, the traditional approach of hosting each site on
+                separate servers or ports can quickly become unwieldy and expensive. This is where the powerful
+                combination of reverse proxies and containerization comes into play.
+            </p>
+
+            <h5>
+                What is a reverse proxy and why use one?
+            </h5>
+
+            <p>
+                A reverse proxy is a server that sits between clients and backend servers, forwarding client requests to
+                the appropriate backend server and then returning the server's response back to the client. Unlike a
+                forward proxy that acts on behalf of clients, a reverse proxy acts on behalf of servers. Think of it as
+                a sophisticated traffic director that intelligently routes incoming requests to the right destination.
+            </p>
+
+            <p>
+                The benefits of using a reverse proxy are substantial. It provides a single entry point for all your
+                websites, enabling you to serve multiple domains from different backend servers while presenting a
+                unified interface to the internet. This setup offers enhanced security by hiding your backend
+                infrastructure, improved performance through caching and load balancing, and simplified SSL certificate
+                management. Additionally, a reverse proxy allows you to implement features like compression, request
+                filtering, and custom headers across all your sites from a central location.
+            </p>
+
+            <h5>
+                Benefits of containerizing web applications with Docker
+            </h5>
+
+            <p>
+                Docker containers revolutionize how we deploy and manage web applications by packaging applications and
+                their dependencies into lightweight, portable units. When applied to web hosting, containerization
+                offers remarkable advantages over traditional deployment methods.
+            </p>
+
+            <p>
+                Containers provide consistent environments across development, testing, and production, eliminating the
+                "it works on my machine" problem. Each website runs in its own isolated container, preventing conflicts
+                between different applications, dependencies, or configurations. This isolation also enhances security,
+                as a compromise in one container doesn't automatically affect others.
+            </p>
+
+            <p>
+                Resource efficiency is another key benefit. Containers share the host operating system kernel, making
+                them much lighter than virtual machines while still providing process isolation. This efficiency allows
+                you to run many more websites on the same hardware. Additionally, containers start almost
+                instantaneously and can be configured to automatically restart, making scaling and deployment much
+                faster and more responsive to traffic demands.
+            </p>
+
+            <h5>
+                Overview of the multi-site hosting architecture
+            </h5>
+
+            <p>
+                The architecture we'll build combines the best of both worlds: nginx as a reverse proxy container that
+                handles incoming requests and routes them to individual website containers, each running its own nginx
+                instance optimized for specific content.
+            </p>
+
+            <p>
+                At the front end, a single nginx reverse proxy container receives all incoming HTTP and HTTPS requests.
+                This proxy examines the requested domain name and routes traffic to the appropriate backend container.
+                Each website runs in its own dedicated container with its own nginx configuration, allowing for
+                site-specific optimizations, custom modules, or different nginx versions if needed.
+            </p>
+
+            <p>
+                This setup creates a clean separation of concerns. The reverse proxy handles common tasks like SSL
+                termination, request logging, and basic security filtering, while individual website containers focus
+                solely on serving their specific content. Docker networking connects these containers seamlessly,
+                creating an internal network that's both secure and efficient.
+            </p>
+
+            <p>
+                The architecture scales horizontally with ease. Adding a new website involves creating a new container
+                and updating the reverse proxy configuration. Removing or updating sites becomes equally straightforward
+                without affecting other websites in the system.
+            </p>
+
+            <h5>
+                Target audience and prerequisites
+            </h5>
+
+            <p>
+                This guide is designed for developers, system administrators, and DevOps engineers who want to implement
+                a professional-grade hosting solution for multiple websites. You should be comfortable with command-line
+                interfaces and have basic experience with web servers, though deep nginx expertise isn't required as
+                I'll explain configurations thoroughly.
+            </p>
+
+            <p>
+                Before diving in, ensure you have Docker installed on your system. Familiarity with basic Docker
+                concepts like containers, images, and volumes will be helpful, though I'll explain Docker-specific
+                configurations as we encounter them. You should also have access to a server or development machine
+                where you can install and run Docker containers.
+            </p>
+
+            <p>
+                Additionally, basic understanding of DNS and domain management is beneficial, especially if you plan to
+                deploy this setup for production use. While we'll cover SSL certificate setup, some familiarity with
+                HTTPS concepts will help you understand the security implications and configuration options.
+            </p>
+
+            <h3>
+                Understanding the Architecture
+            </h3>
+
+            <h5>
+                Reverse Proxy Concept and Traffic Flow
+            </h5>
+
+            <p>
+                As refresher to the above, a reverse proxy sits between clients (web browsers) and your backend servers,
+                acting as an intermediary that forwards client requests to the appropriate backend service. Unlike a
+                forward proxy that acts on behalf of clients, a reverse proxy acts on behalf of servers.
+            </p>
+
+            <p>In our multi-site setup, the reverse proxy serves as a single entry point that:</p>
+
+            <ul>
+                <li>Receives all incoming HTTP/HTTPS requests</li>
+                <li>Examines the request headers (primarily the Host header)</li>
+                <li>Routes traffic to the correct backend container based on domain name</li>
+                <li>Returns the backend's response to the client</li>
+            </ul>
+
+            <h5>Traffic Flow Example:</h5>
+
+            <ol>
+                <li>User visits blog.example.com in their browser</li>
+                <li>DNS resolves to your server's IP address</li>
+                <li>Request hits the nginx reverse proxy container</li>
+                <li>Proxy examines the Host: blog.example.com header</li>
+                <li>Routes request to the blog website container</li>
+                <li>Blog container processes request and returns response</li>
+                <li>Proxy forwards response back to user's browser</li>
+            </ol>
+
+            <p>
+                This architecture allows multiple websites to share a single IP address and port (80/443) while
+                maintaining complete separation between applications.
+            </p>
+
+            <h5>
+                Docker Networking Fundamentals
+            </h5>
+
+            <p>
+                Docker provides several networking modes, but for our reverse proxy setup, we primarily use
+                <b>bridge networks</b>. When containers are connected to the same Docker network, they can communicate
+                using container names as hostnames.
+            </p>
+
+            <p>
+                <b>Container-to-Container Communication</b>: Containers on the same Docker network can reach each other
+                using their service names as DNS hostnames. For example, if you have a container named website1, other
+                containers can access it via http://website1:80.
+            </p>
+
+            <p>
+                <b>Port Exposure vs. Publishing:</b>
+            </p>
+
+            <ul>
+                <li>
+                    EXPOSE in Dockerfile makes ports available to other containers on the same network
+                </li>
+                <li>
+                    -p or ports: in docker-compose publishes ports to the host system
+                </li>
+                <li>
+                    Our reverse proxy publishes ports 80/443 to the host, while backend containers only expose ports
+                    internally
+                </li>
+            </ul>
+
+            <p>
+                <b>Network Isolation</b>: Each Docker network creates an isolated environment. Our setup uses a custom
+                network to ensure all containers can communicate while remaining isolated from other Docker
+                applications.
+            </p>
+
+            <h5>
+                How Nginx Acts as a Reverse Proxy
+            </h5>
+
+            <p>
+                Nginx excels as a reverse proxy due to its efficient event-driven architecture and powerful
+                configuration system. In our setup, nginx uses several key directives:
+            </p>
+
+            <p>
+                <b>upstream blocks</b> define backend servers:
+            </p>
+
+            <pre>
+upstream blog_backend {
+    server blog-container:80;
+}
+
+upstream shop_backend {
+    server shop-container:80;
+}
+            </pre>
+
+            <p>
+                <b>server blocks</b> handle different domains:
+            </p>
+
+            <pre>
+server {
+    listen 80;
+    server_name blog.example.com;
+
+    location / {
+        proxy_pass http://blog_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+            </pre>
+
+            <p>
+                Key proxy directives explained:
+            </p>
+
+            <ul>
+                <li>
+                    <b>proxy_pass</b>: Forwards requests to the specified backend
+                </li>
+                <li>
+                    <b>proxy_set_header Host</b>: Preserves the original domain name
+                </li>
+                <li>
+                    <b>proxy_set_header X-Real-IP</b>: Passes the client's real IP address
+                </li>
+                <li>
+                    <b>proxy_set_header X-Forwarded-For</b>: Maintains the chain of proxy servers
+                </li>
+                <li>
+                    <b>proxy_set_header X-Forwarded-Proto</b>: Indicates whether the original request was HTTP or HTTPS
+                </li>
+            </ul>
+
+            <h5>
+                Architecture Diagram
+            </h5>
+
+            <pre>
+                    Internet
+                        |
+                        | (HTTP/HTTPS Traffic)
+                        |
+                        v
+               ┌─────────────────────┐
+               │                     │
+               │  Docker Host        │
+               │  (Your Server)      │
+               │                     │
+               │  ┌───────────────┐  │
+               │  │               │  │
+               │  │ Nginx Reverse │  │  Published Ports:
+               │  │ Proxy         │◄─┼── 80:80, 443:443
+               │  │ Container     │  │
+               │  │               │  │
+               │  └───────┬───────┘  │
+               │          │          │
+               │    ┌─────┴─────┐    │  Custom Docker Network
+               │    │           │    │  (Internal Communication)
+               │    │           │    │
+               │    v           v    │
+               │ ┌─────────┐ ┌─────────┐ ┌─────────┐
+               │ │Website 1│ │Website 2│ │Website 3│
+               │ │Container│ │Container│ │Container│
+               │ │         │ │         │ │         │
+               │ │blog.    │ │shop.    │ │docs.    │
+               │ │example. │ │example. │ │example. │
+               │ │com      │ │com      │ │com      │
+               │ └─────────┘ └─────────┘ └─────────┘
+               │                     │
+               └─────────────────────┘
+
+Request Flow:
+1. blog.example.com → Reverse Proxy → Website 1 Container
+2. shop.example.com → Reverse Proxy → Website 2 Container  
+3. docs.example.com → Reverse Proxy → Website 3 Container
+            </pre>
+
+            <h3>
+                Diving into an example
+            </h3>
+
+            <p>
+                Here's the docker compose definition for this blog:
+            </p>
+
+            <pre>
+services:
+
+  wryco_nginx_production:
+    container_name: wryco_nginx_production
+    build:
+      context: ./
+      dockerfile: docker/production/nginx/Dockerfile
+    image: wryco_nginx_production
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+      - ./docker/production/nginx/logs:/var/log/nginx
+    networks:
+      - reproxy
+      - wryco_production
+    restart: unless-stopped
+
+networks:
+
+  wryco_production:
+    name: wryco_production
+    driver: bridge
+
+  reproxy:
+    external: true
+    name: reproxy
+            </pre>
+
+            <p>
+                The following definitions are of interest to us:
+            </p>
+
+            <pre>
+    networks:
+      - reproxy
+      - wryco_production
+
+networks:
+
+  wryco_production:
+    name: wryco_production
+    driver: bridge
+
+  reproxy:
+    external: true
+    name: reproxy
+            </pre>
+
+            <p>
+                The container's network property is configured to use an internal bridge (wryco_production) and an
+                external bridge to connect to the reverse proxy container network (reproxy). Here's the docker compose
+                definitions for the reproxy container.
+            </p>
+
+            <pre>
+services:
+  reproxy:
+    build:
+      context: ./
+      dockerfile: docker/nginx/Dockerfile
+    container_name: reproxy
+    image: reproxy
+    networks:
+      - reproxy
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - ./logs:/var/log/nginx
+
+networks:
+  reproxy:
+    external: false
+    name: reproxy
+            </pre>
+
+            <p>
+                The dockerfile for the reverse proxy:
+            </p>
+
+            <pre>
+FROM nginx:bookworm
+
+RUN apt update
+RUN apt upgrade -y
+
+RUN mkdir -p /etc/nginx/ssl
+
+# Copy ssl configs to temp dir and strip .local extension
+COPY ./docker/nginx/*-ssl.conf.local /tmp/
+RUN for f in /tmp/*-ssl.conf.local; do mv "$f" "${f%.local}"; done
+
+# Generate the keys and certs for each website
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/nginx/ssl/wryco.key -out /etc/nginx/ssl/wryco.crt -config /tmp/wryco-ssl.conf
+# (...)
+
+# Copy config containing all site configs
+COPY ./docker/nginx/reproxy.conf.local /etc/nginx/conf.d/reproxy.conf
+            </pre>
+
+            <p>
+                Here's that reproxy.conf file:
+            </p>
+
+            <pre>
+server {
+    listen 80;
+    server_name wryco.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name wryco.com;
+
+    ssl_certificate /etc/nginx/ssl/wryco.crt;
+    ssl_certificate_key /etc/nginx/ssl/wryco.key;
+
+    resolver 127.0.0.11;
+
+    location / {
+        set             $upstream_app wryco_nginx_production;
+        set             $upstream_port 443;
+        set             $upstream_proto https;
+        proxy_pass      $upstream_proto://$upstream_app:$upstream_port;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffer_size          128k;
+        proxy_buffers              4 256k;
+        proxy_busy_buffers_size    256k;
+    }
+}
+            </pre>
+
+            <p>
+                At this point, our reverse proxy container is configured and pointing to the wryco_nginx_production
+                container correctly. It does a lot of the same configuration, but it only handles traffic coming from
+            </p>
+
+        </div>
+    </main>
+
+    <footer>
+        <div id="copyleft">
+            &#127279; 2025 Wryco. No rights reserved.
+        </div>
+    </footer>
+</body>
+
+</html>
