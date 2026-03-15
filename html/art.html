@@ -130,6 +130,18 @@
             padding: 10px;
             border-top: 2px solid #000;
         }
+
+        div#gallery-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px;
+            justify-content: center;
+        }
+
+        div#gallery-preview img {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -149,6 +161,9 @@
     </header>
 
     <main>
+        <div id="gallery-preview">
+            <img src="/art/gallery.png">
+        </div>
         <h1 id="plots">Pen and sharpie plots</h1>
         <h6>All plots were created using custom plotter adapters I designed for the Prusa MK4S 3d printer. Check them
             out <a href="https://www.printables.com/model/1420683-nextruder-plotters" target="_blank">here</a>.</h6>
