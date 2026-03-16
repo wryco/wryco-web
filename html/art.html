@@ -142,6 +142,30 @@
         div#gallery-preview img {
             width: 100%;
         }
+
+        div#photography-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px;
+            justify-content: center;
+        }
+
+        div#photography-gallery img:nth-child(1) {
+            width: calc(33% - 5px);
+        }
+
+        div#photography-gallery img:nth-child(2) {
+            width: calc(67% - 5px);
+        }
+
+        div#photography-gallery img:nth-child(3) {
+            width: 100%;
+        }
+
+        div#photography-gallery img {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -220,6 +244,13 @@
             <img src="/art/time-is-slipping-away.png">
             <img src="/art/wells-fargo-qr.png">
             <img src="/art/xna-night-flight.png">
+            <img src="/art/nextruder-plotters-splash.jpg">
+        </div>
+        <h1 id="photography">Photography</h1>
+        <div id="photography-gallery">
+            <img src="/photography/20260219_144412.jpg">
+            <img src="/photography/20260219_144451.jpg">
+            <img src="/photography/20260219_192611.jpg">
         </div>
         <h1 id="wryfren">Wryfren</h1>
         <h6>Wryfren is a character I created in 2025. He's a silly little guy.</h6>
