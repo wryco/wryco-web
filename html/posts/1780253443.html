@@ -153,13 +153,16 @@
     <h1 class="header">
         <a href="/">Wryco</a> / Post / 1780253443 / Nextruder Plotter Color Reference
     </h1>
-    <p>My most popular 3d model so far has been the <a
+    <p>
+        My most popular 3d model so far has been the <a
             href="https://www.printables.com/model/1420683-nextruder-plotters">nextruder plotter adapter</a> for prusa
         printers. I've optimized it a fair bit, and I commonly use them to plot <a href="https://wryco.com/art">art</a>.
         One difficulty I've found with making art with the plotter is color accuracy. To resolve this, I've created the
         scans below to source color points. There's some sampling bias present in only picking a single point, but I
         leave that work for future improvement. I also foresee some difficulties with sampling from scanned colors as
-        the scanner might be color shifting</p>
+        the scanner might be color shifting, and sampling color shifted values isn't guaranteed to produce the same
+        values. I'll need a multi-sample approach to remove sampling bias.
+    </p>
     <div class="color-reference-container">
         <div>
             <div class="caption">White cardstock</div>
