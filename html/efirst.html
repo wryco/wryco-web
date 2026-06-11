@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <!-- Required -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Title and Description -->
+    <title>Wryco.EFirst - An entity first design philosophy</title>
+    <meta name="description" content="An entity first design philosophy" />
+
+    <!-- Icons -->
+    <link rel="icon" href="/wryco.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/wryco.png" type="image/png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://wryco.com/posts/1780253443" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Wryco.EFirst" />
+    <meta property="og:description" content="An entity first design philosophy" />
+    <meta property="og:url" content="https://wryco.com/posts/1780253443" />
+    <meta property="og:image" content="https://wryco.com/wryco-splash.jpg" />
+    <meta property="og:site_name" content="Wryco" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Wryco.EFirst" />
+    <meta name="twitter:description" content="An entity first design philosophy" />
+    <meta name="twitter:image" content="https://wryco.com/wryco-splash.jpg" />
+
+    <!-- Robots and Crawlers -->
+    <meta name="robots" content="index, nofollow" />
+    <meta name="googlebot" content="index, nofollow" />
+
+    <meta name="language" content="English" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="author" content="Lewis Brown" />
+
+    <!-- Schema.org (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://wryco.com/",
+        "name": "Wryco"
+    }
+    </script>
+
+    <style>
+        body {
+            margin: 10px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>
+            Wryco.<b>E</b><span style="color:#999">ntity</span><b>First</b>
+        </h1>
+    </header>
+    <nav></nav>
+    <hr>
+    <article>
+        <section>
+            <p>
+                An entity-first design pattern for asp.net core.
+            </p>
+            <h1>
+                Why?
+            </h1>
+            <p>
+                Free, fast, easy, modular, hackable.
+            </p>
+            <h1>
+                Example
+            </h1>
+            <style>
+                .base {
+                    color: #3498db;
+                }
+
+                .entity {
+                    color: #e67e22;
+                }
+
+                .context {
+                    color: #e74c3c;
+                }
+
+                .repository {
+                    color: #9b59b6;
+                }
+
+                .controller {
+                    color: #1abc9c;
+                }
+
+                blockquote.dialogue {
+                    background-color: #eee;
+                    padding: 10px;
+                    margin: 10px 0px;
+                }
+
+                pre {
+                    margin: 10px 0px;
+                    padding: 10px;
+                    background-color: #fafafa;
+                }
+            </style>
+            <blockquote class="dialogue">
+                Create an entity.
+            </blockquote>
+            <h4 class="entity">
+                Entity
+            </h4>
+            <pre>
+public class <b class="entity">Device</b>: <b class="base">BaseIEntity</b>
+{
+    public <b class="entity">Device</b>()
+    {
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    // Main
+    public int Id { get; set; }
+    public required string Name { get; set; }
+
+    // Meta
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime LastActiveAt { get; set; } = DateTime.Now;
+}
+            </pre>
+            <blockquote class="dialogue">
+                Reference it in your database context.
+            </blockquote>
+            <h4 class="context">
+                Context
+            </h4>
+            <pre>
+public class <b class="context">ApplicationDbContext</b> : <b class="base">BaseDbContext</b>
+{
+    public <b class="context">ApplicationDbContext</b>(DbContextOptions&lt;<b class="context">ApplicationDbContext</b>&gt; options): base(options){}
+    public DbSet&lt;<b class="entity">Device</b>&gt; Device { get; set; } = null!;
+}
+            </pre>
+            <blockquote class="dialogue">
+                Give it a repository.
+            </blockquote>
+            <h4 class="repository">
+                Repository
+            </h4>
+            <pre>
+public class <b class="repository">DeviceRepository</b>: <b class="base">BaseRepository&lt;<b class="entity">Device</b>&gt;</b>
+{
+    public <b class="repository">DeviceRepository</b>(<b class="context">ApplicationDbContext</b> context) : base(context) { }
+}
+            </pre>
+            <blockquote class="dialogue">
+                And make it all accessible via API.
+            </blockquote>
+            <h4 class="controller">
+                Controller
+            </h4>
+            <pre>
+[ApiController]
+[Route("api/device")]
+public class <b class="controller">DeviceController</b> : <b class="base">BaseController&lt;<b class="repository">DeviceRepository</b>, <b class="entity">Device</b>&gt;</b>
+{
+    public <b class="controller">DeviceController</b>(<b class="repository">DeviceRepository</b> repository) : base(repository) { }
+}
+            </pre>
+            <h1>
+                That's it
+            </h1>
+            <p>
+                The above is all it takes to quickly scaffold a barebones API detailing:
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Action</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/device/</td>
+                        <td>index</td>
+                        <td>gets all devices</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/device/id</td>
+                        <td>show</td>
+                        <td>gets specific device</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/device</td>
+                        <td>create</td>
+                        <td>creates a new device</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/api/device</td>
+                        <td>update</td>
+                        <td>updates a device</td>
+                    </tr>
+                    <tr>
+                        <td>DEL</td>
+                        <td>/api/device</td>
+                        <td>delete</td>
+                        <td>deletes a device</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </article>
+    <footer></footer>
+</body>
+
+</html>
