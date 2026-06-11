@@ -56,6 +56,39 @@
             margin: 10px;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
+
+        .base {
+            color: #3498db;
+        }
+
+        .entity {
+            color: #e67e22;
+        }
+
+        .context {
+            color: #e74c3c;
+        }
+
+        .repository {
+            color: #9b59b6;
+        }
+
+        .controller {
+            color: #1abc9c;
+        }
+
+        .dialogue,
+        .bash {
+            background-color: #eee;
+            padding: 10px;
+            margin: 10px 0px;
+        }
+
+        pre {
+            margin: 10px 0px;
+            padding: 10px;
+            background-color: #fafafa;
+        }
     </style>
 </head>
 
@@ -76,44 +109,17 @@
                 Why?
             </h1>
             <p>
-                Free, fast, easy, modular, hackable.
+                Free, fast, easy, modular, hackable. Extend provided base classes for faster development.
+            </p>
+            <h1>
+                Install
+            </h1>
+            <p class="bash">
+                dotnet add package wryco.efirst --version 1.0.1
             </p>
             <h1>
                 Example
             </h1>
-            <style>
-                .base {
-                    color: #3498db;
-                }
-
-                .entity {
-                    color: #e67e22;
-                }
-
-                .context {
-                    color: #e74c3c;
-                }
-
-                .repository {
-                    color: #9b59b6;
-                }
-
-                .controller {
-                    color: #1abc9c;
-                }
-
-                blockquote.dialogue {
-                    background-color: #eee;
-                    padding: 10px;
-                    margin: 10px 0px;
-                }
-
-                pre {
-                    margin: 10px 0px;
-                    padding: 10px;
-                    background-color: #fafafa;
-                }
-            </style>
             <blockquote class="dialogue">
                 "Create an entity."
             </blockquote>
@@ -164,6 +170,19 @@ public class <b class="repository">DeviceRepository</b>: <b class="base">BaseRep
     public <b class="repository">DeviceRepository</b>(<b class="context">ApplicationDbContext</b> context) : base(context) { }
 }
             </pre>
+            <blockquote class="dialogue">
+                "Add the typical program.cs additions."
+            </blockquote>
+            <h4>
+                Program.cs
+            </h4>
+            <pre>
+(...)
+builder.Services.AddSharedInfrastructure&lt;<b class="context">ApplicationDbContext</b>&gt;(DBConnectionString);
+builder.Services.AddScoped&lt;<b class="repository">DeviceRepository</b>&gt;();
+(...)
+            </pre>
+
             <blockquote class="dialogue">
                 "And make it all accessible via API."
             </blockquote>
