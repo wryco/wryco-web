@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextruder Pen Plotter Toolholder // Prusa MK4S</title>
+
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Three.js, STLLoader, and OrbitControls via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-subtle: #f8f8fa;
+            --bg-card: #ffffff;
+            --dark-surface: #111113;
+
+            --text-primary: #111111;
+            --text-secondary: #555555;
+            --text-muted: #888888;
+            --text-on-dark: #f0f0f2;
+
+            --accent-orange: #FA6800;
+            --accent-orange-hover: #e05d00;
+            --accent-orange-light: rgba(250, 104, 0, 0.08);
+            --accent-blue: #2563EB;
+
+            --border: #e2e2e8;
+            --border-dark: #2a2a2e;
+
+            --font-title: 'Space Grotesk', -apple-system, sans-serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+            --max-width: 1240px;
+            --header-height: 64px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-subtle);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cccccc;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-orange);
+        }
+
+        /* Typography Helpers */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-title);
+            color: var(--text-primary);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .font-mono {
+            font-family: var(--font-mono);
+        }
+
+        /* Container Layout */
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-padding {
+            padding: 5rem 0;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            height: var(--header-height);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand-badge {
+            height: 32px;
+            padding: 0px 8px;
+            background: var(--dark-surface);
+            color: #ffffff;
+            font-family: var(--text-on-dark);
+            font-weight: 700;
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+        }
+
+        .brand-text-title {
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 1.125rem;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-orange);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-sans);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--accent-orange);
+            color: #ffffff;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-orange-hover);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .btn-dark {
+            background: var(--dark-surface);
+            color: #ffffff;
+        }
+
+        .btn-dark:hover {
+            background: #252528;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-primary);
+            background: var(--bg-subtle);
+        }
+
+        .hero-section {
+            background-color: var(--bg);
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 28px 28px;
+            padding: 4.5rem 0 3.5rem 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: var(--accent-orange-light);
+            border: 1px solid rgba(250, 104, 0, 0.25);
+            border-radius: 20px;
+            color: var(--accent-orange);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            animation: pulseDot 1.8s infinite;
+        }
+
+        @keyframes pulseDot {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(2.25rem, 5vw, 3.75rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .hero-title .highlight {
+            color: var(--accent-orange);
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 760px;
+            font-weight: 400;
+            line-height: 1.7;
+            text-align: center;
+            margin: 0 auto 2rem auto;
+        }
+
+        .hero-cta-group {
+            text-align: center;
+            gap: 1rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .spec-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            padding: 1.5rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .spec-label {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .spec-value {
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .inspector-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .canvas-container {
+            position: relative;
+            height: 520px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+
+        #threejs-canvas-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .canvas-overlay-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.9rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            pointer-events: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .preset-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preset-title {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .preset-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .preset-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.75rem 0.85rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background: var(--bg);
+        }
+
+        .preset-btn.active {
+            border-color: var(--accent-orange);
+            background: var(--accent-orange-light);
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .preset-tag {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+        }
+
+        .preset-btn.active .preset-tag {
+            color: var(--accent-orange);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-orange);
+            transform: translateY(-2px);
+        }
+
+        .feature-num {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: var(--accent-orange-light);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .feature-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .workflow-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stepper-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+        }
+
+        .stepper-line-bg {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .stepper-line-progress {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 2px;
+            background: var(--accent-orange);
+            z-index: 2;
+            transition: width 0.3s ease;
+        }
+
+        .step-node {
+            position: relative;
+            z-index: 3;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-subtle);
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .step-node.active {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+            color: #ffffff;
+            box-shadow: 0 0 0 4px var(--accent-orange-light);
+        }
+
+        .step-node.completed {
+            background: var(--dark-surface);
+            border-color: var(--dark-surface);
+            color: #ffffff;
+        }
+
+        .workflow-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .step-details-title {
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-details-desc {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+
+        .step-gcode-block {
+            background: var(--dark-surface);
+            color: var(--accent-orange);
+            font-family: var(--font-mono);
+            font-size: 0.7813rem;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .step-visual-box {
+            background: var(--dark-surface);
+            color: var(--text-on-dark);
+            border-radius: var(--radius-md);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+        }
+
+        .step-icon-large {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-status-text {
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stepper-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .visualizer-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .vis-canvas-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .vis-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .vis-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vis-control-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-subtle);
+            padding: 0.4rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+
+        .vis-canvas-viewport {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background-color: var(--bg-subtle);
+            background-image:
+                linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #gcode-canvas {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        .vis-hud-badge {
+            position: absolute;
+            bottom: 0.75rem;
+            left: 0.75rem;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.7188rem;
+            color: var(--text-primary);
+        }
+
+        .vis-pen-pill {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+        }
+
+        .vis-pen-pill.up {
+            background: var(--dark-surface);
+            color: #ffffff;
+        }
+
+        .vis-pen-pill.down {
+            background: var(--accent-orange);
+            color: #ffffff;
+        }
+
+        .vis-scrubber-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .vis-scrubber-bar input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent-orange);
+            cursor: pointer;
+        }
+
+        .telemetry-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.25rem;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .telemetry-box {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+        }
+
+        .telemetry-label {
+            font-family: var(--font-mono);
+            font-size: 0.6563rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .telemetry-value {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 0.2rem;
+        }
+
+        .gcode-editor-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .gcode-textarea {
+            width: 100%;
+            height: 140px;
+            background: var(--dark-surface);
+            color: var(--accent-orange);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-dark);
+            border-radius: var(--radius-sm);
+            resize: none;
+            outline: none;
+            line-height: 1.4;
+        }
+
+        .gcode-textarea:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .gallery-card:hover {
+            border-color: var(--accent-orange);
+            box-shadow: var(--shadow-md);
+        }
+
+        .gallery-preview-box {
+            height: 260px;
+            background: var(--dark-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .gallery-info {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .gallery-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .gallery-meta {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .print-specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 2rem;
+            align-items: center;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .specs-table-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .specs-cell {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .download-callout-card {
+            background: var(--dark-surface);
+            color: #ffffff;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .download-callout-card h3 {
+            color: #ffffff;
+            font-size: 1.5rem;
+        }
+
+        .footer {
+            background: var(--dark-surface);
+            color: var(--text-muted);
+            padding: 2.5rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        /* Media Queries for Responsive Layout */
+        @media (max-width: 992px) {
+
+            .inspector-grid,
+            .workflow-content-grid,
+            .visualizer-grid,
+            .print-specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .canvas-container {
+                height: 400px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="brand-logo">
+                <a href="#">
+                    <div class="brand-badge">Wryco</div>
+                </a>
+                <span class="brand-text-title">Nextruder Toolholder</span>
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#overview" class="nav-link">Overview</a></li>
+                    <li><a href="#mounting" class="nav-link">Mounting</a></li>
+                    <li><a href="#workflow" class="nav-link">Workflow</a></li>
+                    <li><a href="#plotter" class="nav-link">Plotter Demo</a></li>
+                    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-section border-bottom">
+        <div class="container">
+            <h1 class="hero-title">
+                Transform your Prusa into a<br>
+                <span class="highlight">Precision Pen Plotter</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                A zero-hardware, toolfree quick-release adapter engineered specifically for the Prusa Nextruder
+                geometry. Mount a pen, a marker, a dremel, or any other tool you can think of in seconds without turning
+                a single screw using our open-standard interlocking system.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="https://www.printables.com/model/1788386-nextruder-toolholder" target="_blank"
+                    class="btn btn-primary" style="padding: 0.9rem 1.8rem; margin: 1rem;">
+                    Download Free STLs on Printables
+                </a>
+                <a href="#plotter" class="btn btn-outline" style="padding: 0.9rem 1.8rem; margin: 1rem;">
+                    Try Live G-Code Visualizer
+                </a>
+            </div>
+
+            <!-- Specification Highlights Bar -->
+            <div class="spec-bar">
+                <div class="spec-item">
+                    <span class="spec-label">3-year backwards compatibility</span>
+                    <span class="spec-value">Prusa Nextruder printers</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">No additional hardware</span>
+                    <span class="spec-value" style="color: var(--accent-orange);">No reassembly</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Widely printable</span>
+                    <span class="spec-value">No supports needed</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Easy installation</span>
+                    <span class="spec-value">Replace and calibrate</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="overview" class="section-padding border-bottom">
+        <div class="container">
+            <div>
+                <span
+                    style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-orange); text-transform: uppercase;">
+                    Interactive Inspection
+                </span>
+                <h2>3D Assembly Viewer</h2>
+            </div>
+
+            <div class="inspector-grid">
+                <!-- Three.js Canvas Container -->
+                <div class="canvas-container">
+                    <div id="threejs-canvas-wrapper"></div>
+
+                    <div class="canvas-overlay-badge">
+                        <strong style="color: var(--text-primary);">Assembly Focus:</strong>
+                        <span id="preset-label" style="color: var(--text-secondary);">1. Assembly Overview</span>
+                    </div>
+                </div>
+
+                <!-- Camera Preset Buttons Panel -->
+                <div class="preset-card">
+                    <div class="preset-title">Camera Focus Tours</div>
+
+                    <div class="preset-list">
+                        <button onclick="focusPreset('overview')" class="preset-btn active" id="btn-preset-overview">
+                            <span>1. Assembly Overview</span>
+                            <span class="preset-tag">360°</span>
+                        </button>
+                        <button onclick="focusPreset('rail')" class="preset-btn" id="btn-preset-rail">
+                            <span>2. PG Cover</span>
+                            <span class="preset-tag">Reverse engineered</span>
+                        </button>
+                        <button onclick="focusPreset('latch')" class="preset-btn" id="btn-preset-latch">
+                            <span>3. Toolfree Adapter</span>
+                            <span class="preset-tag">Precision fit</span>
+                        </button>
+                        <button onclick="focusPreset('pen')" class="preset-btn" id="btn-preset-pen">
+                            <span>4. G2 Gel Pen Collar</span>
+                            <span class="preset-tag">Sleeve</span>
+                        </button>
+                        <button onclick="focusPreset('modular')" class="preset-btn" id="btn-preset-modular">
+                            <span>5. Universal Modular Rail</span>
+                            <span class="preset-tag">Expansion</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mounting" class="section-padding border-bottom" style="background: var(--bg-subtle);">
+        <div class="container">
+            <span
+                style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-orange); text-transform: uppercase;">Example
+                Workflow</span>
+            <h2>Toolfree Mounting Mechanics</h2>
+            <p style="color: var(--text-secondary); max-width: 680px; margin-top: 0.5rem;">
+                Leveraging the native heatsink cooling fins on the Prusa Nextruder, this adapter slides into position
+                with zero screws or modifications required.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-num">01</span>
+                    <h3 class="feature-title">Zero Hardware Assembly</h3>
+                    <p class="feature-desc">No brass heat-set inserts, M3 screws, or zip ties needed. Print and mount
+                        directly onto your Nextruder in under 10 seconds.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-num">02</span>
+                    <h3 class="feature-title">Integrated Spring Tab Lock</h3>
+                    <p class="feature-desc">Features printed compliance leaf springs that firmly grip the heatsink
+                        structure, preventing vibration deflection during high-speed vector travels.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-num">03</span>
+                    <h3 class="feature-title">Rapid Tool Swapping</h3>
+                    <p class="feature-desc">Swap between Pilot G2 gel pens, Sharpie markers, or custom stylus inserts in
+                        under 5 seconds during multi-color pause cycles.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-num">04</span>
+                    <h3 class="feature-title">Universal Dovetail Spec</h3>
+                    <p class="feature-desc">Open-source mounting geometry allows you to design custom tool attachments
+                        like drag knives, vinyl cutters, or laser alignment dots.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="workflow" class="section-padding border-bottom">
+        <div class="container">
+            <span
+                style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-orange); text-transform: uppercase;">Example
+                Workflow</span>
+            <h2>Multi-Color Plotting Process</h2>
+            <p style="color: var(--text-secondary); max-width: 680px; margin-top: 0.5rem;">
+                By combining standard Prusa G-code pause commands (<code>M0</code> and <code>M600</code>), you can plot
+                multi-pen generative art seamlessly.
+            </p>
+
+            <div class="workflow-card">
+                <!-- Stepper Progress Bar -->
+                <div class="stepper-nav">
+                    <div class="stepper-line-bg"></div>
+                    <div id="workflow-progress-line" class="stepper-line-progress" style="width: 0%;"></div>
+
+                    <div onclick="setWorkflowStep(1)" class="step-node active" id="wf-node-1">1</div>
+                    <div onclick="setWorkflowStep(2)" class="step-node" id="wf-node-2">2</div>
+                    <div onclick="setWorkflowStep(3)" class="step-node" id="wf-node-3">3</div>
+                    <div onclick="setWorkflowStep(4)" class="step-node" id="wf-node-4">4</div>
+                    <div onclick="setWorkflowStep(5)" class="step-node" id="wf-node-5">5</div>
+                    <div onclick="setWorkflowStep(6)" class="step-node" id="wf-node-6">6</div>
+                </div>
+
+                <!-- Workflow Step Detail View -->
+                <div class="workflow-content-grid">
+                    <div>
+                        <span id="wf-step-badge" class="font-mono"
+                            style="font-size: 0.75rem; font-weight: 700; color: var(--accent-orange);">STEP 1 OF
+                            6</span>
+                        <h3 id="wf-step-title" class="step-details-title">Start Print File on MK4S</h3>
+                        <p id="wf-step-desc" class="step-details-desc">Load your plot file via USB or Prusa Connect. The
+                            MK4S homes all axes and pauses for paper placement.</p>
+
+                        <div style="margin-top: 1rem;">
+                            <span class="font-mono"
+                                style="font-size: 0.7188rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Triggered
+                                G-Code Command:</span>
+                            <div id="wf-step-gcode" class="step-gcode-block">G28 ; Home all axes&#10;M0 Pause for Paper
+                                Placement</div>
+                        </div>
+                    </div>
+
+                    <div class="step-visual-box">
+                        <div id="wf-step-icon" class="step-icon-large">🚀</div>
+                        <div id="wf-step-status" class="step-status-text">Status: Initializing Plot</div>
+                    </div>
+                </div>
+
+                <div class="stepper-actions">
+                    <button onclick="prevWorkflowStep()" id="wf-prev-btn" class="btn btn-outline" disabled>← Previous
+                        Step</button>
+                    <button onclick="nextWorkflowStep()" id="wf-next-btn" class="btn btn-dark">Next Step →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plotter" class="section-padding border-bottom">
+        <div class="container">
+            <div
+                style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <span
+                        style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-orange); text-transform: uppercase;">
+                        Plotter Demo
+                    </span>
+                    <h2>Interactive G-Code Vector Plotter Canvas</h2>
+                </div>
+                <span class="font-mono" style="font-size: 0.75rem; color: var(--text-muted);">
+                    [ Upload custom .gcode files or run preset spirograph artwork ]
+                </span>
+            </div>
+
+            <div class="visualizer-grid">
+                <!-- Canvas and Controls Area -->
+                <div class="vis-canvas-box">
+                    <div class="vis-toolbar">
+                        <div class="vis-btn-group">
+                            <button id="sim-play-btn" onclick="toggleSimPlay()" class="btn btn-primary"
+                                style="padding: 0.5rem 1rem;">
+                                <span id="sim-play-icon">▶</span> <span id="sim-play-text">Play Plot</span>
+                            </button>
+                            <button onclick="resetSim()" class="btn btn-outline" style="padding: 0.5rem 0.85rem;">↺
+                                Reset</button>
+                        </div>
+
+                        <div class="vis-control-item">
+                            <span>Speed:</span>
+                            <input id="sim-speed" type="range" min="1" max="50" value="1"
+                                oninput="updateSimSpeed(this.value)"
+                                style="width: 80px; accent-color: var(--accent-orange);">
+                            <span id="sim-speed-val" style="font-weight: 700;">1x</span>
+                        </div>
+
+                        <div class="vis-control-item">
+                            <span>Pen Color:</span>
+                            <input type="color" id="sim-pen-color" value="#FA6800" onchange="updatePenColor(this.value)"
+                                style="border: none; background: transparent; width: 22px; height: 22px; cursor: pointer;">
+                        </div>
+                    </div>
+
+                    <div class="vis-canvas-viewport">
+                        <canvas id="gcode-canvas"></canvas>
+
+                        <div class="vis-hud-badge">
+                            Pos: X:<span id="pen-pos-x">00.0</span> Y:<span id="pen-pos-y">00.0</span> Z:<span
+                                id="pen-pos-z">5.0</span>
+                        </div>
+
+                        <div id="vis-pen-state" class="vis-pen-pill up">PEN UP (TRAVEL)</div>
+                    </div>
+
+                    <div class="vis-scrubber-bar">
+                        <div
+                            style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.7188rem; color: var(--text-secondary);">
+                            <span>Progress: <strong id="sim-percent"
+                                    style="color: var(--text-primary);">0%</strong></span>
+                            <span>Cmd <span id="sim-cmd-curr">0</span> / <span id="sim-cmd-total">0</span></span>
+                        </div>
+                        <input id="sim-scrubber" type="range" min="0" max="100" value="0"
+                            oninput="scrubSim(this.value)">
+                    </div>
+                </div>
+
+                <!-- Telemetry & File Input Panel -->
+                <div class="telemetry-panel">
+                    <div>
+                        <h3
+                            style="font-size: 0.875rem; font-family: var(--font-mono); text-transform: uppercase; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">
+                            Plotter Telemetry</h3>
+
+                        <div class="telemetry-grid">
+                            <div class="telemetry-box">
+                                <div class="telemetry-label">Total Distance</div>
+                                <div id="stat-dist" class="telemetry-value">0.0 mm</div>
+                            </div>
+                            <div class="telemetry-box">
+                                <div class="telemetry-label">Drawing Moves</div>
+                                <div id="stat-draw-dist" class="telemetry-value" style="color: var(--accent-orange);">
+                                    0.0 mm</div>
+                            </div>
+                            <div class="telemetry-box">
+                                <div class="telemetry-label">Pen Lifts</div>
+                                <div id="stat-lifts" class="telemetry-value">0</div>
+                            </div>
+                            <div class="telemetry-box">
+                                <div class="telemetry-label">Bounding Box</div>
+                                <div id="stat-bounds" class="telemetry-value">120x120mm</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gcode-editor-area">
+                        <label class="font-mono" style="font-size: 0.75rem; font-weight: 700;">Load Custom
+                            .GCODE File:</label>
+
+                        <label class="btn btn-dark" style="cursor: pointer; width: 100%;">
+                            <span>📁 Upload .gcode File</span>
+                            <input type="file" id="gcode-file-input" accept=".gcode,.txt,.nc"
+                                onchange="handleFileSelect(event)" style="display: none;">
+                        </label>
+
+                        <textarea id="gcode-textarea" class="gcode-textarea"
+                            placeholder="Paste G-code lines here..."></textarea>
+
+                        <button onclick="parseAndLoadTextarea()" class="btn btn-outline" style="width: 100%;">Update
+                            Visualizer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="section-padding border-bottom" style="background: var(--bg-subtle);">
+        <div class="container">
+            <span
+                style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-orange); text-transform: uppercase;">Vector
+                Generative Art</span>
+            <h2>Plotted Artwork Showcase</h2>
+            <p style="color: var(--text-secondary); max-width: 680px; margin-top: 0.5rem;">
+                Sample generative artworks produced directly using the Nextruder toolholder on a Prusa MK4S.
+            </p>
+
+            <div class="gallery-grid">
+                <!-- Gallery Card 1 -->
+                <div class="gallery-card">
+                    <div class="gallery-preview-box">
+                        <svg width="180" height="180" viewBox="0 0 200 200" fill="none" stroke="#FA6800"
+                            stroke-width="0.8">
+                            <circle cx="100" cy="100" r="80" stroke="rgba(250,104,0,0.3)" />
+                            <circle cx="100" cy="100" r="60" stroke="rgba(250,104,0,0.5)" />
+                            <path
+                                d="M100,20 L100,180 M20,100 L180,100 M43,43 L157,157 M43,157 L157,43 M100,20 Q140,60 180,100 Q140,140 100,180 Q60,140 20,100 Q60,60 100,20 Z" />
+                            <path d="M100,30 Q130,70 170,100 Q130,130 100,170 Q70,130 30,100 Q70,70 100,30 Z"
+                                stroke="#2563EB" />
+                        </svg>
+                    </div>
+                    <div class="gallery-info">
+                        <h3 class="gallery-title">Algorithmic Guilloche Rose</h3>
+                        <div class="gallery-meta">Pilot G2 0.5mm | 2 Colors | 120mm/s Feedrate</div>
+                    </div>
+                </div>
+
+                <!-- Gallery Card 2 -->
+                <div class="gallery-card">
+                    <div class="gallery-preview-box">
+                        <svg width="180" height="180" viewBox="0 0 200 200" fill="none" stroke="#34D399"
+                            stroke-width="0.8">
+                            <polygon points="100,20 170,170 30,170" stroke="rgba(52,211,153,0.4)" />
+                            <polygon points="100,180 30,30 170,30" stroke="rgba(52,211,153,0.4)" />
+                            <circle cx="100" cy="100" r="45" stroke="#FA6800" />
+                            <circle cx="100" cy="100" r="75" stroke="#34D399" />
+                            <path d="M100,10 L190,100 L100,190 L10,100 Z" />
+                        </svg>
+                    </div>
+                    <div class="gallery-info">
+                        <h3 class="gallery-title">Concentric Isometric Lattice</h3>
+                        <div class="gallery-meta">Sharpie Fine Point | 180mm/s Feedrate</div>
+                    </div>
+                </div>
+
+                <!-- Gallery Card 3 -->
+                <div class="gallery-card">
+                    <div class="gallery-preview-box">
+                        <svg width="180" height="180" viewBox="0 0 200 200" fill="none" stroke="#FA6800"
+                            stroke-width="1">
+                            <path d="M10,100 C50,20 150,180 190,100" stroke="#FA6800" />
+                            <path d="M10,110 C50,30 150,190 190,110" stroke="#FA6800" opacity="0.8" />
+                            <path d="M10,120 C50,40 150,200 190,120" stroke="#FA6800" opacity="0.6" />
+                            <path d="M10,90 C50,10 150,170 190,90" stroke="#38BDF8" />
+                            <path d="M10,80 C50,0 150,160 190,80" stroke="#38BDF8" opacity="0.8" />
+                        </svg>
+                    </div>
+                    <div class="gallery-info">
+                        <h3 class="gallery-title">Topographic Flow Lines</h3>
+                        <div class="gallery-meta">Dual Gel Pen Tone | Continuous Path</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="specs" class="section-padding border-bottom">
+        <div class="container">
+            <div class="print-specs-grid">
+                <div>
+                    <span
+                        style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-orange); text-transform: uppercase;">Slicer
+                        Parameters</span>
+                    <h2>Recommended Print Settings</h2>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9375rem;">
+                        Designed with print-in-place tolerances and 45° overhang chamfers for seamless slicing.
+                    </p>
+
+                    <div class="specs-table-grid font-mono" style="font-size: 0.8125rem;">
+                        <div class="specs-cell">
+                            <span style="color: var(--text-muted); font-size: 0.6875rem; display: block;">LAYER
+                                HEIGHT</span>
+                            <strong>0.20mm (Standard)</strong>
+                        </div>
+                        <div class="specs-cell">
+                            <span style="color: var(--text-muted); font-size: 0.6875rem; display: block;">WALL
+                                PERIMETERS</span>
+                            <strong>3 or 4 Walls</strong>
+                        </div>
+                        <div class="specs-cell">
+                            <span style="color: var(--text-muted); font-size: 0.6875rem; display: block;">INFILL
+                                DENSITY</span>
+                            <strong>15% - 20% Gyroid</strong>
+                        </div>
+                        <div class="specs-cell"
+                            style="border-color: rgba(250, 104, 0, 0.4); background: var(--accent-orange-light);">
+                            <span
+                                style="color: var(--accent-orange); font-size: 0.6875rem; display: block; font-weight: 700;">SUPPORTS
+                                REQUIRED</span>
+                            <strong style="color: var(--accent-orange);">NONE (0%)</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Printables Callout Box -->
+                <div class="download-callout-card">
+                    <div
+                        style="width: 48px; height: 48px; background: rgba(250,104,0,0.15); border: 1px solid var(--accent-orange); color: var(--accent-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 1.5rem; font-weight: 700;">
+                        ↓
+                    </div>
+                    <div>
+                        <h3>Ready to Print & Plot?</h3>
+                        <p style="color: var(--text-muted); font-size: 0.8125rem; margin-top: 0.25rem;">
+                            Download free 3D models and STL files on Printables.
+                        </p>
+                    </div>
+                    <a href="https://www.printables.com/model/1788386-nextruder-toolholder" target="_blank"
+                        rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.9rem;">
+                        Open Printables Model Page
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div
+                    style="width: 20px; height: 20px; background: var(--accent-orange); color: #fff; font-weight: 700; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">
+                    N</div>
+                <span style="color: #ffffff; font-weight: 600;">NEXTRUDER TOOLHOLDER FOR PRUSA MK4S</span>
+            </div>
+            <div>
+                <span>Designed for the 3D Printing & Generative Plotting Community.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ----------------------------------------------------
+           1. THREE.JS 3D INSPECTOR ENGINE & PRESET TOURS
+           ---------------------------------------------------- */
+        let scene, camera, renderer, controls;
+        let adapterGroup;
+
+        // Target positions for smooth camera interpolation
+        let targetCamPos = { x: 160, y: 80, z: 160 };
+        let targetLookAt = { x: 0, y: 45, z: 0 };
+        let lerp = 0.015;
+
+        function initThreeJS() {
+            const wrapper = document.getElementById('threejs-canvas-wrapper');
+            const width = wrapper.clientWidth;
+            const height = wrapper.clientHeight;
+
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf8f8fa);
+
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(targetCamPos.x, targetCamPos.y, targetCamPos.z);
+
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            wrapper.appendChild(renderer.domElement);
+
+            // OrbitControls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = false;
+            controls.target.set(targetLookAt.x, targetLookAt.y, targetLookAt.z);
+
+            // Lighting
+            const ambient = new THREE.AmbientLight(0xffffff, 0.75);
+            scene.add(ambient);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(40, 160, 100);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            // Grid Floor
+            const grid = new THREE.GridHelper(160, 16, 0xd0d0d8, 0xe2e2e8);
+            grid.position.y = -35;
+            scene.add(grid);
+
+            //buildProceduralModel();
+
+            loadModel();
+
+            // Window Resize listener
+            window.addEventListener('resize', onWindowResize);
+            controls.addEventListener('start', (event) => {
+                lerp = 0;
+            });
+
+            controls.addEventListener('end', (event) => {
+                lerp = 0.015;
+            });
+
+
+            // Start animation loop
+            animateThreeJS();
+        }
+
+        function loadModel() {
+            const loader = new THREE.STLLoader();
+
+            // Load assembly
+            loader.load('/projects/nextruder-toolholder/models/NTHV4-Assembly.stl', (geometry) => {
+                const material = new THREE.MeshStandardMaterial({ color: 0xfa6800, roughness: 0.4 });
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(-20, 40, 11.25);
+
+                // upside down
+                mesh.rotateX(Math.PI);
+                mesh.rotateY(Math.PI);
+                scene.add(mesh);
+            });
+        }
+
+        function focusPreset(key) {
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-preset-${key}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const label = document.getElementById('preset-label');
+
+            if (key === 'overview') {
+                targetCamPos = { x: 160, y: 80, z: 160 };
+                targetLookAt = { x: 0, y: 45, z: 0 };
+                label.innerText = '1. Assembly Overview';
+            } else if (key === 'rail') {
+                targetCamPos = { x: -40, y: 35, z: 70 };
+                targetLookAt = { x: -10, y: 40, z: 0 };
+                label.innerText = '2. Zero-Hardware Rail Fit';
+            } else if (key === 'latch') {
+                targetCamPos = { x: 50, y: 10, z: 40 };
+                targetLookAt = { x: 30, y: -10, z: 20 };
+                label.innerText = '3. Toolfree adapter';
+            } else if (key === 'pen') {
+                targetCamPos = { x: 80, y: 60, z: 10 };
+                targetLookAt = { x: 0, y: 60, z: 0 };
+                label.innerText = '4. G2 Gel Pen Sleeve Collar';
+            } else if (key === 'modular') {
+                targetCamPos = { x: 70, y: 125, z: 40 };
+                targetLookAt = { x: 0, y: 105, z: 0 };
+                label.innerText = '5. Universal Modular Rail Interface';
+            }
+        }
+
+
+
+
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+
+            // Lerp camera position smoothly
+            camera.position.x += (targetCamPos.x - camera.position.x) * lerp;
+            camera.position.y += (targetCamPos.y - camera.position.y) * lerp;
+            camera.position.z += (targetCamPos.z - camera.position.z) * lerp;
+
+            // Lerp controls target
+            controls.target.x += (targetLookAt.x - controls.target.x) * lerp;
+            controls.target.y += (targetLookAt.y - controls.target.y) * lerp;
+            controls.target.z += (targetLookAt.z - controls.target.z) * lerp;
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            const wrapper = document.getElementById('threejs-canvas-wrapper');
+            if (!wrapper) return;
+            camera.aspect = wrapper.clientWidth / wrapper.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
+        }
+
+        let currWorkflowStep = 1;
+        const workflowSteps = [
+            {
+                step: 1,
+                title: "Start Print File on MK4S",
+                desc: "Load your vector plot file onto the Prusa MK4S. The toolhead homes and triggers an initial pause.",
+                gcode: "G28 ; Home all axes\nM0 Pause for Paper Placement",
+                icon: "🚀",
+                status: "Status: Initializing Plot",
+                pct: "0%"
+            },
+            {
+                step: 2,
+                title: "Place Paper / Substrate on Bed",
+                desc: "While paused at step M0, align paper onto the spring steel sheet and tape the corners flat.",
+                gcode: "M0 Paper Alignment Pause\n; Secure paper corners",
+                icon: "📄",
+                status: "Status: Paper Secured",
+                pct: "20%"
+            },
+            {
+                step: 3,
+                title: "Slide-Mount Toolholder & Pen #1",
+                desc: "Slide the toolholder onto the Nextruder heatsink rail until it clicks. Insert Pen #1 into the sleeve.",
+                gcode: "; Toolfree Clip Engaged\n; Pen #1 Inserted",
+                icon: "🖊️",
+                status: "Status: Pen #1 Mounted",
+                pct: "40%"
+            },
+            {
+                step: 4,
+                title: "Resume & Plot Color #1",
+                desc: "Press the screen knob to resume. The MK4S executes the vector paths for Color Layer #1.",
+                gcode: "G1 X45 Y30 Z0.2 F7200 ; Plotting Layer 1\nM600 ; Pause for Color Change #2",
+                icon: "⚡",
+                status: "Status: Plotting Layer 1",
+                pct: "60%"
+            },
+            {
+                step: 5,
+                title: "Swap Pen #2 (Multi-Color Loop)",
+                desc: "At the M600 color pause trigger, unclip Pen #1, swap to Pen #2, and press resume.",
+                gcode: "M600 ; Tool Change Pause\n; Swap to Pen #2",
+                icon: "🎨",
+                status: "Status: Swapping Color #2",
+                pct: "80%"
+            },
+            {
+                step: 6,
+                title: "Plot Complete & Tool Removal",
+                desc: "Plotting completes! Unclip the toolholder in 1 second and retrieve your finished vector art.",
+                gcode: "G0 X0 Y200 Z50 ; Park Toolhead\nM84 ; Disable Steppers",
+                icon: "✨",
+                status: "Status: Artwork Finished!",
+                pct: "100%"
+            }
+        ];
+
+        function setWorkflowStep(num) {
+            currWorkflowStep = num;
+            const data = workflowSteps[num - 1];
+
+            document.getElementById('wf-step-badge').innerText = `STEP ${data.step} OF 6`;
+            document.getElementById('wf-step-title').innerText = data.title;
+            document.getElementById('wf-step-desc').innerText = data.desc;
+            document.getElementById('wf-step-gcode').innerText = data.gcode;
+            document.getElementById('wf-step-icon').innerText = data.icon;
+            document.getElementById('wf-step-status').innerText = data.status;
+            document.getElementById('workflow-progress-line').style.width = data.pct;
+
+            for (let i = 1; i <= 6; i++) {
+                const node = document.getElementById(`wf-node-${i}`);
+                if (i === num) {
+                    node.className = "step-node active";
+                } else if (i < num) {
+                    node.className = "step-node completed";
+                } else {
+                    node.className = "step-node";
+                }
+            }
+
+            document.getElementById('wf-prev-btn').disabled = (num === 1);
+            document.getElementById('wf-next-btn').disabled = (num === 6);
+        }
+
+        function nextWorkflowStep() {
+            if (currWorkflowStep < 6) setWorkflowStep(currWorkflowStep + 1);
+        }
+
+        function prevWorkflowStep() {
+            if (currWorkflowStep > 1) setWorkflowStep(currWorkflowStep - 1);
+        }
+
+        let simCanvas, simCtx;
+        let parsedCommands = [];
+        let simCurrentIndex = 0;
+        let simIsPlaying = false;
+        let simSpeed = 1;
+        let simPenColor = "#666666";
+        let simAnimFrame = null;
+        let scaleX = 1;
+        let scaleY = 1;
+
+        function generatePresetGCode() {
+            let lines = [
+                "; NEXTRUDER PEN PLOTTER PRESET ARTWORK",
+                "G28 ; Home axes",
+                "G90 ; Absolute positioning",
+                "G0 Z5.0 F3000 ; Pen UP"
+            ];
+
+            const cx = 100, cy = 100, R = 55, r = 22, rho = 40;
+
+            lines.push(`G0 X${(cx + R - r + rho).toFixed(2)} Y${cy} Z5.0`);
+            lines.push("G1 Z0.2 F1000 ; Pen DOWN");
+
+            for (let t = 0; t <= Math.PI * 6; t += 0.08) {
+                let x = cx + (R - r) * Math.cos(t) + rho * Math.cos((R - r) * t / r);
+                let y = cy + (R - r) * Math.sin(t) - rho * Math.sin((R - r) * t / r);
+                lines.push(`G1 X${x.toFixed(2)} Y${y.toFixed(2)} F3600`);
+            }
+
+            lines.push("G0 Z5.0 F3000 ; Pen UP");
+            lines.push("G0 X0 Y180 Z20.0 ; Finish plot");
+            return lines.join("\n");
+        }
+
+        function parseGCode(txt) {
+            parsedCommands = [];
+            let totalDist = 0;
+            let drawDist = 0;
+            let lifts = 0;
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+            const lines = txt.split('\n');
+            let cx = 0, cy = 0, cz = 1.0;
+
+            for (let line of lines) {
+                line = line.trim();
+                if (line.startsWith(';') || !line) continue;
+
+                const commentIdx = line.indexOf(';');
+                if (commentIdx !== -1) line = line.substring(0, commentIdx).trim();
+
+                const parts = line.split(/\s+/);
+                const cmd = parts[0].toUpperCase();
+
+                if (cmd === 'G0' || cmd === 'G1') {
+                    let nx = cx, ny = cy, nz = cz;
+
+                    parts.forEach(p => {
+                        const val = parseFloat(p.substring(1));
+                        if (p[0] === 'X' || p[0] === 'x') nx = val;
+                        if (p[0] === 'Y' || p[0] === 'y') ny = val;
+                        if (p[0] === 'Z' || p[0] === 'z') nz = val;
+                    });
+
+                    const dist = Math.hypot(nx - cx, ny - cy);
+                    const isDraw = (nz <= 0.5) && (cmd === 'G1');
+
+                    if (isDraw) {
+                        drawDist += dist;
+                        minX = Math.min(minX, nx); maxX = Math.max(maxX, nx);
+                        minY = Math.min(minY, ny); maxY = Math.max(maxY, ny);
+                    }
+                    totalDist += dist;
+
+                    if (nz > 0.5) lifts++;
+
+                    parsedCommands.push({ x1: cx, y1: cy, z1: cz, x2: nx, y2: ny, z2: nz, isDraw: isDraw });
+
+                    cx = nx; cy = ny; cz = nz;
+                }
+            }
+
+            // Update Telemetry Display
+            document.getElementById('stat-dist').innerText = totalDist.toFixed(1) + ' mm';
+            document.getElementById('stat-draw-dist').innerText = drawDist.toFixed(1) + ' mm';
+            document.getElementById('stat-lifts').innerText = lifts;
+
+            const w = (maxX > minX) ? (maxX - minX).toFixed(0) : 0;
+            const h = (maxY > minY) ? (maxY - minY).toFixed(0) : 0;
+            document.getElementById('stat-bounds').innerText = `${w}x${h} mm`;
+            document.getElementById('sim-cmd-total').innerText = parsedCommands.length;
+
+            scaleX = simCanvas.width / maxX;
+            scaleY = simCanvas.height / maxY;
+        }
+
+        function initGCodeCanvas() {
+            simCanvas = document.getElementById('gcode-canvas');
+            simCtx = simCanvas.getContext('2d');
+
+            simCanvas.width = 460;
+            simCanvas.height = 380;
+
+            loadQRCodeGCode().then(code => {
+                document.getElementById('gcode-textarea').value = code;
+                parseGCode(code);
+                drawSimFrame();
+            });
+        }
+
+        async function loadQRCodeGCode() {
+            const res = await fetch('/projects/nextruder-toolholder/gcode/qrcode.gcode');
+            if (res.ok) {
+                return await res.text();
+            }
+            return generatePresetGCode();
+        }
+
+        function drawSimFrame() {
+            if (!simCtx) return;
+            simCtx.clearRect(0, 0, simCanvas.width, simCanvas.height);
+
+            // Render vector lines up to simCurrentIndex
+            for (let i = 0; i < simCurrentIndex && i < parsedCommands.length; i++) {
+                const item = parsedCommands[i];
+
+                simCtx.beginPath();
+                const sx = item.x1 * scaleX;
+                const sy = simCanvas.height - (item.y1 * scaleY);
+                const ex = item.x2 * scaleX;
+                const ey = simCanvas.height - (item.y2 * scaleY);
+
+                simCtx.moveTo(sx, sy);
+                simCtx.lineTo(ex, ey);
+
+                if (item.isDraw) {
+                    simCtx.strokeStyle = simPenColor;
+                    simCtx.lineWidth = 0.3;
+                } else {
+                    simCtx.strokeStyle = 'rgba(180, 180, 255, 0.25)';
+                    simCtx.lineWidth = 0.1;
+                }
+                simCtx.stroke();
+            }
+
+            // Active Tool Pointer
+            if (parsedCommands.length > 0 && simCurrentIndex > 0) {
+                const curr = parsedCommands[Math.min(simCurrentIndex - 1, parsedCommands.length - 1)];
+                const px = curr.x2 * scaleX;
+                const py = simCanvas.height - (curr.y2 * scaleY);
+
+                document.getElementById('pen-pos-x').innerText = curr.x2.toFixed(1);
+                document.getElementById('pen-pos-y').innerText = curr.y2.toFixed(1);
+                document.getElementById('pen-pos-z').innerText = curr.z2.toFixed(1);
+
+                const statePill = document.getElementById('vis-pen-state');
+                if (curr.z2 <= 0.5) {
+                    statePill.innerText = "PEN DOWN";
+                    statePill.className = "vis-pen-pill down";
+                } else {
+                    statePill.innerText = "PEN UP";
+                    statePill.className = "vis-pen-pill up";
+                }
+
+                simCtx.beginPath();
+                simCtx.arc(px, py, 5, 0, Math.PI * 2);
+                simCtx.fillStyle = simPenColor;
+                simCtx.fill();
+                simCtx.lineWidth = 1.5;
+                simCtx.strokeStyle = '#ffffff';
+                simCtx.stroke();
+            }
+
+            const pct = parsedCommands.length ? Math.floor((simCurrentIndex / parsedCommands.length) * 100) : 0;
+            document.getElementById('sim-percent').innerText = pct + '%';
+            document.getElementById('sim-cmd-curr').innerText = simCurrentIndex;
+            document.getElementById('sim-scrubber').value = pct;
+        }
+
+        function toggleSimPlay() {
+            simIsPlaying = !simIsPlaying;
+            document.getElementById('sim-play-text').innerText = simIsPlaying ? "Pause" : "Play Plot";
+            document.getElementById('sim-play-icon').innerText = simIsPlaying ? "⏸" : "▶";
+
+            if (simIsPlaying) runSimLoop();
+            else if (simAnimFrame) cancelAnimationFrame(simAnimFrame);
+        }
+
+        function runSimLoop() {
+            if (!simIsPlaying) return;
+
+            simCurrentIndex += parseInt(simSpeed);
+            if (simCurrentIndex >= parsedCommands.length) {
+                simCurrentIndex = parsedCommands.length;
+                simIsPlaying = false;
+                document.getElementById('sim-play-text').innerText = "Play Plot";
+                document.getElementById('sim-play-icon').innerText = "▶";
+            }
+
+            drawSimFrame();
+            if (simIsPlaying) simAnimFrame = requestAnimationFrame(runSimLoop);
+        }
+
+        function resetSim() {
+            simIsPlaying = false;
+            simCurrentIndex = 0;
+            document.getElementById('sim-play-text').innerText = "Play Plot";
+            document.getElementById('sim-play-icon').innerText = "▶";
+            if (simAnimFrame) cancelAnimationFrame(simAnimFrame);
+            drawSimFrame();
+        }
+
+        function updateSimSpeed(val) {
+            simSpeed = val;
+            document.getElementById('sim-speed-val').innerText = val + 'x';
+        }
+
+        function updatePenColor(color) {
+            simPenColor = color;
+            drawSimFrame();
+        }
+
+        function scrubSim(pct) {
+            simCurrentIndex = Math.floor((pct / 100) * parsedCommands.length);
+            drawSimFrame();
+        }
+
+        function parseAndLoadTextarea() {
+            parseGCode(document.getElementById('gcode-textarea').value);
+            resetSim();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('gcode-textarea').value = e.target.result;
+                parseGCode(e.target.result);
+                resetSim();
+            };
+            reader.readAsText(file);
+        }
+
+        window.onload = function () {
+            initThreeJS();
+            initGCodeCanvas();
+            setWorkflowStep(1);
+        };
+    </script>
+</body>
+
+</html>
