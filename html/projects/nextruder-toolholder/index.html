@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nextruder Pen Plotter Toolholder // Prusa MK4S</title>
+    <title>Nextruder Toolholder</title>
 
     <!-- Google Fonts Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -149,6 +149,10 @@
             gap: 0.75rem;
             text-decoration: none;
             color: var(--text-primary);
+        }
+
+        .brand-logo a {
+            text-decoration: none;
         }
 
         .brand-badge {
@@ -1548,21 +1552,20 @@
             }
         }
 
-
-
-
         function animateThreeJS() {
             requestAnimationFrame(animateThreeJS);
 
-            // Lerp camera position smoothly
-            camera.position.x += (targetCamPos.x - camera.position.x) * lerp;
-            camera.position.y += (targetCamPos.y - camera.position.y) * lerp;
-            camera.position.z += (targetCamPos.z - camera.position.z) * lerp;
+            if (lerp !== 0) {
+                // Lerp camera position smoothly
+                camera.position.x += (targetCamPos.x - camera.position.x) * lerp;
+                camera.position.y += (targetCamPos.y - camera.position.y) * lerp;
+                camera.position.z += (targetCamPos.z - camera.position.z) * lerp;
 
-            // Lerp controls target
-            controls.target.x += (targetLookAt.x - controls.target.x) * lerp;
-            controls.target.y += (targetLookAt.y - controls.target.y) * lerp;
-            controls.target.z += (targetLookAt.z - controls.target.z) * lerp;
+                // Lerp controls target
+                controls.target.x += (targetLookAt.x - controls.target.x) * lerp;
+                controls.target.y += (targetLookAt.y - controls.target.y) * lerp;
+                controls.target.z += (targetLookAt.z - controls.target.z) * lerp;
+            }
 
             controls.update();
             renderer.render(scene, camera);

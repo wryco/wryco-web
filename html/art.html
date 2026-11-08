@@ -8,28 +8,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Title and Description -->
-    <title>wryco / art</title>
-    <meta name="description" content="Art by Wryfren" />
+    <title>wryco / art &amp; commissions</title>
+    <meta name="description" content="Artwork, pen plots, digital designs, and commissions by Lewis Brown (Wryfren)." />
 
     <!-- Icons -->
     <link rel="icon" href="/wryco.png" type="image/png" />
     <link rel="apple-touch-icon" href="/wryco.png" type="image/png" />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://wryco.com" />
+    <link rel="canonical" href="https://wryco.com/art.html" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="wryco" />
-    <meta property="og:description" content="Art by Wryfren" />
-    <meta property="og:url" content="https://wryco.com" />
+    <meta property="og:title" content="wryco / art & commissions" />
+    <meta property="og:description"
+        content="Artwork, pen plots, digital designs, and commissions by Lewis Brown (Wryfren)." />
+    <meta property="og:url" content="https://wryco.com/art.html" />
     <meta property="og:image" content="https://wryco.com/wryco-splash.jpg" />
     <meta property="og:site_name" content="wryco" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="wryco" />
-    <meta name="twitter:description" content="Art by Wryfren" />
+    <meta name="twitter:title" content="wryco / art & commissions" />
+    <meta name="twitter:description"
+        content="Artwork, pen plots, digital designs, and commissions by Lewis Brown (Wryfren)." />
     <meta name="twitter:image" content="https://wryco.com/wryco-splash.jpg" />
 
     <!-- Robots and Crawlers -->
@@ -45,259 +47,1438 @@
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "url": "https://wryco.com/",
-        "name": "wryco"
+        "url": "https://wryco.com/art.html",
+        "name": "wryco / art"
     }
     </script>
+
     <style>
+        :root {
+            --bg-color: #0d0f12;
+            --surface-color: #161a22;
+            --surface-hover: #1f242e;
+            --border-color: #2b3240;
+            --border-light: #3d4659;
+            --text-main: #f0f3f8;
+            --text-muted: #9aa5b8;
+            --accent: #58a6ff;
+            --accent-rgb: 88, 166, 255;
+            --accent-hover: #79b8ff;
+            --accent-badge: #238636;
+            --card-radius: 12px;
+            --pill-radius: 9999px;
+            --max-w: 1280px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            margin: 0px;
-            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        header {
-            margin: 10px;
+        /* Links */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.15s ease, opacity 0.15s ease;
         }
 
-        div#branding {
-            font-size: 100px;
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* Top Navigation Bar */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(14px);
+            background-color: rgba(13, 15, 18, 0.85);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-brand:hover {
+            opacity: 0.85;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #1f6feb 0%, #388bfd 100%);
+            color: #ffffff !important;
+            padding: 0.45rem 1rem;
+            border-radius: var(--pill-radius);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 2px 8px rgba(56, 139, 253, 0.25);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(56, 139, 253, 0.4);
+            color: #ffffff;
+        }
+
+        /* Page Layout */
+        main {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+            padding-top: 1rem;
+        }
+
+        .hero-banner-frame {
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-banner-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .hero-header {
             text-align: center;
-            margin-bottom: 15px;
+            max-width: 780px;
+            margin: 0 auto;
         }
 
-        div#commission-link {
-            text-align: center;
-            margin-bottom: 15px;
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 1.05;
+            margin: 0 0 1rem;
+            background: linear-gradient(180deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        div#toc {
-            text-align: center;
-            margin-bottom: 15px;
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin: 0 auto 1.5rem;
+            max-width: 600px;
         }
 
-        div#blog-link {
-            text-align: center;
-            margin-bottom: 15px;
+        /* Commission Callout Card */
+        .commission-hero-card {
+            background: linear-gradient(145deg, #161b22, #10141d);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            padding: 2.25rem 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3.5rem;
         }
 
-        h1 {
-            text-align: center;
+        .commission-hero-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent) 0%, #388bfd 100%);
         }
 
-        h6 {
-            text-align: center;
+        .commission-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(35, 134, 54, 0.15);
+            border: 1px solid rgba(46, 160, 67, 0.4);
+            color: #3fb950;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--pill-radius);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
         }
 
-        div#plot-gallery {
+        .commission-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #3fb950;
+            box-shadow: 0 0 8px #3fb950;
+        }
+
+        .commission-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.75rem;
+        }
+
+        @media (min-width: 840px) {
+            .commission-content {
+                grid-template-columns: 1.4fr 1fr;
+                align-items: center;
+            }
+        }
+
+        .commission-pitch h2 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0 0 0.75rem;
+            color: #ffffff;
+        }
+
+        .commission-pitch p {
+            color: var(--text-muted);
+            margin: 0 0 1.25rem;
+            font-size: 1rem;
+        }
+
+        .commission-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        .feature-item strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .feature-item span {
+            color: var(--text-muted);
+            font-size: 0.825rem;
+        }
+
+        .commission-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+            color: #ffffff !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(46, 160, 67, 0.3);
+            transition: all 0.15s ease;
         }
 
-        div#plot-gallery img {
-            width: calc(50% - 5px);
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(46, 160, 67, 0.5);
+            background: linear-gradient(135deg, #2ea043 0%, #3fb950 100%);
         }
 
-        div#digital-gallery {
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.06);
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-color);
+            transition: all 0.15s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-light);
+        }
+
+        .contact-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .contact-box h3 {
+            margin: 0 0 1rem;
+            font-size: 1.1rem;
+            color: #ffffff;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px;
-            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        div#digital-gallery img {
-            width: calc(33% - 5px);
-        }
-
-        div#wryfren-gallery {
+        .contact-item {
             display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-item .label {
+            color: var(--text-muted);
+            font-size: 0.775rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-item .value {
+            color: var(--text-main);
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        /* Section Styling */
+        .section-header {
+            margin-top: 4.5rem;
+            margin-bottom: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .section-title-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .section-count {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background-color: var(--surface-color);
+            padding: 0.2rem 0.65rem;
+            border-radius: var(--pill-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 0.975rem;
+            margin: 0;
+            /* max-width: 800px; */
+        }
+
+        /* Plot Gallery (Scans with lightbox links) */
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 680px) {
+            .plot-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px;
+            }
+        }
+
+        @media (min-width: 980px) {
+            .plot-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .plot-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .plot-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: block;
+            position: relative;
+            aspect-ratio: 3 / 4;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .plot-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .plot-card .scan-tag {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(13, 15, 18, 0.85);
+            backdrop-filter: blur(4px);
+            color: #d0d7de;
+            font-size: 0.65rem;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.85;
+            transition: opacity 0.2s ease;
+        }
+
+        .plot-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+        }
+
+        .plot-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .plot-card:hover .scan-tag {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        /* Digital Gallery */
+        .digital-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 16px;
+        }
+
+        @media (min-width: 600px) {
+            .digital-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .digital-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        .art-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .art-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-light);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .art-card .img-wrap {
+            position: relative;
+            background-color: #000;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+        }
+
+        .art-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .art-card:hover .img-wrap img {
+            transform: scale(1.02);
+        }
+
+        /* Photography Gallery */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 720px) {
+            .photo-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        .photo-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 4 / 3;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-light);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Wryfren Character Grid */
+        .wryfren-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 550px) {
+            .wryfren-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px;
+            }
+        }
+
+        @media (min-width: 850px) {
+            .wryfren-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+        }
+
+        @media (min-width: 1100px) {
+            .wryfren-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        .wryfren-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            aspect-ratio: 1;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
         }
 
-        div#wryfren-gallery img {
-            width: calc(25% - 7.5px);
+        .wryfren-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--accent);
+            background-color: var(--surface-hover);
         }
 
+        .wryfren-card img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        /* Commission FAQ / How it works */
+        .commission-details-section {
+            margin-top: 5rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            padding: 2.5rem 2rem;
+        }
+
+        .commission-details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .commission-details-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .detail-step {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .step-num {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.925rem;
+            margin: 0;
+        }
+
+        /* Footer */
         footer {
-            margin: 10px;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 1.5rem;
             text-align: center;
-            padding: 10px;
-            border-top: 2px solid #000;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
-        div#gallery-preview {
+        footer .footer-links {
+            margin-bottom: 1rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px;
             justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        div#gallery-preview img {
-            width: 100%;
+        footer .footer-links a {
+            color: var(--text-muted);
         }
 
-        div#photography-gallery {
+        footer .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Lightbox Overlay for Image Inspection */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            cursor: zoom-out;
+        }
+
+        #lightbox.active {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px;
-            justify-content: center;
         }
 
-        div#photography-gallery img:nth-child(1) {
-            width: calc(33% - 5px);
+        #lightbox img {
+            max-width: 95vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            cursor: auto;
         }
 
-        div#photography-gallery img:nth-child(2) {
-            width: calc(67% - 5px);
+        #lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #ffffff;
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.15s ease;
         }
 
-        div#photography-gallery img:nth-child(3) {
-            width: 100%;
-        }
-
-        div#photography-gallery img {
-            width: 100%;
+        #lightbox-close:hover {
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <div id="branding">wryco</div>
-        <div id="commission-link">
-            Interested in commissioning a piece? Email me at <a href="mailto:lewis@wryco.com">lewis@wryco.com</a> and
-            name your price.
+    <!-- Top Sticky Navigation -->
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand" title="wryco home">wryco</a>
+            <div class="nav-links">
+                <a href="#plots">Pen Plots</a>
+                <a href="#digital">Digital</a>
+                <a href="#photography">Photography</a>
+                <a href="#wryfren">Wryfren</a>
+                <a href="#commissions" class="nav-cta">Commission Art</a>
+                <a href="/" title="Back to main blog">&larr; Blog</a>
+            </div>
         </div>
-        <div id="toc">
-            <a href="#plots">Plots</a> | <a href="#digital">Digital</a> | <a href="#wryfren">Wryfren</a>
-        </div>
-        <div id="blog-link">
-            <a href="/">Back to blog</a>
-        </div>
-    </header>
+    </nav>
 
     <main>
-        <div id="gallery-preview">
-            <img src="/art/gallery.png">
-        </div>
-        <h1 id="plots">Pen and sharpie plots</h1>
-        <h6>All plots were created using custom plotter adapters I designed for the Prusa MK4S 3d printer. Check them
-            out <a href="https://www.printables.com/model/1420683-nextruder-plotters" target="_blank">here</a>.</h6>
-        <div id="plot-gallery">
-            <img src="/scans/EPSON001.JPG" loading="lazy">
-            <img src="/scans/EPSON002.JPG" loading="lazy">
-            <img src="/scans/EPSON003.JPG" loading="lazy">
-            <img src="/scans/EPSON004.JPG" loading="lazy">
-            <img src="/scans/EPSON005.JPG" loading="lazy">
-            <img src="/scans/EPSON006.JPG" loading="lazy">
-            <img src="/scans/EPSON007.JPG" loading="lazy">
-            <img src="/scans/EPSON008.JPG" loading="lazy">
-            <img src="/scans/EPSON009.JPG" loading="lazy">
-            <img src="/scans/EPSON010.JPG" loading="lazy">
-            <img src="/scans/EPSON011.JPG" loading="lazy">
-            <img src="/scans/EPSON012.JPG" loading="lazy">
-            <img src="/scans/EPSON013.JPG" loading="lazy">
-            <img src="/scans/EPSON014.JPG" loading="lazy">
-            <img src="/scans/EPSON015.JPG" loading="lazy">
-            <img src="/scans/EPSON016.JPG" loading="lazy">
-            <img src="/scans/EPSON017.JPG" loading="lazy">
-            <img src="/scans/EPSON018.JPG" loading="lazy">
-            <img src="/scans/EPSON019.JPG" loading="lazy">
-            <img src="/scans/EPSON020.JPG" loading="lazy">
-            <img src="/scans/EPSON021.JPG" loading="lazy">
-            <img src="/scans/EPSON022.JPG" loading="lazy">
-            <img src="/scans/EPSON023.JPG" loading="lazy">
-            <img src="/scans/EPSON024.JPG" loading="lazy">
-            <img src="/scans/EPSON025.JPG" loading="lazy">
-            <img src="/scans/EPSON026.JPG" loading="lazy">
-            <img src="/scans/EPSON027.JPG" loading="lazy">
-            <img src="/scans/EPSON028.JPG" loading="lazy">
-            <img src="/scans/EPSON029.JPG" loading="lazy">
-            <img src="/scans/EPSON030.JPG" loading="lazy">
-            <img src="/scans/EPSON031.JPG" loading="lazy">
-            <img src="/scans/EPSON032.JPG" loading="lazy">
-            <img src="/scans/EPSON033.JPG" loading="lazy">
-            <img src="/scans/EPSON034.JPG" loading="lazy">
-            <img src="/scans/EPSON035.JPG" loading="lazy">
-            <img src="/scans/EPSON036.JPG" loading="lazy">
-            <img src="/scans/EPSON037.JPG" loading="lazy">
-            <img src="/scans/EPSON038.JPG" loading="lazy">
-            <img src="/scans/EPSON039.JPG" loading="lazy">
-            <img src="/scans/EPSON040.JPG" loading="lazy">
-            <img src="/scans/EPSON041.JPG" loading="lazy">
-            <img src="/scans/EPSON042.JPG" loading="lazy">
-            <img src="/scans/EPSON043.JPG" loading="lazy">
-            <img src="/scans/EPSON044.JPG" loading="lazy">
-            <img src="/scans/EPSON045.JPG" loading="lazy">
-            <img src="/scans/EPSON046.JPG" loading="lazy">
-            <img src="/scans/EPSON047.JPG" loading="lazy">
-            <img src="/scans/EPSON048.JPG" loading="lazy">
-            <img src="/scans/EPSON049.JPG" loading="lazy">
-            <img src="/scans/EPSON050.JPG" loading="lazy">
-            <img src="/scans/EPSON051.JPG" loading="lazy">
-            <img src="/scans/EPSON052.JPG" loading="lazy">
-            <img src="/scans/EPSON053.JPG" loading="lazy">
-            <img src="/scans/EPSON054.JPG" loading="lazy">
-            <img src="/scans/EPSON055.JPG" loading="lazy">
-            <img src="/scans/EPSON056.JPG" loading="lazy">
-            <img src="/scans/EPSON057.JPG" loading="lazy">
-            <img src="/scans/EPSON058.JPG" loading="lazy">
-            <img src="/scans/EPSON059.JPG" loading="lazy">
-            <img src="/scans/EPSON060.JPG" loading="lazy">
-            <img src="/scans/EPSON068.JPG" loading="lazy">
-            <img src="/scans/EPSON070.JPG" loading="lazy">
-            <img src="/scans/EPSON071.JPG" loading="lazy">
-            <img src="/scans/EPSON072.JPG" loading="lazy">
-        </div>
-        <h1 id="digital">Digital</h1>
-        <div id="digital-gallery">
-            <img src="/art/3d-printer-car-magazine.png" loading="lazy">
-            <img src="/art/distant-mountains.jpg" loading="lazy">
-            <img src="/art/fimbo-cat.jpg" loading="lazy">
-            <img src="/art/hole-in-the-sky.png" loading="lazy">
-            <img src="/art/noise-sp.png" loading="lazy">
-            <img src="/art/pony-hell.png" loading="lazy">
-            <img src="/art/time-is-slipping-away.png" loading="lazy">
-            <img src="/art/wells-fargo-qr.png" loading="lazy">
-            <img src="/art/xna-night-flight.png" loading="lazy">
-            <img src="/art/nextruder-plotters-splash.jpg" loading="lazy">
-        </div>
-        <h1 id="photography">Photography</h1>
-        <div id="photography-gallery">
-            <img src="/photography/20260219_144412.jpg" loading="lazy">
-            <img src="/photography/20260219_144451.jpg" loading="lazy">
-            <img src="/photography/20260219_192611.jpg" loading="lazy">
-        </div>
-        <h1 id="wryfren">Wryfren</h1>
-        <h6>Wryfren is a character I created in 2025. He's a silly little guy.</h6>
-        <div id="wryfren-gallery">
-            <img src="/wryfren/wryfren-bikes.png" loading="lazy">
-            <img src="/wryfren/wryfren-browses.png" loading="lazy">
-            <img src="/wryfren/wryfren-crossing.png" loading="lazy">
-            <img src="/wryfren/wryfren-greed.png" loading="lazy">
-            <img src="/wryfren/wryfren-lifts.png" loading="lazy">
-            <img src="/wryfren/wryfren-love.png" loading="lazy">
-            <img src="/wryfren/wryfren-magazine.png" loading="lazy">
-            <img src="/wryfren/wryfren-mess.png" loading="lazy">
-            <img src="/wryfren/wryfren-nightmare.png" loading="lazy">
-            <img src="/wryfren/wryfren-sticker.png" loading="lazy">
-            <img src="/wryfren/wryfren-surprised.png" loading="lazy">
-        </div>
+        <!-- Hero Header -->
+        <header class="hero">
+            <div class="hero-header">
+                <h1 class="hero-title">Artwork &amp; Plots</h1>
+                <p class="hero-subtitle">
+                    Pen plots, digital art, and photography by <a href="mailto:lewis@wryco.com">lewis@wryco.com</a>.
+                </p>
+            </div>
+            <div class="hero-banner-frame">
+                <img src="/art/gallery.png" alt="Wryco Art Gallery Overview">
+            </div>
+        </header>
+
+        <!-- Commission Landing Section -->
+        <section id="commissions" class="commission-hero-card">
+            <div class="commission-badge">
+                <span class="commission-badge-dot"></span>
+                Commissions Open &bull; Name Your Price
+            </div>
+            <div class="commission-content">
+                <div class="commission-pitch">
+                    <h2>Interested in a custom piece or physical plot?</h2>
+                    <p>
+                        Whether you want an original pen plot mailed to your door, a fresh replot of an existing piece
+                        on my site, or a custom digital illustration sent straight to your inbox, I'd love to make it
+                        happen.
+                    </p>
+                    <div class="commission-features">
+                        <div class="feature-item">
+                            <strong>Physical Pen Plots</strong>
+                            <span>Drawn with custom 3D printed adapters</span>
+                        </div>
+                        <div class="feature-item">
+                            <strong>Digital &amp; Editorial</strong>
+                            <span>Illustrations, graphic art, and posters</span>
+                        </div>
+                        <div class="feature-item">
+                            <strong>Name Your Price</strong>
+                            <span>Flexible budgets welcomed for all projects</span>
+                        </div>
+                    </div>
+                    <div class="commission-actions">
+                        <a href="mailto:lewis@wryco.com?subject=Art%20Commission%20Inquiry" class="btn-primary">
+                            &#9993; Email lewis@wryco.com
+                        </a>
+                        <a href="#plots" class="btn-secondary">
+                            Browse Previous Work &darr;
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-box">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <span class="label">Email</span>
+                        <a class="value" href="mailto:lewis@wryco.com">lewis@wryco.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="label">Hardware &amp; Tools</span>
+                        <span class="value">Prusa MK4S + Custom Nextruder Plotters</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="label">Location &amp; Delivery</span>
+                        <span class="value">International shipping</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commission Process / FAQ Section -->
+        <section class="commission-details-section">
+            <h2 style="margin: 0; color: #ffffff; font-size: 1.5rem;">How Commissions Work</h2>
+            <div class="commission-details-grid">
+                <div class="detail-step">
+                    <span class="step-num">Step 01</span>
+                    <h3 class="step-title">Get in Touch</h3>
+                    <p class="step-desc">
+                        Drop an email to <a href="mailto:lewis@wryco.com">lewis@wryco.com</a> with "Commission"
+                        somewhere in the subject line describing your idea.
+                    </p>
+                </div>
+                <div class="detail-step">
+                    <span class="step-num">Step 02</span>
+                    <h3 class="step-title">Name Your Price</h3>
+                    <p class="step-desc">
+                        No rigid tier tables. Share your budget and expectations, and we'll agree on scope, materials,
+                        or resolution.
+                    </p>
+                </div>
+                <div class="detail-step">
+                    <span class="step-num">Step 03</span>
+                    <h3 class="step-title">Payment</h3>
+                    <p class="step-desc">
+                        Payments accepted via check, venmo, stripe, Ko-fi, or crypto. Work will begin upon receipt of
+                        payment.
+                    </p>
+                </div>
+                <div class="detail-step">
+                    <span class="step-num">Step 04</span>
+                    <h3 class="step-title">Delivery</h3>
+                    <p class="step-desc">
+                        You'll receive progress updates and high-res previews. Physical pen plots are packed flat and
+                        shipped; digital artworks are delivered in full resolution.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pen & Sharpie Plots Section -->
+        <section id="plots">
+            <div class="section-header">
+                <div class="section-title-row">
+                    <h2 class="section-title">Pen and sharpie plots</h2>
+                </div>
+                <p class="section-desc">
+                    All plots were created using custom plotter adapters I designed for the Prusa MK4S 3D printer. Check
+                    them out <a href="https://www.printables.com/model/1420683-nextruder-plotters"
+                        target="_blank">here</a> and <a
+                        href="https://www.printables.com/model/1788386-nextruder-toolholder">here</a>.
+                    Click any plot to inspect the full-resolution scan.
+                </p>
+            </div>
+
+            <div class="plot-grid">
+                <a href="/scans/EPSON001.JPG" target="_blank" class="plot-card" title="Plot EPSON001">
+                    <img src="/preview/EPSON001.JPG" alt="Pen plot EPSON001" loading="lazy">
+                    <span class="scan-tag">#001</span>
+                </a>
+                <a href="/scans/EPSON002.JPG" target="_blank" class="plot-card" title="Plot EPSON002">
+                    <img src="/preview/EPSON002.JPG" alt="Pen plot EPSON002" loading="lazy">
+                    <span class="scan-tag">#002</span>
+                </a>
+                <a href="/scans/EPSON003.JPG" target="_blank" class="plot-card" title="Plot EPSON003">
+                    <img src="/preview/EPSON003.JPG" alt="Pen plot EPSON003" loading="lazy">
+                    <span class="scan-tag">#003</span>
+                </a>
+                <a href="/scans/EPSON004.JPG" target="_blank" class="plot-card" title="Plot EPSON004">
+                    <img src="/preview/EPSON004.JPG" alt="Pen plot EPSON004" loading="lazy">
+                    <span class="scan-tag">#004</span>
+                </a>
+                <a href="/scans/EPSON005.JPG" target="_blank" class="plot-card" title="Plot EPSON005">
+                    <img src="/preview/EPSON005.JPG" alt="Pen plot EPSON005" loading="lazy">
+                    <span class="scan-tag">#005</span>
+                </a>
+                <a href="/scans/EPSON006.JPG" target="_blank" class="plot-card" title="Plot EPSON006">
+                    <img src="/preview/EPSON006.JPG" alt="Pen plot EPSON006" loading="lazy">
+                    <span class="scan-tag">#006</span>
+                </a>
+                <a href="/scans/EPSON007.JPG" target="_blank" class="plot-card" title="Plot EPSON007">
+                    <img src="/preview/EPSON007.JPG" alt="Pen plot EPSON007" loading="lazy">
+                    <span class="scan-tag">#007</span>
+                </a>
+                <a href="/scans/EPSON008.JPG" target="_blank" class="plot-card" title="Plot EPSON008">
+                    <img src="/preview/EPSON008.JPG" alt="Pen plot EPSON008" loading="lazy">
+                    <span class="scan-tag">#008</span>
+                </a>
+                <a href="/scans/EPSON009.JPG" target="_blank" class="plot-card" title="Plot EPSON009">
+                    <img src="/preview/EPSON009.JPG" alt="Pen plot EPSON009" loading="lazy">
+                    <span class="scan-tag">#009</span>
+                </a>
+                <a href="/scans/EPSON010.JPG" target="_blank" class="plot-card" title="Plot EPSON010">
+                    <img src="/preview/EPSON010.JPG" alt="Pen plot EPSON010" loading="lazy">
+                    <span class="scan-tag">#010</span>
+                </a>
+                <a href="/scans/EPSON011.JPG" target="_blank" class="plot-card" title="Plot EPSON011">
+                    <img src="/preview/EPSON011.JPG" alt="Pen plot EPSON011" loading="lazy">
+                    <span class="scan-tag">#011</span>
+                </a>
+                <a href="/scans/EPSON012.JPG" target="_blank" class="plot-card" title="Plot EPSON012">
+                    <img src="/preview/EPSON012.JPG" alt="Pen plot EPSON012" loading="lazy">
+                    <span class="scan-tag">#012</span>
+                </a>
+                <a href="/scans/EPSON013.JPG" target="_blank" class="plot-card" title="Plot EPSON013">
+                    <img src="/preview/EPSON013.JPG" alt="Pen plot EPSON013" loading="lazy">
+                    <span class="scan-tag">#013</span>
+                </a>
+                <a href="/scans/EPSON014.JPG" target="_blank" class="plot-card" title="Plot EPSON014">
+                    <img src="/preview/EPSON014.JPG" alt="Pen plot EPSON014" loading="lazy">
+                    <span class="scan-tag">#014</span>
+                </a>
+                <a href="/scans/EPSON015.JPG" target="_blank" class="plot-card" title="Plot EPSON015">
+                    <img src="/preview/EPSON015.JPG" alt="Pen plot EPSON015" loading="lazy">
+                    <span class="scan-tag">#015</span>
+                </a>
+                <a href="/scans/EPSON016.JPG" target="_blank" class="plot-card" title="Plot EPSON016">
+                    <img src="/preview/EPSON016.JPG" alt="Pen plot EPSON016" loading="lazy">
+                    <span class="scan-tag">#016</span>
+                </a>
+                <a href="/scans/EPSON017.JPG" target="_blank" class="plot-card" title="Plot EPSON017">
+                    <img src="/preview/EPSON017.JPG" alt="Pen plot EPSON017" loading="lazy">
+                    <span class="scan-tag">#017</span>
+                </a>
+                <a href="/scans/EPSON018.JPG" target="_blank" class="plot-card" title="Plot EPSON018">
+                    <img src="/preview/EPSON018.JPG" alt="Pen plot EPSON018" loading="lazy">
+                    <span class="scan-tag">#018</span>
+                </a>
+                <a href="/scans/EPSON019.JPG" target="_blank" class="plot-card" title="Plot EPSON019">
+                    <img src="/preview/EPSON019.JPG" alt="Pen plot EPSON019" loading="lazy">
+                    <span class="scan-tag">#019</span>
+                </a>
+                <a href="/scans/EPSON020.JPG" target="_blank" class="plot-card" title="Plot EPSON020">
+                    <img src="/preview/EPSON020.JPG" alt="Pen plot EPSON020" loading="lazy">
+                    <span class="scan-tag">#020</span>
+                </a>
+                <a href="/scans/EPSON021.JPG" target="_blank" class="plot-card" title="Plot EPSON021">
+                    <img src="/preview/EPSON021.JPG" alt="Pen plot EPSON021" loading="lazy">
+                    <span class="scan-tag">#021</span>
+                </a>
+                <a href="/scans/EPSON022.JPG" target="_blank" class="plot-card" title="Plot EPSON022">
+                    <img src="/preview/EPSON022.JPG" alt="Pen plot EPSON022" loading="lazy">
+                    <span class="scan-tag">#022</span>
+                </a>
+                <a href="/scans/EPSON023.JPG" target="_blank" class="plot-card" title="Plot EPSON023">
+                    <img src="/preview/EPSON023.JPG" alt="Pen plot EPSON023" loading="lazy">
+                    <span class="scan-tag">#023</span>
+                </a>
+                <a href="/scans/EPSON024.JPG" target="_blank" class="plot-card" title="Plot EPSON024">
+                    <img src="/preview/EPSON024.JPG" alt="Pen plot EPSON024" loading="lazy">
+                    <span class="scan-tag">#024</span>
+                </a>
+                <a href="/scans/EPSON025.JPG" target="_blank" class="plot-card" title="Plot EPSON025">
+                    <img src="/preview/EPSON025.JPG" alt="Pen plot EPSON025" loading="lazy">
+                    <span class="scan-tag">#025</span>
+                </a>
+                <a href="/scans/EPSON026.JPG" target="_blank" class="plot-card" title="Plot EPSON026">
+                    <img src="/preview/EPSON026.JPG" alt="Pen plot EPSON026" loading="lazy">
+                    <span class="scan-tag">#026</span>
+                </a>
+                <a href="/scans/EPSON027.JPG" target="_blank" class="plot-card" title="Plot EPSON027">
+                    <img src="/preview/EPSON027.JPG" alt="Pen plot EPSON027" loading="lazy">
+                    <span class="scan-tag">#027</span>
+                </a>
+                <a href="/scans/EPSON028.JPG" target="_blank" class="plot-card" title="Plot EPSON028">
+                    <img src="/preview/EPSON028.JPG" alt="Pen plot EPSON028" loading="lazy">
+                    <span class="scan-tag">#028</span>
+                </a>
+                <a href="/scans/EPSON029.JPG" target="_blank" class="plot-card" title="Plot EPSON029">
+                    <img src="/preview/EPSON029.JPG" alt="Pen plot EPSON029" loading="lazy">
+                    <span class="scan-tag">#029</span>
+                </a>
+                <a href="/scans/EPSON030.JPG" target="_blank" class="plot-card" title="Plot EPSON030">
+                    <img src="/preview/EPSON030.JPG" alt="Pen plot EPSON030" loading="lazy">
+                    <span class="scan-tag">#030</span>
+                </a>
+                <a href="/scans/EPSON031.JPG" target="_blank" class="plot-card" title="Plot EPSON031">
+                    <img src="/preview/EPSON031.JPG" alt="Pen plot EPSON031" loading="lazy">
+                    <span class="scan-tag">#031</span>
+                </a>
+                <a href="/scans/EPSON032.JPG" target="_blank" class="plot-card" title="Plot EPSON032">
+                    <img src="/preview/EPSON032.JPG" alt="Pen plot EPSON032" loading="lazy">
+                    <span class="scan-tag">#032</span>
+                </a>
+                <a href="/scans/EPSON033.JPG" target="_blank" class="plot-card" title="Plot EPSON033">
+                    <img src="/preview/EPSON033.JPG" alt="Pen plot EPSON033" loading="lazy">
+                    <span class="scan-tag">#033</span>
+                </a>
+                <a href="/scans/EPSON034.JPG" target="_blank" class="plot-card" title="Plot EPSON034">
+                    <img src="/preview/EPSON034.JPG" alt="Pen plot EPSON034" loading="lazy">
+                    <span class="scan-tag">#034</span>
+                </a>
+                <a href="/scans/EPSON035.JPG" target="_blank" class="plot-card" title="Plot EPSON035">
+                    <img src="/preview/EPSON035.JPG" alt="Pen plot EPSON035" loading="lazy">
+                    <span class="scan-tag">#035</span>
+                </a>
+                <a href="/scans/EPSON036.JPG" target="_blank" class="plot-card" title="Plot EPSON036">
+                    <img src="/preview/EPSON036.JPG" alt="Pen plot EPSON036" loading="lazy">
+                    <span class="scan-tag">#036</span>
+                </a>
+                <a href="/scans/EPSON037.JPG" target="_blank" class="plot-card" title="Plot EPSON037">
+                    <img src="/preview/EPSON037.JPG" alt="Pen plot EPSON037" loading="lazy">
+                    <span class="scan-tag">#037</span>
+                </a>
+                <a href="/scans/EPSON038.JPG" target="_blank" class="plot-card" title="Plot EPSON038">
+                    <img src="/preview/EPSON038.JPG" alt="Pen plot EPSON038" loading="lazy">
+                    <span class="scan-tag">#038</span>
+                </a>
+                <a href="/scans/EPSON039.JPG" target="_blank" class="plot-card" title="Plot EPSON039">
+                    <img src="/preview/EPSON039.JPG" alt="Pen plot EPSON039" loading="lazy">
+                    <span class="scan-tag">#039</span>
+                </a>
+                <a href="/scans/EPSON040.JPG" target="_blank" class="plot-card" title="Plot EPSON040">
+                    <img src="/preview/EPSON040.JPG" alt="Pen plot EPSON040" loading="lazy">
+                    <span class="scan-tag">#040</span>
+                </a>
+                <a href="/scans/EPSON041.JPG" target="_blank" class="plot-card" title="Plot EPSON041">
+                    <img src="/preview/EPSON041.JPG" alt="Pen plot EPSON041" loading="lazy">
+                    <span class="scan-tag">#041</span>
+                </a>
+                <a href="/scans/EPSON042.JPG" target="_blank" class="plot-card" title="Plot EPSON042">
+                    <img src="/preview/EPSON042.JPG" alt="Pen plot EPSON042" loading="lazy">
+                    <span class="scan-tag">#042</span>
+                </a>
+                <a href="/scans/EPSON043.JPG" target="_blank" class="plot-card" title="Plot EPSON043">
+                    <img src="/preview/EPSON043.JPG" alt="Pen plot EPSON043" loading="lazy">
+                    <span class="scan-tag">#043</span>
+                </a>
+                <a href="/scans/EPSON044.JPG" target="_blank" class="plot-card" title="Plot EPSON044">
+                    <img src="/preview/EPSON044.JPG" alt="Pen plot EPSON044" loading="lazy">
+                    <span class="scan-tag">#044</span>
+                </a>
+                <a href="/scans/EPSON045.JPG" target="_blank" class="plot-card" title="Plot EPSON045">
+                    <img src="/preview/EPSON045.JPG" alt="Pen plot EPSON045" loading="lazy">
+                    <span class="scan-tag">#045</span>
+                </a>
+                <a href="/scans/EPSON046.JPG" target="_blank" class="plot-card" title="Plot EPSON046">
+                    <img src="/preview/EPSON046.JPG" alt="Pen plot EPSON046" loading="lazy">
+                    <span class="scan-tag">#046</span>
+                </a>
+                <a href="/scans/EPSON047.JPG" target="_blank" class="plot-card" title="Plot EPSON047">
+                    <img src="/preview/EPSON047.JPG" alt="Pen plot EPSON047" loading="lazy">
+                    <span class="scan-tag">#047</span>
+                </a>
+                <a href="/scans/EPSON048.JPG" target="_blank" class="plot-card" title="Plot EPSON048">
+                    <img src="/preview/EPSON048.JPG" alt="Pen plot EPSON048" loading="lazy">
+                    <span class="scan-tag">#048</span>
+                </a>
+                <a href="/scans/EPSON049.JPG" target="_blank" class="plot-card" title="Plot EPSON049">
+                    <img src="/preview/EPSON049.JPG" alt="Pen plot EPSON049" loading="lazy">
+                    <span class="scan-tag">#049</span>
+                </a>
+                <a href="/scans/EPSON050.JPG" target="_blank" class="plot-card" title="Plot EPSON050">
+                    <img src="/preview/EPSON050.JPG" alt="Pen plot EPSON050" loading="lazy">
+                    <span class="scan-tag">#050</span>
+                </a>
+                <a href="/scans/EPSON051.JPG" target="_blank" class="plot-card" title="Plot EPSON051">
+                    <img src="/preview/EPSON051.JPG" alt="Pen plot EPSON051" loading="lazy">
+                    <span class="scan-tag">#051</span>
+                </a>
+                <a href="/scans/EPSON052.JPG" target="_blank" class="plot-card" title="Plot EPSON052">
+                    <img src="/preview/EPSON052.JPG" alt="Pen plot EPSON052" loading="lazy">
+                    <span class="scan-tag">#052</span>
+                </a>
+                <a href="/scans/EPSON053.JPG" target="_blank" class="plot-card" title="Plot EPSON053">
+                    <img src="/preview/EPSON053.JPG" alt="Pen plot EPSON053" loading="lazy">
+                    <span class="scan-tag">#053</span>
+                </a>
+                <a href="/scans/EPSON054.JPG" target="_blank" class="plot-card" title="Plot EPSON054">
+                    <img src="/preview/EPSON054.JPG" alt="Pen plot EPSON054" loading="lazy">
+                    <span class="scan-tag">#054</span>
+                </a>
+                <a href="/scans/EPSON055.JPG" target="_blank" class="plot-card" title="Plot EPSON055">
+                    <img src="/preview/EPSON055.JPG" alt="Pen plot EPSON055" loading="lazy">
+                    <span class="scan-tag">#055</span>
+                </a>
+                <a href="/scans/EPSON056.JPG" target="_blank" class="plot-card" title="Plot EPSON056">
+                    <img src="/preview/EPSON056.JPG" alt="Pen plot EPSON056" loading="lazy">
+                    <span class="scan-tag">#056</span>
+                </a>
+                <a href="/scans/EPSON057.JPG" target="_blank" class="plot-card" title="Plot EPSON057">
+                    <img src="/preview/EPSON057.JPG" alt="Pen plot EPSON057" loading="lazy">
+                    <span class="scan-tag">#057</span>
+                </a>
+                <a href="/scans/EPSON058.JPG" target="_blank" class="plot-card" title="Plot EPSON058">
+                    <img src="/preview/EPSON058.JPG" alt="Pen plot EPSON058" loading="lazy">
+                    <span class="scan-tag">#058</span>
+                </a>
+                <a href="/scans/EPSON059.JPG" target="_blank" class="plot-card" title="Plot EPSON059">
+                    <img src="/preview/EPSON059.JPG" alt="Pen plot EPSON059" loading="lazy">
+                    <span class="scan-tag">#059</span>
+                </a>
+                <a href="/scans/EPSON060.JPG" target="_blank" class="plot-card" title="Plot EPSON060">
+                    <img src="/preview/EPSON060.JPG" alt="Pen plot EPSON060" loading="lazy">
+                    <span class="scan-tag">#060</span>
+                </a>
+                <a href="/scans/EPSON068.JPG" target="_blank" class="plot-card" title="Plot EPSON068">
+                    <img src="/preview/EPSON068.JPG" alt="Pen plot EPSON068" loading="lazy">
+                    <span class="scan-tag">#068</span>
+                </a>
+                <a href="/scans/EPSON070.JPG" target="_blank" class="plot-card" title="Plot EPSON070">
+                    <img src="/preview/EPSON070.JPG" alt="Pen plot EPSON070" loading="lazy">
+                    <span class="scan-tag">#070</span>
+                </a>
+                <a href="/scans/EPSON071.JPG" target="_blank" class="plot-card" title="Plot EPSON071">
+                    <img src="/preview/EPSON071.JPG" alt="Pen plot EPSON071" loading="lazy">
+                    <span class="scan-tag">#071</span>
+                </a>
+                <a href="/scans/EPSON072.JPG" target="_blank" class="plot-card" title="Plot EPSON072">
+                    <img src="/preview/EPSON072.JPG" alt="Pen plot EPSON072" loading="lazy">
+                    <span class="scan-tag">#072</span>
+                </a>
+                <a href="/scans/EPSON075.JPG" target="_blank" class="plot-card" title="Plot EPSON075">
+                    <img src="/preview/EPSON075.JPG" alt="Pen plot EPSON075" loading="lazy">
+                    <span class="scan-tag">#075</span>
+                </a>
+                <a href="/scans/EPSON076.JPG" target="_blank" class="plot-card" title="Plot EPSON076">
+                    <img src="/preview/EPSON076.JPG" alt="Pen plot EPSON076" loading="lazy">
+                    <span class="scan-tag">#076</span>
+                </a>
+                <a href="/scans/EPSON077.JPG" target="_blank" class="plot-card" title="Plot EPSON077">
+                    <img src="/preview/EPSON077.JPG" alt="Pen plot EPSON077" loading="lazy">
+                    <span class="scan-tag">#077</span>
+                </a>
+                <a href="/scans/EPSON078.JPG" target="_blank" class="plot-card" title="Plot EPSON078">
+                    <img src="/preview/EPSON078.JPG" alt="Pen plot EPSON078" loading="lazy">
+                    <span class="scan-tag">#078</span>
+                </a>
+                <a href="/scans/EPSON079.JPG" target="_blank" class="plot-card" title="Plot EPSON079">
+                    <img src="/preview/EPSON079.JPG" alt="Pen plot EPSON079" loading="lazy">
+                    <span class="scan-tag">#079</span>
+                </a>
+                <a href="/scans/EPSON080.JPG" target="_blank" class="plot-card" title="Plot EPSON080">
+                    <img src="/preview/EPSON080.JPG" alt="Pen plot EPSON080" loading="lazy">
+                    <span class="scan-tag">#080</span>
+                </a>
+                <a href="/scans/EPSON081.JPG" target="_blank" class="plot-card" title="Plot EPSON081">
+                    <img src="/preview/EPSON081.JPG" alt="Pen plot EPSON081" loading="lazy">
+                    <span class="scan-tag">#081</span>
+                </a>
+                <a href="/scans/EPSON082.JPG" target="_blank" class="plot-card" title="Plot EPSON082">
+                    <img src="/preview/EPSON082.JPG" alt="Pen plot EPSON082" loading="lazy">
+                    <span class="scan-tag">#082</span>
+                </a>
+                <a href="/scans/EPSON083.JPG" target="_blank" class="plot-card" title="Plot EPSON083">
+                    <img src="/preview/EPSON083.JPG" alt="Pen plot EPSON083" loading="lazy">
+                    <span class="scan-tag">#083</span>
+                </a>
+                <a href="/scans/EPSON084.JPG" target="_blank" class="plot-card" title="Plot EPSON084">
+                    <img src="/preview/EPSON084.JPG" alt="Pen plot EPSON084" loading="lazy">
+                    <span class="scan-tag">#084</span>
+                </a>
+                <a href="/scans/EPSON085.JPG" target="_blank" class="plot-card" title="Plot EPSON085">
+                    <img src="/preview/EPSON085.JPG" alt="Pen plot EPSON085" loading="lazy">
+                    <span class="scan-tag">#085</span>
+                </a>
+                <a href="/scans/EPSON086.JPG" target="_blank" class="plot-card" title="Plot EPSON086">
+                    <img src="/preview/EPSON086.JPG" alt="Pen plot EPSON086" loading="lazy">
+                    <span class="scan-tag">#086</span>
+                </a>
+                <a href="/scans/EPSON087.JPG" target="_blank" class="plot-card" title="Plot EPSON087">
+                    <img src="/preview/EPSON087.JPG" alt="Pen plot EPSON087" loading="lazy">
+                    <span class="scan-tag">#087</span>
+                </a>
+                <a href="/scans/EPSON088.JPG" target="_blank" class="plot-card" title="Plot EPSON088">
+                    <img src="/preview/EPSON088.JPG" alt="Pen plot EPSON088" loading="lazy">
+                    <span class="scan-tag">#088</span>
+                </a>
+                <a href="/scans/EPSON089.JPG" target="_blank" class="plot-card" title="Plot EPSON089">
+                    <img src="/preview/EPSON089.JPG" alt="Pen plot EPSON089" loading="lazy">
+                    <span class="scan-tag">#089</span>
+                </a>
+                <a href="/scans/EPSON090.JPG" target="_blank" class="plot-card" title="Plot EPSON090">
+                    <img src="/preview/EPSON090.JPG" alt="Pen plot EPSON090" loading="lazy">
+                    <span class="scan-tag">#090</span>
+                </a>
+                <a href="/scans/EPSON091.JPG" target="_blank" class="plot-card" title="Plot EPSON091">
+                    <img src="/preview/EPSON091.JPG" alt="Pen plot EPSON091" loading="lazy">
+                    <span class="scan-tag">#091</span>
+                </a>
+                <a href="/scans/EPSON092.JPG" target="_blank" class="plot-card" title="Plot EPSON092">
+                    <img src="/preview/EPSON092.JPG" alt="Pen plot EPSON092" loading="lazy">
+                    <span class="scan-tag">#092</span>
+                </a>
+                <a href="/scans/EPSON094.JPG" target="_blank" class="plot-card" title="Plot EPSON094">
+                    <img src="/preview/EPSON094.JPG" alt="Pen plot EPSON094" loading="lazy">
+                    <span class="scan-tag">#094</span>
+                </a>
+                <a href="/scans/EPSON095.JPG" target="_blank" class="plot-card" title="Plot EPSON095">
+                    <img src="/preview/EPSON095.JPG" alt="Pen plot EPSON095" loading="lazy">
+                    <span class="scan-tag">#095</span>
+                </a>
+                <a href="/scans/EPSON096.JPG" target="_blank" class="plot-card" title="Plot EPSON096">
+                    <img src="/preview/EPSON096.JPG" alt="Pen plot EPSON096" loading="lazy">
+                    <span class="scan-tag">#096</span>
+                </a>
+                <a href="/scans/EPSON097.JPG" target="_blank" class="plot-card" title="Plot EPSON097">
+                    <img src="/preview/EPSON097.JPG" alt="Pen plot EPSON097" loading="lazy">
+                    <span class="scan-tag">#097</span>
+                </a>
+                <a href="/scans/EPSON098.JPG" target="_blank" class="plot-card" title="Plot EPSON098">
+                    <img src="/preview/EPSON098.JPG" alt="Pen plot EPSON098" loading="lazy">
+                    <span class="scan-tag">#098</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Digital Art Section -->
+        <section id="digital">
+            <div class="section-header">
+                <div class="section-title-row">
+                    <h2 class="section-title">Digital Art</h2>
+                </div>
+                <p class="section-desc">
+                    Digital paintings, graphic compositions, editorial magazine layouts, and project visuals.
+                </p>
+            </div>
+            <div class="digital-grid">
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/3d-printer-car-magazine.png" alt="3D Printer Car Magazine" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/distant-mountains.jpg" alt="Distant Mountains" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/fimbo-cat.jpg" alt="Fimbo Cat" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/hole-in-the-sky.png" alt="Hole in the Sky" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/noise-sp.png" alt="Noise SP" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/pony-hell.png" alt="Pony Hell" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/time-is-slipping-away.png" alt="Time is Slipping Away" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/wells-fargo-qr.png" alt="Wells Fargo QR" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/xna-night-flight.png" alt="XNA Night Flight" loading="lazy">
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="img-wrap">
+                        <img src="/art/nextruder-plotters-splash.jpg" alt="Nextruder Plotters Splash" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photography Section -->
+        <section id="photography">
+            <div class="section-header">
+                <div class="section-title-row">
+                    <h2 class="section-title">Photography</h2>
+                    <span class="section-count">Selected Photos</span>
+                </div>
+                <p class="section-desc">
+                    Observational photography and atmospheric snapshots.
+                </p>
+            </div>
+            <div class="photo-grid">
+                <div class="photo-card">
+                    <img src="/photography/20260219_144412.jpg" alt="Photograph 20260219_144412" loading="lazy">
+                </div>
+                <div class="photo-card">
+                    <img src="/photography/20260219_144451.jpg" alt="Photograph 20260219_144451" loading="lazy">
+                </div>
+                <div class="photo-card">
+                    <img src="/photography/20260219_192611.jpg" alt="Photograph 20260219_192611" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Wryfren Character Section -->
+        <section id="wryfren">
+            <div class="section-header">
+                <div class="section-title-row">
+                    <h2 class="section-title">Wryfren</h2>
+                    <span class="section-count">11 Illustrations</span>
+                </div>
+                <p class="section-desc">
+                    Wryfren is a character I created in 2025. He's a silly little guy who gets into all sorts of
+                    situations.
+                </p>
+            </div>
+            <div class="wryfren-grid">
+                <div class="wryfren-card" title="Wryfren bikes">
+                    <img src="/wryfren/wryfren-bikes.png" alt="Wryfren biking" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren browses">
+                    <img src="/wryfren/wryfren-browses.png" alt="Wryfren browsing" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren crossing">
+                    <img src="/wryfren/wryfren-crossing.png" alt="Wryfren crossing" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren greed">
+                    <img src="/wryfren/wryfren-greed.png" alt="Wryfren greed" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren lifts">
+                    <img src="/wryfren/wryfren-lifts.png" alt="Wryfren lifting weights" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren love">
+                    <img src="/wryfren/wryfren-love.png" alt="Wryfren love" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren magazine">
+                    <img src="/wryfren/wryfren-magazine.png" alt="Wryfren magazine cover" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren mess">
+                    <img src="/wryfren/wryfren-mess.png" alt="Wryfren mess" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren nightmare">
+                    <img src="/wryfren/wryfren-nightmare.png" alt="Wryfren nightmare" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren sticker">
+                    <img src="/wryfren/wryfren-sticker.png" alt="Wryfren sticker" loading="lazy">
+                </div>
+                <div class="wryfren-card" title="Wryfren surprised">
+                    <img src="/wryfren/wryfren-surprised.png" alt="Wryfren surprised" loading="lazy">
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- Lightbox for viewing images closer without leaving the page -->
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image Preview">
+        <span id="lightbox-close" title="Close preview">&times;</span>
+        <img id="lightbox-img" src="" alt="Expanded preview">
+    </div>
+
     <footer>
+        <div class="footer-links">
+            <a href="/">Blog Home</a>
+            <a href="#plots">Pen Plots</a>
+            <a href="#digital">Digital Art</a>
+            <a href="#photography">Photography</a>
+            <a href="#wryfren">Wryfren</a>
+            <a href="mailto:lewis@wryco.com">lewis@wryco.com</a>
+        </div>
         <div id="copyleft">
             &#127279; 2026 Wryco. No rights reserved.
         </div>
     </footer>
+
+    <!-- Interactive lightbox script for seamless browsing -->
+    <script>
+        (function () {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            // Attach lightbox handler to cards that can open images
+            document.querySelectorAll('.digital-grid img, .photo-grid img, .wryfren-card img').forEach(img => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', (e) => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt || 'Art preview';
+                    lightbox.classList.add('active');
+                });
+            });
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target !== lightboxImg) {
+                    closeLightbox();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
