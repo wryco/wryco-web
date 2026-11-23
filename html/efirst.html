@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-
     <!-- Required -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Title and Description -->
-    <title>Wryco.EFirst - An entity first design philosophy</title>
-    <meta name="description" content="An entity first design philosophy" />
+    <title>Wryco.EFirst — An Entity-First Design Pattern for ASP.NET Core</title>
+    <meta name="description"
+        content="Free, fast, modular, and hackable entity-first base classes for rapidly scaffolding ASP.NET Core APIs." />
 
     <!-- Icons -->
     <link rel="icon" href="/wryco.png" type="image/png" />
@@ -22,7 +22,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Wryco.EFirst" />
-    <meta property="og:description" content="An entity first design philosophy" />
+    <meta property="og:description" content="An entity-first design pattern for ASP.NET Core." />
     <meta property="og:url" content="https://wryco.com/efirst" />
     <meta property="og:image" content="https://wryco.com/wryco-splash.jpg" />
     <meta property="og:site_name" content="Wryco" />
@@ -30,12 +30,12 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Wryco.EFirst" />
-    <meta name="twitter:description" content="An entity first design philosophy" />
+    <meta name="twitter:description" content="An entity-first design pattern for ASP.NET Core." />
     <meta name="twitter:image" content="https://wryco.com/wryco-splash.jpg" />
 
     <!-- Robots and Crawlers -->
-    <meta name="robots" content="index, nofollow" />
-    <meta name="googlebot" content="index, nofollow" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
 
     <meta name="language" content="English" />
     <meta property="og:locale" content="en_US" />
@@ -45,209 +45,505 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "url": "https://wryco.com/",
-        "name": "Wryco"
+        "@type": "SoftwareSourceCode",
+        "name": "Wryco.EFirst",
+        "programmingLanguage": "C#",
+        "runtimePlatform": "ASP.NET Core",
+        "url": "https://wryco.com/efirst",
+        "author": {
+            "@type": "Person",
+            "name": "Lewis Brown"
+        }
     }
     </script>
 
     <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --surface-alt: #f1f3f5;
+            --border: #e1e4e8;
+            --text: #1f2328;
+            --text-muted: #59636e;
+            --base: #2980b9;
+            --entity: #d35400;
+            --context: #c0392b;
+            --repository: #8e44ad;
+            --controller: #16a085;
+            --radius: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            margin: 10px;
+            margin: 0;
+            padding: 24px 16px 48px;
+            background-color: var(--bg);
+            color: var(--text);
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1896px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.85rem;
+            letter-spacing: -0.02em;
+        }
+
+        header h1 a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        header h1 a:hover {
+            text-decoration: underline;
+        }
+
+        .muted-title {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.92rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: var(--text);
+            text-decoration: underline;
+        }
+
+        .lead {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin: 20px 0 12px;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        h2 {
+            margin: 32px 0 10px;
+            font-size: 1.35rem;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            margin: 20px 0 6px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .base {
-            color: #3498db;
+            color: var(--base);
         }
 
         .entity {
-            color: #e67e22;
+            color: var(--entity);
         }
 
         .context {
-            color: #e74c3c;
+            color: var(--context);
         }
 
         .repository {
-            color: #9b59b6;
+            color: var(--repository);
         }
 
         .controller {
-            color: #1abc9c;
+            color: var(--controller);
         }
 
-        .dialogue,
-        .bash {
-            background-color: #eee;
-            padding: 10px;
-            margin: 10px 0px;
+        .dialogue {
+            background-color: var(--surface-alt);
+            border-left: 3px solid var(--border);
+            padding: 8px 14px;
+            margin: 22px 0 8px;
+            font-style: italic;
+            color: var(--text-muted);
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+
+        .install-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.92rem;
+            overflow-x: auto;
+        }
+
+        .copy-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            color: var(--text);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: var(--surface-alt);
         }
 
         pre {
-            margin: 10px 0px;
-            padding: 10px;
-            background-color: #fafafa;
+            margin: 6px 0 16px;
+            padding: 14px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 0.85rem;
+            margin: 10px 0 4px;
+            color: var(--text-muted);
+        }
+
+        .legend span::before {
+            content: "● ";
+        }
+
+        .legend .base::before {
+            color: var(--base);
+        }
+
+        .legend .entity::before {
+            color: var(--entity);
+        }
+
+        .legend .context::before {
+            color: var(--context);
+        }
+
+        .legend .repository::before {
+            color: var(--repository);
+        }
+
+        .legend .controller::before {
+            color: var(--controller);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 0.92rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--surface-alt);
+            font-weight: 600;
+        }
+
+        .method {
+            display: inline-block;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--surface-alt);
+        }
+
+        .callout {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            margin: 20px 0;
+            font-size: 0.94rem;
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        footer {
+            margin-top: 48px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>
-            <a href="/">Wryco</a>.<b>E</b><span style="color:#999">ntity</span><b>First</b>
-        </h1>
-    </header>
-    <nav></nav>
-    <hr>
-    <article>
-        <section>
-            <p>
-                An entity-first design pattern for asp.net core.
-            </p>
+    <div class="container">
+        <header>
             <h1>
-                Why?
+                <a href="/">Wryco</a>.<b>E</b><span class="muted-title">ntity</span><b>First</b>
             </h1>
-            <p>
-                Free, fast, easy, modular, hackable. Extend provided base classes for faster development.
-            </p>
-            <h1>
-                Install
-            </h1>
-            <p class="bash">
-                dotnet add package Wryco.EFirst --version 1.0.1
-            </p>
-            <h1>
-                Example
-            </h1>
-            <blockquote class="dialogue">
-                "Create an entity."
-            </blockquote>
-            <h4 class="entity">
-                Entity
-            </h4>
-            <pre>
-public class <b class="entity">Device</b>: <b class="base">BaseIEntity</b>
-{
-    public <b class="entity">Device</b>()
-    {
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
-    }
+            <nav aria-label="Primary">
+                <a href="#why">Why</a>
+                <a href="#install">Install</a>
+                <a href="#example">Example</a>
+                <a href="#routes">Routes</a>
+                <a href="#customizing">Customizing</a>
+                <a href="https://www.nuget.org/packages/Wryco.EFirst" target="_blank" rel="noopener">NuGet</a>
+            </nav>
+        </header>
 
+        <main>
+            <article>
+                <section>
+                    <p class="lead">
+                        An entity-first design pattern for ASP.NET Core. Define your entity, inherit the base layers,
+                        and get a working CRUD API in minutes.
+                    </p>
+
+                    <div class="badges">
+                        <span class="badge">ASP.NET Core</span>
+                        <span class="badge">EF Core</span>
+                        <span class="badge">v1.0.1</span>
+                        <span class="badge">Open Source</span>
+                    </div>
+
+                    <h2 id="why">Why?</h2>
+                    <p>
+                        Free, fast, easy, modular, and hackable. Extend provided base classes (<code>BaseIEntity</code>,
+                        <code>BaseDbContext</code>, <code>BaseRepository</code>, and <code>BaseController</code>) to
+                        skip repetitive CRUD boilerplate while keeping full control to override methods or drop down to
+                        custom logic whenever a route outgrows defaults.
+                    </p>
+
+                    <h2 id="install">Install</h2>
+                    <div class="install-box">
+                        <code id="install-cmd">dotnet add package Wryco.EFirst --version 1.0.1</code>
+                        <button class="copy-btn" type="button" onclick="copyInstall(this)">Copy</button>
+                    </div>
+
+                    <h2 id="example">Example</h2>
+                    <div class="legend" aria-label="Architecture color key">
+                        <span class="base">Base Class</span>
+                        <span class="entity">Entity</span>
+                        <span class="context">DbContext</span>
+                        <span class="repository">Repository</span>
+                        <span class="controller">Controller</span>
+                    </div>
+
+                    <blockquote class="dialogue">
+                        "Create an entity."
+                    </blockquote>
+                    <h3 class="entity">1. Entity</h3>
+                    <pre><code>public class <b class="entity">Device</b> : <b class="base">BaseIEntity</b>
+{
     // Main
     public int Id { get; set; }
     public required string Name { get; set; }
 
     // Meta
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
-    public DateTime LastActiveAt { get; set; } = DateTime.Now;
-}
-            </pre>
-            <blockquote class="dialogue">
-                "Reference it in your database context."
-            </blockquote>
-            <h4 class="context">
-                Context
-            </h4>
-            <pre>
-public class <b class="context">ApplicationDbContext</b> : <b class="base">BaseDbContext</b>
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime LastActiveAt { get; set; } = DateTime.UtcNow;
+}</code></pre>
+
+                    <blockquote class="dialogue">
+                        "Reference it in your database context."
+                    </blockquote>
+                    <h3 class="context">2. Context</h3>
+                    <pre><code>public class <b class="context">ApplicationDbContext</b> : <b class="base">BaseDbContext</b>
 {
-    public <b class="context">ApplicationDbContext</b>(DbContextOptions&lt;<b class="context">ApplicationDbContext</b>&gt; options): base(options){}
-    public DbSet&lt;<b class="entity">Device</b>&gt; Device { get; set; } = null!;
-}
-            </pre>
-            <blockquote class="dialogue">
-                "Give it a repository."
-            </blockquote>
-            <h4 class="repository">
-                Repository
-            </h4>
-            <pre>
-public class <b class="repository">DeviceRepository</b>: <b class="base">BaseRepository&lt;<b class="entity">Device</b>&gt;</b>
+    public <b class="context">ApplicationDbContext</b>(DbContextOptions&lt;<b class="context">ApplicationDbContext</b>&gt; options) : base(options) { }
+    public DbSet&lt;<b class="entity">Device</b>&gt; Devices { get; set; } = null!;
+}</code></pre>
+
+                    <blockquote class="dialogue">
+                        "Give it a repository."
+                    </blockquote>
+                    <h3 class="repository">3. Repository</h3>
+                    <pre><code>public class <b class="repository">DeviceRepository</b> : <b class="base">BaseRepository&lt;<b class="entity">Device</b>&gt;</b>
 {
     public <b class="repository">DeviceRepository</b>(<b class="context">ApplicationDbContext</b> context) : base(context) { }
-}
-            </pre>
-            <blockquote class="dialogue">
-                "Add the typical program.cs additions."
-            </blockquote>
-            <h4>
-                Program.cs
-            </h4>
-            <pre>
-(...)
-builder.Services.AddSharedInfrastructure&lt;<b class="context">ApplicationDbContext</b>&gt;(DBConnectionString);
-builder.Services.AddScoped&lt;<b class="repository">DeviceRepository</b>&gt;();
-(...)
-            </pre>
+}</code></pre>
 
-            <blockquote class="dialogue">
-                "And make it all accessible via API."
-            </blockquote>
-            <h4 class="controller">
-                Controller
-            </h4>
-            <pre>
-[ApiController]
+                    <blockquote class="dialogue">
+                        "Add the typical Program.cs additions."
+                    </blockquote>
+                    <h3>4. Program.cs</h3>
+                    <pre><code>// ...
+builder.Services.AddSharedInfrastructure&lt;<b class="context">ApplicationDbContext</b>&gt;(dbConnectionString);
+builder.Services.AddScoped&lt;<b class="repository">DeviceRepository</b>&gt;();
+// ...</code></pre>
+
+                    <blockquote class="dialogue">
+                        "And make it all accessible via API."
+                    </blockquote>
+                    <h3 class="controller">5. Controller</h3>
+                    <pre><code>[ApiController]
 [Route("api/device")]
 public class <b class="controller">DeviceController</b> : <b class="base">BaseController&lt;<b class="repository">DeviceRepository</b>, <b class="entity">Device</b>&gt;</b>
 {
     public <b class="controller">DeviceController</b>(<b class="repository">DeviceRepository</b> repository) : base(repository) { }
-}
-            </pre>
-            <h1>
-                "That's it."
-            </h1>
-            <p>
-                The above is all it takes to quickly scaffold a barebones API detailing:
-            </p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Method</th>
-                        <th>Endpoint</th>
-                        <th>Action</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>GET</td>
-                        <td>/api/device/</td>
-                        <td>index</td>
-                        <td>gets all devices</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>/api/device/id</td>
-                        <td>show</td>
-                        <td>gets specific device</td>
-                    </tr>
-                    <tr>
-                        <td>POST</td>
-                        <td>/api/device</td>
-                        <td>create</td>
-                        <td>creates a new device</td>
-                    </tr>
-                    <tr>
-                        <td>PUT</td>
-                        <td>/api/device</td>
-                        <td>update</td>
-                        <td>updates a device</td>
-                    </tr>
-                    <tr>
-                        <td>DEL</td>
-                        <td>/api/device</td>
-                        <td>delete</td>
-                        <td>deletes a device</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </article>
-    <footer></footer>
+}</code></pre>
+
+                    <h2 id="routes">That's it.</h2>
+                    <p>
+                        The five steps above scaffold a working CRUD API exposing the following endpoints:
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Action</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method">GET</span></td>
+                                <td><code>/api/device</code></td>
+                                <td><code>index</code></td>
+                                <td>Gets all devices</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">GET</span></td>
+                                <td><code>/api/device/{id}</code></td>
+                                <td><code>show</code></td>
+                                <td>Gets a specific device by ID</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">POST</span></td>
+                                <td><code>/api/device</code></td>
+                                <td><code>create</code></td>
+                                <td>Creates a new device</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">PUT</span></td>
+                                <td><code>/api/device</code></td>
+                                <td><code>update</code></td>
+                                <td>Updates an existing device</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">DELETE</span></td>
+                                <td><code>/api/device</code></td>
+                                <td><code>delete</code></td>
+                                <td>Deletes a device</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 id="customizing">Customizing &amp; Extending</h2>
+                    <p>
+                        Because every layer is a standard C# class inheriting from a base type, you are never locked in:
+                    </p>
+                    <pre><code>public class <b class="repository">DeviceRepository</b> : <b class="base">BaseRepository&lt;<b class="entity">Device</b>&gt;</b>
+{
+    public <b class="repository">DeviceRepository</b>(<b class="context">ApplicationDbContext</b> context) : base(context) { }
+
+    public async Task&lt;List&lt;<b class="entity">Device</b>&gt;&gt; GetActiveAsync()
+        =&gt; await _context.Devices.Where(d =&gt; d.LastActiveAt &gt; DateTime.UtcNow.AddMinutes(-15)).ToListAsync();
+}</code></pre>
+                    <div class="callout">
+                        <strong>Best fit:</strong>
+                        Rapid prototyping, internal tools, and clean CRUD microservices where you want consistent
+                        conventions up front without giving up standard ASP.NET Core and EF Core extensibility.
+                    </div>
+                </section>
+            </article>
+        </main>
+
+        <footer>
+            <span>© Wryco · Built by Lewis Brown</span>
+            <div>
+                <a href="/">Wryco Home</a> ·
+                <a href="https://www.nuget.org/packages/Wryco.EFirst" target="_blank" rel="noopener">NuGet Package</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function copyInstall(btn) {
+            const cmd = document.getElementById('install-cmd').textContent.trim();
+            navigator.clipboard.writeText(cmd).then(() => {
+                btn.textContent = 'Copied';
+                setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+            });
+        }
+    </script>
 </body>
 
 </html>
