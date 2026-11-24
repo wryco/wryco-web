@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Color Sampler & Inspector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        code,
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Checkerboard pattern for canvas transparent backdrop */
+        .checkerboard {
+            background-color: #0f172a;
+            background-image:
+                linear-gradient(45deg, #1e293b 25%, transparent 25%),
+                linear-gradient(-45deg, #1e293b 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #1e293b 75%),
+                linear-gradient(-45deg, transparent 75%, #1e293b 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+
+<body class="h-full flex flex-col overflow-hidden bg-slate-950 text-slate-200">
+
+    <!-- Top Navigation Header -->
+    <header
+        class="h-14 border-b border-slate-800 bg-slate-900/80 backdrop-blur px-4 flex items-center justify-between z-20 shrink-0">
+        <div class="flex items-center space-x-3">
+            <div
+                class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30">
+                <i class="fa-solid font-bold fa-eye-dropper text-sm"></i>
+            </div>
+            <div>
+                <h1 class="font-semibold text-sm leading-tight text-slate-100">SlopPoint</h1>
+                <p class="text-[10px] text-slate-400">AI Generated Pixel Color Inspector & Palette Sampler</p>
+            </div>
+        </div>
+
+        <!-- Header Action Controls -->
+        <div class="flex items-center space-x-2">
+            <label for="imageLoader"
+                class="cursor-pointer bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 shadow-md shadow-indigo-600/20">
+                <i class="fa-solid fa-upload"></i>
+                <span class="hidden sm:inline">Upload Image</span>
+            </label>
+            <input type="file" id="imageLoader" accept="image/*" class="hidden">
+
+            <button id="sampleDemoBtn"
+                class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                <span class="hidden sm:inline">Demo Image</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Application Workspace -->
+    <main class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+
+        <!-- LEFT PANEL: Interactive Canvas & Zoom Controls -->
+        <section
+            class="flex-1 flex flex-col relative border-b lg:border-b-0 lg:border-r border-slate-800 bg-slate-950 overflow-hidden">
+
+            <!-- Canvas Toolbar Header -->
+            <div
+                class="h-10 border-b border-slate-800/80 bg-slate-900/50 px-4 flex items-center justify-between text-xs text-slate-400 shrink-0">
+                <div class="flex items-center space-x-2 overflow-hidden mr-2">
+                    <i class="fa-regular fa-image text-slate-500"></i>
+                    <span id="fileNameDisplay" class="truncate max-w-[200px] text-slate-300 font-medium">No image
+                        loaded</span>
+                    <span id="imageDimDisplay" class="text-[11px] text-slate-500 font-mono"></span>
+                </div>
+
+                <!-- Zoom & Viewport Controls -->
+                <div class="flex items-center space-x-1 shrink-0">
+                    <button id="zoomOutBtn" title="Zoom Out (Ctrl -)"
+                        class="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-800 text-slate-300 transition">
+                        <i class="fa-solid fa-minus text-xs"></i>
+                    </button>
+                    <span id="zoomLevelDisplay"
+                        class="font-mono text-[11px] w-12 text-center text-indigo-400 font-medium">100%</span>
+                    <button id="zoomInBtn" title="Zoom In (Ctrl +)"
+                        class="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-800 text-slate-300 transition">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                    </button>
+                    <div class="h-4 w-px bg-slate-800 mx-1"></div>
+                    <button id="zoomFitBtn" title="Fit Screen"
+                        class="px-2 h-7 flex items-center justify-center rounded hover:bg-slate-800 text-slate-300 transition text-[11px] gap-1">
+                        <i class="fa-solid fa-expand text-xs"></i> Fit
+                    </button>
+                    <button id="zoomResetBtn" title="Reset Zoom (1:1)"
+                        class="px-2 h-7 flex items-center justify-center rounded hover:bg-slate-800 text-slate-300 transition text-[11px]">
+                        100%
+                    </button>
+                </div>
+            </div>
+
+            <!-- Canvas Interactive Container -->
+            <div id="canvasViewport"
+                class="flex-1 relative overflow-hidden checkerboard flex items-center justify-center cursor-crosshair select-none">
+
+                <!-- Drag & Drop Overlay / Initial Placeholder State -->
+                <div id="dropZone"
+                    class="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-slate-950/80 backdrop-blur-sm transition-opacity duration-200">
+                    <div
+                        class="w-16 h-16 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center mb-4 text-indigo-400 text-2xl shadow-xl">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <h2 class="text-base font-semibold text-slate-200 mb-1">Drag & Drop an image here</h2>
+                    <p class="text-xs text-slate-400 max-w-sm mb-4">Supports PNG, JPG, WEBP, SVG, GIF or BMP files for
+                        precise color sampling.</p>
+                    <label for="imageLoader2"
+                        class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-indigo-300 border border-slate-700 text-xs font-medium px-4 py-2 rounded-lg transition">
+                        Browse File
+                    </label>
+                    <input type="file" id="imageLoader2" accept="image/*" class="hidden">
+                </div>
+
+                <!-- The Main Working Canvas -->
+                <canvas id="imageCanvas"
+                    class="absolute left-0 top-0 origin-top-left transition-transform duration-75"></canvas>
+
+                <!-- Hover Pointer/Coordinate Badge -->
+                <div id="hoverCoordinateBadge"
+                    class="pointer-events-none fixed z-30 hidden bg-slate-900/90 backdrop-blur border border-slate-700 text-slate-200 font-mono text-[10px] px-2 py-1 rounded shadow-lg">
+                    X: <span id="hoverX">0</span> Y: <span id="hoverY">0</span>
+                </div>
+            </div>
+
+            <!-- Live Color Quick Bar Footer -->
+            <div
+                class="h-12 border-t border-slate-800 bg-slate-900 px-4 flex items-center justify-between text-xs shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div id="hoverColorSwatch"
+                        class="w-6 h-6 rounded border border-slate-700/60 shadow-inner bg-slate-800 transition-colors">
+                    </div>
+                    <div class="flex items-center space-x-3 font-mono text-xs">
+                        <div><span class="text-slate-500 text-[10px] block font-sans">HEX</span><span
+                                id="hoverHexDisplay" class="text-slate-200 font-semibold">#------</span></div>
+                        <div><span class="text-slate-500 text-[10px] block font-sans">RGB</span><span
+                                id="hoverRgbDisplay" class="text-slate-300">-, -, -</span></div>
+                        <div class="hidden sm:block"><span
+                                class="text-slate-500 text-[10px] block font-sans">HSL</span><span id="hoverHslDisplay"
+                                class="text-slate-300">-, -, -</span></div>
+                    </div>
+                </div>
+
+                <div class="text-[11px] text-slate-400 hidden md:flex items-center gap-3">
+                    <span><kbd
+                            class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px]">Scroll</kbd>
+                        Zoom</span>
+                    <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px]">Drag</kbd>
+                        Pan</span>
+                    <span><kbd
+                            class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px]">Click</kbd>
+                        Sample</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT PANEL: Samples Table & Color Palette Dashboard -->
+        <section class="w-full lg:w-96 flex flex-col bg-slate-900/90 h-1/2 lg:h-auto overflow-hidden shrink-0">
+
+            <!-- Panel Header Tabs / Controls -->
+            <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-900 shrink-0">
+                <div class="flex items-center space-x-2">
+                    <h2 class="font-semibold text-xs text-slate-200 tracking-wide uppercase">Sampled Points</h2>
+                    <span id="sampleCountBadge"
+                        class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full">0</span>
+                </div>
+
+                <div class="flex items-center space-x-1">
+                    <button id="copyAllCsvBtn" title="Export CSV"
+                        class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs transition">
+                        <i class="fa-solid fa-file-csv"></i>
+                    </button>
+                    <button id="copyAllJsonBtn" title="Export JSON"
+                        class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs transition">
+                        <i class="fa-solid fa-code"></i>
+                    </button>
+                    <div class="h-3 w-px bg-slate-800 my-auto mx-1"></div>
+                    <button id="clearSamplesBtn" title="Clear All Samples"
+                        class="p-1.5 rounded hover:bg-red-500/10 text-slate-400 hover:text-red-400 text-xs transition">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Color Palette & Average Summary Section -->
+            <div id="paletteSummaryContainer" class="p-3 border-b border-slate-800 bg-slate-950/40 shrink-0 hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-[11px] font-medium text-slate-400">Average & Palette Breakdown</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] text-slate-500">Average Color:</span>
+                        <div id="avgColorSwatch" class="w-3.5 h-3.5 rounded border border-slate-700"></div>
+                        <span id="avgHexDisplay" class="font-mono text-[10px] text-slate-300">#------</span>
+                    </div>
+                </div>
+                <!-- Active Swatch Palette Row -->
+                <div id="paletteStrip" class="flex h-6 rounded-lg overflow-hidden border border-slate-800 bg-slate-900">
+                    <!-- Dynamic Palette Swatches Insertion -->
+                </div>
+            </div>
+
+            <!-- Samples Table Scrollable Area -->
+            <div class="flex-1 overflow-y-auto min-h-0 relative">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead
+                        class="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 font-medium text-[11px] z-10">
+                        <tr>
+                            <th class="py-2.5 px-3 w-8 text-center">#</th>
+                            <th class="py-2.5 px-2">Color</th>
+                            <th class="py-2.5 px-2">HEX / Code</th>
+                            <th class="py-2.5 px-2">X, Y</th>
+                            <th class="py-2.5 px-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="samplesTableBody" class="divide-y divide-slate-800/60 font-mono text-[11px]">
+                        <!-- Table rows dynamically populated -->
+                    </tbody>
+                </table>
+
+                <!-- Empty Table State Display -->
+                <div id="emptyTableState"
+                    class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-slate-500">
+                    <i class="fa-solid fa-eyedropper text-2xl mb-2 text-slate-600"></i>
+                    <p class="text-xs font-medium text-slate-400">No samples collected yet</p>
+                    <p class="text-[11px] text-slate-500 mt-1 max-w-[200px]">Click anywhere on the image canvas to
+                        record color points.</p>
+                </div>
+            </div>
+
+            <!-- Table Footer Summary info -->
+            <div
+                class="px-3 py-2 border-t border-slate-800 bg-slate-900/90 text-[11px] text-slate-400 flex items-center justify-between shrink-0">
+                <span id="statusMessage">Ready</span>
+                <button id="copyPaletteCodesBtn"
+                    class="text-indigo-400 hover:text-indigo-300 text-[11px] font-sans flex items-center gap-1 font-medium transition">
+                    <i class="fa-regular fa-copy"></i> Copy HEX List
+                </button>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Floating Magnifier Loupe Overlay -->
+    <div id="magnifierLoupe"
+        class="fixed pointer-events-none z-50 hidden w-32 h-32 rounded-full border-2 border-white/80 shadow-2xl overflow-hidden bg-slate-950 transform -translate-x-1/2 -translate-y-1/2">
+        <canvas id="loupeCanvas" width="128" height="128" class="w-full h-full"></canvas>
+        <!-- Crosshair Center Overlay -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-3 h-3 border border-red-500 rounded-xs bg-red-500/20"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Bar -->
+    <div id="toastNotification"
+        class="fixed bottom-14 right-4 lg:bottom-6 lg:right-6 bg-indigo-600 text-white text-xs px-3.5 py-2 rounded-lg shadow-xl border border-indigo-400/30 transform translate-y-10 opacity-0 transition-all duration-200 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastText">Color code copied to clipboard!</span>
+    </div>
+
+    <script>
+        // --- Application State Management ---
+        const state = {
+            image: null,
+            imageName: 'demo.png',
+            imageWidth: 0,
+            imageHeight: 0,
+            scale: 1,
+            panX: 0,
+            panY: 0,
+            isPanning: false,
+            startPanX: 0,
+            startPanY: 0,
+            samples: [],
+            currentHoverColor: { hex: '#000000', rgb: '0, 0, 0', hsl: '0%, 0%, 0%' },
+            hoverCoords: { x: 0, y: 0 }
+        };
+
+        // --- DOM Elements References ---
+        const imageLoader = document.getElementById('imageLoader');
+        const imageLoader2 = document.getElementById('imageLoader2');
+        const sampleDemoBtn = document.getElementById('sampleDemoBtn');
+        const dropZone = document.getElementById('dropZone');
+        const canvasViewport = document.getElementById('canvasViewport');
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        // Zoom UI
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const zoomResetBtn = document.getElementById('zoomResetBtn');
+        const zoomFitBtn = document.getElementById('zoomFitBtn');
+        const zoomLevelDisplay = document.getElementById('zoomLevelDisplay');
+
+        // Display elements
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const imageDimDisplay = document.getElementById('imageDimDisplay');
+        const hoverCoordinateBadge = document.getElementById('hoverCoordinateBadge');
+        const hoverX = document.getElementById('hoverX');
+        const hoverY = document.getElementById('hoverY');
+        const hoverColorSwatch = document.getElementById('hoverColorSwatch');
+        const hoverHexDisplay = document.getElementById('hoverHexDisplay');
+        const hoverRgbDisplay = document.getElementById('hoverRgbDisplay');
+        const hoverHslDisplay = document.getElementById('hoverHslDisplay');
+
+        // Magnifier Loupe
+        const magnifierLoupe = document.getElementById('magnifierLoupe');
+        const loupeCanvas = document.getElementById('loupeCanvas');
+        const loupeCtx = loupeCanvas.getContext('2d');
+
+        // Table & Sidebar
+        const samplesTableBody = document.getElementById('samplesTableBody');
+        const emptyTableState = document.getElementById('emptyTableState');
+        const sampleCountBadge = document.getElementById('sampleCountBadge');
+        const clearSamplesBtn = document.getElementById('clearSamplesBtn');
+        const copyAllCsvBtn = document.getElementById('copyAllCsvBtn');
+        const copyAllJsonBtn = document.getElementById('copyAllJsonBtn');
+        const copyPaletteCodesBtn = document.getElementById('copyPaletteCodesBtn');
+        const paletteSummaryContainer = document.getElementById('paletteSummaryContainer');
+        const paletteStrip = document.getElementById('paletteStrip');
+        const avgColorSwatch = document.getElementById('avgColorSwatch');
+        const avgHexDisplay = document.getElementById('avgHexDisplay');
+        const toastNotification = document.getElementById('toastNotification');
+        const toastText = document.getElementById('toastText');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Color Conversion Utilities
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('').toUpperCase();
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0; // achromatic
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return {
+                h: Math.round(h * 360),
+                s: Math.round(s * 100),
+                l: Math.round(l * 100)
+            };
+        }
+
+        // Image Loader Handler
+        function loadImageFromFile(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    state.image = img;
+                    state.imageName = file.name;
+                    state.imageWidth = img.width;
+                    state.imageHeight = img.height;
+
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    fileNameDisplay.textContent = file.name;
+                    imageDimDisplay.textContent = `(${img.width} × ${img.height}px)`;
+                    dropZone.classList.add('hidden');
+
+                    fitImageToViewport();
+                    showToast(`Image "${file.name}" loaded successfully.`);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Load Demo Colorful Canvas Image
+        function loadDemoImage() {
+            const demoCanvas = document.createElement('canvas');
+            demoCanvas.width = 1200;
+            demoCanvas.height = 800;
+            const dCtx = demoCanvas.getContext('2d');
+
+            // Create rich colorful radial & linear gradients
+            const grad1 = dCtx.createLinearGradient(0, 0, 1200, 800);
+            grad1.addColorStop(0, '#ff007f');
+            grad1.addColorStop(0.3, '#7928ca');
+            grad1.addColorStop(0.6, '#00dfd8');
+            grad1.addColorStop(1, '#ffeb3b');
+            dCtx.fillStyle = grad1;
+            dCtx.fillRect(0, 0, 1200, 800);
+
+            // Add interesting geometric patterns
+            for (let i = 0; i < 30; i++) {
+                dCtx.beginPath();
+                dCtx.arc(
+                    Math.random() * 1200,
+                    Math.random() * 800,
+                    Math.random() * 150 + 20,
+                    0,
+                    Math.PI * 2
+                );
+                dCtx.fillStyle = `hsla(${Math.random() * 360}, 80%, 60%, ${Math.random() * 0.7 + 0.2})`;
+                dCtx.fill();
+            }
+
+            const img = new Image();
+            img.onload = () => {
+                state.image = img;
+                state.imageName = 'demo-palette.png';
+                state.imageWidth = img.width;
+                state.imageHeight = img.height;
+
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                fileNameDisplay.textContent = 'demo-palette.png';
+                imageDimDisplay.textContent = `(${img.width} × ${img.height}px)`;
+                dropZone.classList.add('hidden');
+
+                fitImageToViewport();
+                showToast('Demo canvas loaded.');
+            };
+            img.src = demoCanvas.toDataURL();
+        }
+
+        function updateTransform() {
+            canvas.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
+            zoomLevelDisplay.textContent = `${Math.round(state.scale * 100)}%`;
+        }
+
+        function fitImageToViewport() {
+            if (!state.image) return;
+            const viewportRect = canvasViewport.getBoundingClientRect();
+            const padding = 40;
+            const availWidth = viewportRect.width - padding;
+            const availHeight = viewportRect.height - padding;
+
+            const scaleX = availWidth / state.imageWidth;
+            const scaleY = availHeight / state.imageHeight;
+            state.scale = Math.min(scaleX, scaleY, 1);
+
+            state.panX = (viewportRect.width - state.imageWidth * state.scale) / 2;
+            state.panY = (viewportRect.height - state.imageHeight * state.scale) / 2;
+
+            updateTransform();
+        }
+
+        function zoomToPoint(deltaZoom, cursorX, cursorY) {
+            if (!state.image) return;
+            const newScale = Math.min(Math.max(state.scale * deltaZoom, 0.1), 50);
+
+            // Adjust pan to zoom into specific mouse location
+            state.panX = cursorX - (cursorX - state.panX) * (newScale / state.scale);
+            state.panY = cursorY - (cursorY - state.panY) * (newScale / state.scale);
+            state.scale = newScale;
+
+            updateTransform();
+        }
+
+        // Convert Screen Mouse Coordinates to Original Image Pixel Coordinates
+        function getCanvasCoordinates(e) {
+            const rect = canvasViewport.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const imgX = Math.floor((mouseX - state.panX) / state.scale);
+            const imgY = Math.floor((mouseY - state.panY) / state.scale);
+
+            return { x: imgX, y: imgY, screenX: e.clientX, screenY: e.clientY };
+        }
+
+        // Update Hover Color Preview & Magnifier Loupe
+        function handleCanvasHover(e) {
+            if (!state.image) return;
+
+            const { x, y, screenX, screenY } = getCanvasCoordinates(e);
+
+            if (x >= 0 && x < state.imageWidth && y >= 0 && y < state.imageHeight) {
+                // Pixel data sampling
+                const pixel = ctx.getImageData(x, y, 1, 1).data;
+                const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+                const hsl = rgbToHsl(pixel[0], pixel[1], pixel[2]);
+
+                state.currentHoverColor = {
+                    r: pixel[0], g: pixel[1], b: pixel[2], a: pixel[3],
+                    hex,
+                    rgb: `${pixel[0]}, ${pixel[1]}, ${pixel[2]}`,
+                    hsl: `${hsl.h}°, ${hsl.s}%, ${hsl.l}%`
+                };
+                state.hoverCoords = { x, y };
+
+                // Update footer display
+                hoverColorSwatch.style.backgroundColor = hex;
+                hoverHexDisplay.textContent = hex;
+                hoverRgbDisplay.textContent = state.currentHoverColor.rgb;
+                hoverHslDisplay.textContent = state.currentHoverColor.hsl;
+
+                // Position coordinate badge
+                hoverCoordinateBadge.classList.remove('hidden');
+                hoverCoordinateBadge.style.left = `${screenX + 12}px`;
+                hoverCoordinateBadge.style.top = `${screenY + 12}px`;
+                hoverX.textContent = x;
+                hoverY.textContent = y;
+
+                // Render Loupe Magnifier
+                renderMagnifier(x, y, screenX, screenY);
+            } else {
+                hoverCoordinateBadge.classList.add('hidden');
+                magnifierLoupe.classList.add('hidden');
+            }
+        }
+
+        function renderMagnifier(imgX, imgY, screenX, screenY) {
+            magnifierLoupe.classList.remove('hidden');
+            magnifierLoupe.style.left = `${screenX}px`;
+            magnifierLoupe.style.top = `${screenY - 80}px`;
+
+            const loupeSize = 128;
+            const zoomRadius = 8; // Number of surrounding pixels to draw in zoom grid
+
+            loupeCtx.imageSmoothingEnabled = false;
+            loupeCtx.clearRect(0, 0, loupeSize, loupeSize);
+
+            // Draw magnified portion of original canvas image
+            loupeCtx.drawImage(
+                canvas,
+                imgX - zoomRadius, imgY - zoomRadius, zoomRadius * 2, zoomRadius * 2,
+                0, 0, loupeSize, loupeSize
+            );
+
+            // Draw subtle pixel grid overlay inside loupe
+            const pixelSize = loupeSize / (zoomRadius * 2);
+            loupeCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            loupeCtx.lineWidth = 0.5;
+
+            for (let i = 0; i <= loupeSize; i += pixelSize) {
+                loupeCtx.beginPath();
+                loupeCtx.moveTo(i, 0);
+                loupeCtx.lineTo(i, loupeSize);
+                loupeCtx.stroke();
+
+                loupeCtx.beginPath();
+                loupeCtx.moveTo(0, i);
+                loupeCtx.lineTo(loupeSize, i);
+                loupeCtx.stroke();
+            }
+        }
+
+        // Add Sample Point
+        function addSamplePoint(x, y) {
+            if (!state.image) return;
+            if (x < 0 || x >= state.imageWidth || y < 0 || y >= state.imageHeight) return;
+
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+            const hslObj = rgbToHsl(pixel[0], pixel[1], pixel[2]);
+
+            const sample = {
+                id: Date.now() + Math.random(),
+                num: state.samples.length + 1,
+                x,
+                y,
+                r: pixel[0],
+                g: pixel[1],
+                b: pixel[2],
+                hex,
+                rgb: `${pixel[0]}, ${pixel[1]}, ${pixel[2]}`,
+                hsl: `${hslObj.h}°, ${hslObj.s}%, ${hslObj.l}%`
+            };
+
+            state.samples.push(sample);
+            renderSamplesTable();
+            showToast(`Sampled ${hex} at (${x}, ${y})`);
+        }
+
+        function deleteSample(id) {
+            state.samples = state.samples.filter(s => s.id !== id);
+            // Renumber remaining samples
+            state.samples.forEach((s, idx) => s.num = idx + 1);
+            renderSamplesTable();
+        }
+
+        function clearAllSamples() {
+            if (state.samples.length === 0) return;
+            if (confirm('Are you sure you want to clear all sampled color points?')) {
+                state.samples = [];
+                renderSamplesTable();
+                showToast('All samples cleared.');
+            }
+        }
+
+        // Render Table Rows & Summary Palette
+        function renderSamplesTable() {
+            sampleCountBadge.textContent = state.samples.length;
+            samplesTableBody.innerHTML = '';
+
+            if (state.samples.length === 0) {
+                emptyTableState.classList.remove('hidden');
+                paletteSummaryContainer.classList.add('hidden');
+                statusMessage.textContent = 'Ready';
+                return;
+            }
+
+            emptyTableState.classList.add('hidden');
+            paletteSummaryContainer.classList.remove('hidden');
+            statusMessage.textContent = `${state.samples.length} sample(s) collected`;
+
+            // Render Individual Table Rows
+            state.samples.forEach((sample) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/50 transition group';
+                tr.innerHTML = `
+          <td class="py-2 px-3 text-center text-slate-500">${sample.num}</td>
+          <td class="py-2 px-2">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded border border-slate-700/80 shadow-xs shrink-0" style="background-color: ${sample.hex}"></span>
+            </div>
+          </td>
+          <td class="py-2 px-2">
+            <span class="text-slate-200 font-semibold block">${sample.hex}</span>
+            <span class="text-[10px] text-slate-400 font-normal">rgb(${sample.rgb})</span>
+          </td>
+          <td class="py-2 px-2 text-slate-400">
+            ${sample.x}, ${sample.y}
+          </td>
+          <td class="py-2 px-3 text-right font-sans">
+            <div class="flex items-center justify-end space-x-1 opacity-80 group-hover:opacity-100">
+              <button onclick="copyToClipboard('${sample.hex}', 'HEX ${sample.hex}')" title="Copy HEX Code" class="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-slate-200">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+              <button onclick="deleteSample(${sample.id})" title="Delete Sample" class="p-1 hover:bg-red-500/20 rounded text-slate-400 hover:text-red-400">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </td>
+        `;
+                samplesTableBody.appendChild(tr);
+            });
+
+            // Calculate & Render Average Color and Palette Strip
+            updatePaletteSummary();
+        }
+
+        function updatePaletteSummary() {
+            if (state.samples.length === 0) return;
+
+            let sumR = 0, sumG = 0, sumB = 0;
+            paletteStrip.innerHTML = '';
+
+            state.samples.forEach(s => {
+                sumR += s.r;
+                sumG += s.g;
+                sumB += s.b;
+
+                // Palette strip element
+                const swatch = document.createElement('div');
+                swatch.className = 'flex-1 h-full cursor-pointer hover:opacity-80 transition relative group';
+                swatch.style.backgroundColor = s.hex;
+                swatch.title = `${s.hex} (${s.x}, ${s.y})`;
+                swatch.onclick = () => copyToClipboard(s.hex, `HEX ${s.hex}`);
+                paletteStrip.appendChild(swatch);
+            });
+
+            const avgR = Math.round(sumR / state.samples.length);
+            const avgG = Math.round(sumG / state.samples.length);
+            const avgB = Math.round(sumB / state.samples.length);
+            const avgHex = rgbToHex(avgR, avgG, avgB);
+
+            avgColorSwatch.style.backgroundColor = avgHex;
+            avgHexDisplay.textContent = avgHex;
+        }
+
+        function copyToClipboard(text, label = 'Code') {
+            if (!text) return;
+
+            // Fallback for document iframe restrictions
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            showToast(`${label} copied to clipboard!`);
+        }
+
+        function exportCSV() {
+            if (state.samples.length === 0) {
+                showToast('No samples available to export.');
+                return;
+            }
+            let csv = 'Sample,HEX,RGB,HSL,X,Y\n';
+            state.samples.forEach(s => {
+                csv += `${s.num},"${s.hex}","rgb(${s.rgb})","${s.hsl}",${s.x},${s.y}\n`;
+            });
+            copyToClipboard(csv, 'CSV Data');
+        }
+
+        function exportJSON() {
+            if (state.samples.length === 0) {
+                showToast('No samples available to export.');
+                return;
+            }
+            const jsonStr = JSON.stringify(state.samples, null, 2);
+            copyToClipboard(jsonStr, 'JSON Data');
+        }
+
+        function copyHEXList() {
+            if (state.samples.length === 0) return;
+            const list = state.samples.map(s => s.hex).join(', ');
+            copyToClipboard(list, 'HEX List');
+        }
+
+        function showToast(message) {
+            toastText.textContent = message;
+            toastNotification.classList.remove('opacity-0', 'translate-y-10');
+            toastNotification.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toastNotification.classList.remove('opacity-100', 'translate-y-0');
+                toastNotification.classList.add('opacity-0', 'translate-y-10');
+            }, 2500);
+        }
+
+        // Attach Event Handlers
+        function initEvents() {
+            // Image Upload Handlers
+            imageLoader.addEventListener('change', (e) => loadImageFromFile(e.target.files[0]));
+            imageLoader2.addEventListener('change', (e) => loadImageFromFile(e.target.files[0]));
+            sampleDemoBtn.addEventListener('click', loadDemoImage);
+
+            // Drag and Drop
+            window.addEventListener('dragover', (e) => e.preventDefault());
+            window.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    loadImageFromFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            // Canvas Zoom Buttons
+            zoomInBtn.addEventListener('click', () => {
+                const rect = canvasViewport.getBoundingClientRect();
+                zoomToPoint(1.25, rect.width / 2, rect.height / 2);
+            });
+
+            zoomOutBtn.addEventListener('click', () => {
+                const rect = canvasViewport.getBoundingClientRect();
+                zoomToPoint(0.8, rect.width / 2, rect.height / 2);
+            });
+
+            zoomResetBtn.addEventListener('click', () => {
+                state.scale = 1;
+                const rect = canvasViewport.getBoundingClientRect();
+                state.panX = (rect.width - state.imageWidth) / 2;
+                state.panY = (rect.height - state.imageHeight) / 2;
+                updateTransform();
+            });
+
+            zoomFitBtn.addEventListener('click', fitImageToViewport);
+
+            // Mouse Wheel Zooming
+            canvasViewport.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const rect = canvasViewport.getBoundingClientRect();
+                const cursorX = e.clientX - rect.left;
+                const cursorY = e.clientY - rect.top;
+
+                const delta = e.deltaY < 0 ? 1.15 : 0.85;
+                zoomToPoint(delta, cursorX, cursorY);
+            }, { passive: false });
+
+            // Canvas Panning (Drag) & Sampling (Click)
+            canvasViewport.addEventListener('mousedown', (e) => {
+                if (!state.image) return;
+
+                // Right click or middle mouse click or space dragging for pan
+                if (e.button === 1 || e.button === 2 || e.shiftKey) {
+                    state.isPanning = true;
+                    state.startPanX = e.clientX - state.panX;
+                    state.startPanY = e.clientY - state.panY;
+                    canvasViewport.style.cursor = 'grabbing';
+                    return;
+                }
+
+                // Left Click: Color Sample Action
+                if (e.button === 0) {
+                    const { x, y } = getCanvasCoordinates(e);
+                    addSamplePoint(x, y);
+                }
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (state.isPanning) {
+                    state.panX = e.clientX - state.startPanX;
+                    state.panY = e.clientY - state.startPanY;
+                    updateTransform();
+                } else {
+                    handleCanvasHover(e);
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                state.isPanning = false;
+                canvasViewport.style.cursor = 'crosshair';
+            });
+
+            canvasViewport.addEventListener('mouseleave', () => {
+                hoverCoordinateBadge.classList.add('hidden');
+                magnifierLoupe.classList.add('hidden');
+            });
+
+            // Actions & Export Buttons
+            clearSamplesBtn.addEventListener('click', clearAllSamples);
+            copyAllCsvBtn.addEventListener('click', exportCSV);
+            copyAllJsonBtn.addEventListener('click', exportJSON);
+            copyPaletteCodesBtn.addEventListener('click', copyHEXList);
+
+            // Prevent Context Menu on canvas viewport for smoother panning
+            canvasViewport.addEventListener('contextmenu', (e) => e.preventDefault());
+
+            // Window Resize Listener
+            window.addEventListener('resize', () => {
+                if (state.image) {
+                    fitImageToViewport();
+                }
+            });
+        }
+
+        // Initialize Application on Window Load
+        window.onload = function () {
+            initEvents();
+            // Auto-load demo image for instant interactive preview
+            loadDemoImage();
+        };
+    </script>
+</body>
+
+</html>
