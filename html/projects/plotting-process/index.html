@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wryco - Plotting Process</title>
+    <style>
+        /* Reset & Modern Base */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0f1115;
+            --surface: #16181f;
+            --text: #e6e8ec;
+            --text-muted: #8b92a0;
+            --border: #232733;
+            --accent: #5e81ac;
+            --accent-hover: #81a1c1;
+            --content-max-width: 780px;
+            --site-max-width: 1360px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.75;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Outer Wrapper for Ultra-wide / 4K support */
+        .site-wrapper {
+            width: 100%;
+            max-width: var(--site-max-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 0 1.5rem;
+        }
+
+        /* Minimalist Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.15s ease;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        /* Main Layout with Flexbox */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 4rem 0;
+            width: 100%;
+        }
+
+        /* Table of Contents */
+        section.toc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem 2rem;
+            margin: 1.25rem 0;
+        }
+
+        section.toc h2 {
+            font-size: 1.1rem;
+            margin: 0 0 0.75rem 0;
+            color: #fff;
+        }
+
+        section.toc ul {
+            list-style: decimal;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.4rem;
+        }
+
+        section.toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.15s ease;
+        }
+
+        section.toc a:hover {
+            color: var(--accent);
+            padding-left: 0.25rem;
+        }
+
+        /* Article Content Container */
+        article.post {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: var(--content-max-width);
+            gap: 2.25rem;
+        }
+
+        /* Header within Article */
+        .post-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .post-title {
+            font-size: clamp(2rem, 3.5vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .post-meta span:not(:last-child)::after {
+            content: "•";
+            margin-left: 0.75rem;
+        }
+
+        /* Content Section */
+        section.post-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+            color: #d1d5db;
+        }
+
+        section.post-content h2 {
+            font-size: clamp(1.4rem, 2vw, 1.85rem);
+            color: #fff;
+            margin-top: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        section.post-content p {
+            line-height: 1.8;
+        }
+
+        section.post-content blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 0.5rem 0 0.5rem 1.25rem;
+            font-style: italic;
+            color: var(--text-muted);
+            margin: 0.5rem 0;
+        }
+
+        section.post-content pre {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Post Footer Section (Author / Navigation) */
+        section.post-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .author-card {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .author-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--accent-hover);
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .author-bio {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Minimalist Footer */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            border-top: 1px solid var(--border);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        footer nav {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        /* Responsiveness & 4K adjustments */
+        @media (max-width: 640px) {
+
+            header,
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .site-wrapper {
+                padding: 0 1rem;
+            }
+
+            main {
+                padding: 2.5rem 0;
+            }
+        }
+
+        @media (min-width: 2560px) {
+            :root {
+                --content-max-width: 900px;
+                --site-max-width: 1800px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <header>
+            <a href="/" class="brand">wryco</a>
+            <nav>
+                <a href="/">Home</a>
+            </nav>
+        </header>
+
+        <main>
+            <article class="post">
+                <header class="post-header">
+                    <h1 class="post-title">Plotting Process</h1>
+                    <div class="post-meta">
+                        <span>Published on November 25, 2026</span>
+                        <span>2 min read</span>
+                        <span>Art & Software</span>
+                    </div>
+                </header>
+
+                <section class="toc">
+                    <h2>Table of Contents</h2>
+                    <ul>
+                        <li><a href="#init">Init</a></li>
+                        <li><a href="#edit">Edit</a></li>
+                        <li><a href="#corners">Corners</a></li>
+                        <li><a href="#vectorize">Vectorize</a></li>
+                        <li><a href="#import">Import</a></li>
+                        <li><a href="#config">Config</a></li>
+                        <li><a href="#slice">Slice</a></li>
+                        <li><a href="#plotting">Plotting</a></li>
+                        <li><a href="#scan">Scan</a></li>
+                        <li><a href="#splash">Splash</a></li>
+                        <li><a href="#repo">Repo</a></li>
+                    </ul>
+                </section>
+
+                <section class="post-content">
+
+                    <h2>Init</h2>
+                    <p>
+                        Creating a plot starts with sourcing a photo.
+                    </p>
+                    <img src="img/01-digital.png">
+                    <blockquote>
+                        "5 color quantized wireframe mesh of a joinery mechanism I made a year ago."
+                    </blockquote>
+
+                    <h2>Edit</h2>
+                    <p>
+                        I use a script in the pen-drive process to color correct colors to match available G2 colors.
+                    </p>
+                    <img src="img/02-edit.png">
+
+                    <h2>Corners</h2>
+                    <p>
+                        Adding corners to the image to ensure the created SVGs all have the same dimension to make
+                        slicer orientation easier.
+                    </p>
+                    <img src="img/03-corners.png">
+                    <blockquote>
+                        "You probably don't notice it, but the top left and bottom right corners now have the unique
+                        colors."
+                    </blockquote>
+
+                    <h2>Vectorize</h2>
+                    <p>
+                        Using Inkscape I vectorize each color into its own SVG file.
+                    </p>
+                    <img src="svg/black.svg">
+                    <blockquote>
+                        "Black layer"
+                    </blockquote>
+                    <img src="svg/purple.svg">
+                    <blockquote>
+                        "Purple layer"
+                    </blockquote>
+                    <img src="svg/white.svg">
+                    <blockquote>
+                        "White layer"
+                    </blockquote>
+                    <img src="svg/yellow.svg">
+                    <blockquote>
+                        "Yellow layer"
+                    </blockquote>
+
+                    <h2>
+                        Import
+                    </h2>
+                    <p>
+                        Next up is opening up the base nextruder toolholder .3mf file and importing the created SVGs.
+                    </p>
+                    <img src="img/04-import.png">
+                    <blockquote>
+                        "The result of importing the SVGs into the 3MF file."
+                    </blockquote>
+
+                    <h2>Config</h2>
+                    <p>
+                        Scaling the imported SVGs to match the reference object dimensions to fit the plottable area,
+                        set the imports to use extruder 2, and messing around with infills...
+                    </p>
+                    <img src="img/05-config.png">
+                    <blockquote>
+                        "The result of configuring."
+                    </blockquote>
+
+                    <h2>Slice</h2>
+                    <p>
+                        Slicing the 3mf file into a gcode.
+                    </p>
+
+                    <img src="img/06-slice.png">
+                    <blockquote>
+                        "The result of slicing."
+                    </blockquote>
+
+                    <h2>Plotting</h2>
+                    <img src="img/07-plotting.gif">
+                    <blockquote>
+                        "GleebyDeeby plotting a full black version of the plot. Oops."
+                    </blockquote>
+
+                    <h2>Scan</h2>
+                    <p>
+                        The final result. Some detail lost with the white layer being plotted black. It probably would
+                        have looked better with color.
+                    </p>
+                    <img src="img/08-scan.png">
+                    <blockquote>
+                        "The final result."
+                    </blockquote>
+
+                    <h2>Splash</h2>
+                    <p>I create a splash image using a template for making repos with the plotting files.</p>
+                    <img src="img/09-splash.png">
+                    <blockquote>
+                        "Such a dapper looking artist."
+                    </blockquote>
+
+                    <h2>Repo</h2>
+                    <p>
+                        Lastly, I upload all the files to printables so others can make their own plots. Check it out <a
+                            href="https://www.printables.com/model/1928639-ramity-plots-joinery-mechanism-wireframe"
+                            target="_blank">here</a>.
+                    </p>
+                    <img src="img/10-repo.png">
+                    <blockquote>
+                        "As seen on your screen."
+                    </blockquote>
+                </section>
+            </article>
+        </main>
+
+        <footer>
+            <span>🄯 lewis@wryco.com</span>
+            <nav>
+                <a href="https://github.com/ramity" target="_blank">GitHub</a>
+                <a href="/">Home</a>
+            </nav>
+        </footer>
+    </div>
+</body>
+
+</html>
